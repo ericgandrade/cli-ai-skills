@@ -1,771 +1,586 @@
-# Manual de Desenvolvimento de Skills
+# Skills Development Guide
 
-Guia de referência para criar e manter Skills para **Claude Code** e **GitHub Copilot**.
+Comprehensive guide for creating and maintaining AI Skills for **GitHub Copilot CLI** and **Claude Code**.
 
-## Referências Oficiais
+---
 
-| Ferramenta | Documentação |
-|------------|--------------|
+## 📚 Official References
+
+| Tool | Documentation |
+|------|---------------|
 | Claude Code | https://code.claude.com/docs/en/skills |
 | GitHub Copilot | https://docs.github.com/en/copilot/concepts/agents/about-agent-skills |
 | Agent Skills Standard | https://agentskills.io |
 
 ---
 
-## Visão Geral
+## 🎯 What is a Skill?
 
-Skills são instruções em Markdown que ensinam a IA a executar tarefas específicas. Ambas as ferramentas seguem o **Agent Skills Open Standard**, compartilhando estrutura similar.
+A **skill** is a Markdown file (`SKILL.md`) containing structured instructions that teach an AI agent how to perform specific tasks.
 
-### O que é uma Skill
+### Core Components
 
-- Arquivo `SKILL.md` com instruções detalhadas
-- Frontmatter YAML com metadados (name, description)
-- Workflow passo a passo para a IA seguir
-- Pode incluir arquivos auxiliares (scripts, templates)
+- **SKILL.md file** - The skill specification with frontmatter and workflow
+- **README.md** (optional but recommended) - User-facing documentation
+- **Auxiliary files** (optional) - Scripts, templates, or resources
+
+### Key Characteristics
+
+- ✅ **Self-contained** - All instructions in one file
+- ✅ **Structured workflow** - Step-by-step process
+- ✅ **Trigger-based** - Activated by specific phrases or context
+- ✅ **Tool-agnostic** - Works across different AI platforms
 
 ---
 
-## Zero-Config Design Principles
+## 🏗️ Zero-Config Design Principles
 
-All skills in this vault follow a **zero-config philosophy**:
+Modern skills follow a **zero-configuration philosophy** for maximum portability and user experience.
 
 ### Core Principles
 
-1. **No hardcoded paths** - Skills discover vault structure at runtime
-2. **No hardcoded values** - Skills extract valid values from templates/files
+1. **No hardcoded paths** - Discover file/folder structure at runtime
+2. **No hardcoded values** - Extract valid values from actual files when possible
 3. **No configuration files** - Skills work out of the box
-4. **User interaction** - Skills ask when ambiguous, never assume
-5. **Vault-agnostic** - Skills work with PARA, Zettelkasten, or custom structures
+4. **Ask when ambiguous** - Interactive clarification instead of assumptions
+5. **Context-agnostic** - Works with any project structure or methodology
 
-### Step 0: Discovery (Required for most skills)
+### Discovery Pattern
 
-**Most skills should start with a discovery step**, but it may be optional for skills that don't depend on vault structure.
+Most skills that interact with project structure should include a **Step 0: Discovery** phase:
 
 **When Step 0 is REQUIRED:**
-- Skill creates/validates notes based on templates
-- Skill needs to know vault folder structure
-- Skill extracts valid values from files
-- Examples: `note-creator`, `note-validator`
+- Skill creates/validates files based on templates or patterns
+- Skill needs to understand project folder structure
+- Skill extracts valid values from existing files
+- Example: Note creation, file validation skills
 
 **When Step 0 is OPTIONAL:**
-- Skill works purely with note content
-- Skill doesn't need templates or folder discovery
-- Example: `wikilink-validator` (optional - only for context)
+- Skill works purely with content (not structure)
+- Skill doesn't depend on templates or configuration
+- Example: Content analysis, wikilink suggestion skills
 
 **Standard Discovery Pattern:**
 
 ```markdown
-### Step 0: Discover Vault Structure
+### Step 0: Discovery
 
-Before executing the main workflow, discover the vault configuration:
+Before executing the main workflow, discover project configuration:
 
-**Templates folder:**
-- Search for directories matching: `*emplate*`, `*Template*`, `Templates/`
-- If multiple found, ask user which to use
-- If none found, ask user for path or offer to work without templates
+**Resource discovery:**
+- Search for relevant directories using patterns (e.g., `*template*`, `*config*`)
+- If multiple found → ask user which to use
+- If none found → ask user for path OR offer to work without it
 
-**Available note types:**
-- Scan template folder for `template-*.md` files
-- Extract type from filename: `template-task.md` → type: task
-- Build dynamic list of supported types
+**Value extraction:**
+- Parse files for valid values (e.g., YAML frontmatter, JSON config)
+- Extract enums: `status: draft | review | published` → ["draft", "review", "published"]
+- Build dynamic validation rules from discovered values
 
-**Valid field values:**
-- Parse template frontmatter for enum values
-- Example: `status: backlog | in-progress | done` → extract array
-- Use these for validation and prompts
-
-**Vault folders:**
-- Search for inbox: `*Inbox*`, `*inbox*`, `*INBOX*`
-- Search for projects: `*Project*`, `*project*`, `PROJECTS/`
-- Pattern-based detection, not exact matches
-```
-
-**Optional Discovery Pattern:**
-
-```markdown
-### Step 0: Discover Vault Structure (Optional)
-
-**Note:** This skill is less dependent on vault structure but can benefit from discovery.
-
-**Optional discovery:**
-- [Only discover what's needed for enhanced functionality]
-- [Skill works without this information]
+**Folder structure:**
+- Pattern-based detection (avoid exact path matching)
+- Example: `*inbox*`, `*project*`, `src/`, `docs/`
+- Ask user to confirm when ambiguous
 ```
 
 ### Anti-Patterns to Avoid
 
-❌ **Never do:**
-- Hardcode paths: `00-Inbox/`, `04-Resources/Templates/`
-- Hardcode values: `status: ["backlog", "in-progress", "done"]`
-- Hardcode keywords: `if content.includes("reunião")`
-- Assume folder structure: `{vault}/02-Projects/`
+❌ **NEVER do:**
+- Hardcode absolute paths: `/path/to/folder/`
+- Hardcode relative paths: `templates/`, `src/components/`
+- Hardcode enum values: `["option1", "option2"]`
+- Hardcode detection keywords: `if content.includes("meeting")`
+- Assume folder structures exist without checking
 
-✅ **Always do:**
-- Discover at runtime: `find templates with pattern`
-- Extract from files: `parse enum from template YAML`
-- Use patterns: `detect by structure (time markers + names)`
-- Ask user: `confirm when multiple options found`
+✅ **ALWAYS do:**
+- Discover at runtime: `search for patterns, ask if ambiguous`
+- Extract from files: `parse YAML/JSON for valid values`
+- Use pattern matching: `detect by structure, not keywords`
+- Provide fallbacks: `offer to work without optional resources`
+- Ask user confirmation: `when multiple valid options exist`
 
 ---
 
-## Claude Code Skills
+## 📦 Directory Structure
 
-### Estrutura de Diretórios
+### Claude Code
 
 ```
 .claude/
 └── skills/
-    └── <nome-da-skill>/
-        ├── SKILL.md          ← Obrigatório (maiúsculo)
-        ├── scripts/          ← Opcional
-        └── templates/        ← Opcional
+    └── <skill-name>/
+        ├── SKILL.md          # Required (uppercase)
+        ├── README.md         # Recommended
+        ├── scripts/          # Optional
+        └── resources/        # Optional
 ```
 
-### Localização
-
-| Tipo | Caminho | Escopo |
-|------|---------|--------|
-| Projeto | `.claude/skills/` | Apenas este projeto |
-| Pessoal | `~/.claude/skills/` | Todos os projetos |
-
-### Formato do SKILL.md
-
-```markdown
----
-name: nome-da-skill
-description: Use when user asks to "trigger phrase 1", "trigger phrase 2", or when [context]. Does [what the skill does].
----
-
-# Nome da Skill
-
-Descrição breve do propósito.
-
-## Purpose
-
-Explicação detalhada do objetivo.
-
-## When to Use
-
-- Situação 1
-- Situação 2
-
-## Workflow
-
-### 1. Primeiro Passo
-
-Instruções detalhadas...
-
-### 2. Segundo Passo
-
-Instruções detalhadas...
-
-## Restrictions
-
-- Nunca fazer X
-- Sempre fazer Y
-
-## Example Usage
-
-\`\`\`
-User: exemplo de comando
-Assistant: [descrição da resposta esperada]
-\`\`\`
-```
-
-### Frontmatter - Campos
-
-| Campo | Obrigatório | Descrição |
-|-------|-------------|-----------|
-| `name` | Sim | Identificador único (lowercase, hyphens) |
-| `description` | Sim | Quando usar + o que faz. **Triggers vão aqui.** |
-
-### Ferramentas Disponíveis
-
-Referencie estas ferramentas nas instruções:
-
-| Ferramenta | Uso |
-|------------|-----|
-| `Read` | Ler arquivos |
-| `Edit` | Editar arquivos existentes |
-| `Write` | Criar novos arquivos |
-| `Bash` | Executar comandos shell |
-| `Glob` | Buscar arquivos por padrão |
-| `Grep` | Buscar conteúdo em arquivos |
-
-### Invocação
-
-```bash
-# Automática (Claude detecta pelo contexto)
-"adicione wikilinks nesta nota"
-
-# Direta (slash command)
-/nome-da-skill
-/nome-da-skill argumento
-```
-
----
-
-## GitHub Copilot Skills
-
-### Estrutura de Diretórios
+### GitHub Copilot
 
 ```
 .github/
 └── skills/
-    └── <nome-da-skill>/
-        ├── SKILL.md          ← Obrigatório (maiúsculo)
-        ├── README.md         ← Opcional (documentação)
-        ├── scripts/          ← Opcional
-        └── templates/        ← Opcional
+    └── <skill-name>/
+        ├── SKILL.md          # Required (uppercase)
+        ├── README.md         # Recommended
+        ├── scripts/          # Optional
+        └── resources/        # Optional
 ```
 
-### Localização
+### Scope
 
-| Tipo | Caminho | Escopo |
-|------|---------|--------|
-| Projeto | `.github/skills/` | Apenas este repositório |
-| Pessoal | `~/.copilot/skills/` | Todos os projetos |
+| Type | Claude Path | Copilot Path | Scope |
+|------|-------------|--------------|-------|
+| **Project** | `.claude/skills/` | `.github/skills/` | Current project only |
+| **Global** | `~/.claude/skills/` | `~/.copilot/skills/` | All projects |
 
-### Formato do SKILL.md
+---
+
+## 📝 SKILL.md Structure
+
+### Minimal Template
 
 ```markdown
 ---
-name: nome-da-skill
-description: Describes what the skill does and when Copilot should use it. Include trigger phrases here.
----
-
-# Nome da Skill
-
-Descrição breve do propósito.
-
-## Purpose
-
-Explicação detalhada do objetivo.
-
-## When to Use
-
-- Situação 1
-- Situação 2
-
-## Workflow
-
-### 1. Primeiro Passo
-
-Instruções detalhadas...
-
-### 2. Segundo Passo
-
-Instruções detalhadas...
-
-## Restrictions
-
-- Nunca fazer X
-- Sempre fazer Y
-
-## Example Usage
-
-\`\`\`
-User: exemplo de comando
-Assistant: [descrição da resposta esperada]
-\`\`\`
-```
-
-### Frontmatter - Campos
-
-| Campo | Obrigatório | Descrição |
-|-------|-------------|-----------|
-| `name` | Sim | Identificador único (lowercase, hyphens) |
-| `description` | Sim | Quando usar + o que faz |
-
-### Ferramentas Disponíveis
-
-Referencie estas ferramentas nas instruções:
-
-| Ferramenta | Uso |
-|------------|-----|
-| `view` | Ler arquivos |
-| `edit` | Editar arquivos |
-| `run` | Executar comandos shell |
-
----
-
-## Tabela Comparativa
-
-| Aspecto | Claude Code | GitHub Copilot |
-|---------|-------------|----------------|
-| Diretório projeto | `.claude/skills/` | `.github/skills/` |
-| Diretório pessoal | `~/.claude/skills/` | `~/.copilot/skills/` |
-| Arquivo | `SKILL.md` (maiúsculo) | `SKILL.md` (maiúsculo) |
-| Frontmatter | `name`, `description` | `name`, `description` |
-| Ler arquivo | `Read` | `view` |
-| Editar arquivo | `Edit` | `edit` |
-| Executar comando | `Bash` | `run` |
-
----
-
-## Sincronização entre Ferramentas
-
-Quando a mesma skill existir em ambas as ferramentas, siga este processo:
-
-### Checklist de Validação
-
-Antes de finalizar, verifique:
-
-- [ ] Nome (`name`) é idêntico em ambas
-- [ ] Descrição (`description`) tem o mesmo significado
-- [ ] Seções de workflow são equivalentes
-- [ ] Restrições são as mesmas
-- [ ] Exemplos cobrem os mesmos casos de uso
-
-### Extended Synchronization Checklist
-
-Before finalizing synchronization:
-
-**SKILL.md Parity:**
-- [ ] Frontmatter `name` is identical
-- [ ] Frontmatter `description` has same triggers and meaning
-- [ ] Step 0 (Discovery) workflow is identical
-- [ ] Main workflow steps are functionally equivalent
-- [ ] Restrictions are the same
-- [ ] Examples cover same use cases
-- [ ] Tool references are correctly converted
-
-**README.md Parity:**
-- [ ] Overview section is identical (except platform name)
-- [ ] Zero-Config Discovery section is identical
-- [ ] Usage examples have correct prompts (`copilot>` vs `claude>`)
-- [ ] Version numbers match
-- [ ] Compatibility field is platform-specific
-- [ ] Zero-Config footer describes same features
-
-**Index Updates:**
-- [ ] Both index READMEs updated
-- [ ] Skill description consistent across all 4 files (2 SKILL.md + 2 index READMEs)
-
-### Regras de Conversão
-
-Ao copiar entre ferramentas, ajuste as referências de ferramentas:
-
-| De Claude Code | Para GitHub Copilot |
-|----------------|---------------------|
-| `Read tool` | `view tool` |
-| `Edit tool` | `edit tool` |
-| `Write tool` | `edit tool` (criar) |
-| `Bash tool` | `run tool` |
-| `Glob tool` | descrever busca manualmente |
-| `Grep tool` | descrever busca manualmente |
-
-| De GitHub Copilot | Para Claude Code |
-|-------------------|------------------|
-| `view tool` | `Read tool` |
-| `edit tool` | `Edit tool` |
-| `run tool` | `Bash tool` |
-
-### Processo de Sincronização
-
-1. **Identifique a versão mais atual** - Qual foi editada por último?
-2. **Compare o conteúdo** - Use diff ou leia ambas
-3. **Unifique o workflow** - Mescle melhorias de ambas
-4. **Ajuste ferramentas** - Converta nomes conforme tabela acima
-5. **Valide com checklist** - Confirme paridade
-
-### Instrução para IA
-
-Ao criar ou atualizar uma skill:
-
-```
-Verifique se a skill existe em ambas as localizações:
-- .claude/skills/<nome>/SKILL.md
-- .github/skills/<nome>/SKILL.md
-
-Se existir em ambas:
-1. Compare o conteúdo de workflow e restrições
-2. Se houver diferenças significativas, pergunte qual versão usar como base
-3. Sincronize o conteúdo, ajustando apenas os nomes das ferramentas
-4. Mantenha ambas as versões funcionalmente idênticas
-
-Se existir em apenas uma:
-1. Pergunte se deve criar na outra ferramenta também
-2. Se sim, copie e ajuste os nomes das ferramentas
-```
-
----
-
-## Workflow de Criação
-
-### Criar Nova Skill (Processo Completo)
-
-1. **Defina o propósito** - O que a skill faz?
-2. **Liste os triggers** - Quais frases ativam a skill?
-3. **Design Step 0 (Discovery)** - O que precisa descobrir no vault?
-4. **Escreva o workflow** - Passos detalhados (após discovery)
-5. **Adicione restrições** - O que nunca fazer (anti-hardcoding)
-6. **Crie exemplos** - Casos de uso reais
-7. **Escreva SKILL.md** - Para ambas as plataformas
-8. **Escreva README.md** - Para ambas as plataformas (com zero-config)
-9. **Atualize índices** - Ambos os README.md de índice
-10. **Valide** - Checklist completo (ver seção Testing & Validation)
-11. **Teste manualmente** - Ative skill e verifique comportamento
-12. **Commit** - Mensagem semântica com versão
-
-### Estrutura Mínima
-
-```bash
-# Claude Code
-mkdir -p .claude/skills/minha-skill
-touch .claude/skills/minha-skill/SKILL.md
-
-# GitHub Copilot
-mkdir -p .github/skills/minha-skill
-touch .github/skills/minha-skill/SKILL.md
-```
-
-### Template Inicial - SKILL.md
-
-Use este template como ponto de partida:
-
-```markdown
----
-name: minha-skill
-description: Use when user asks to "[trigger 1]", "[trigger 2]", or when [context]. [What the skill does in one sentence].
+name: skill-name
+description: Use when user asks to "trigger phrase 1", "trigger phrase 2". [What the skill does].
 triggers:
   - trigger phrase 1
   - trigger phrase 2
   - trigger phrase 3
+version: 1.0.0
 ---
-
-# Minha Skill
-
-[One-sentence description of what the skill does]
 
 ## Purpose
 
-[Detailed explanation of the goal and use cases]
+[What the skill does and why it exists]
 
 ## When to Use
 
-- [Situation 1 - be specific]
-- [Situation 2 - be specific]
-- [Situation 3 - optional]
+- [Scenario 1]
+- [Scenario 2]
+- [Scenario 3]
 
 ## Workflow
 
-### Step 0: Discover Vault Structure
+### Step 0: Discovery (if needed)
 
-**Before executing main workflow**, discover runtime configuration:
+[Discovery logic for resources/configuration]
 
-**[Resource 1] discovery:**
-- Search for [pattern or location]
-- If multiple found, ask user: "[Question]?"
-- If none found, [fallback behavior]
+### Step 1: [Main Step Name]
 
-**[Resource 2] discovery:**
-- [Discovery logic]
-- [Extraction method]
-- [Handling ambiguity]
+[Detailed instructions]
 
-**Valid values extraction:**
-- Parse [source] for [data]
-- Extract: `[example]` → [result]
-- Build dynamic list: [usage]
+### Step 2: [Next Step Name]
 
----
-
-### Step 1: [First Main Step]
-
-[Detailed instructions using discovered values]
-
-**Input:**
-- [What the step receives]
-
-**Process:**
-- [What to do]
-- Use discovered [resource] from Step 0
-- Never hardcode [what to avoid]
-
-**Output:**
-- [What the step produces]
-
----
-
-### Step 2: [Second Main Step]
-
-[Continue workflow...]
-
----
+[Detailed instructions]
 
 ## Critical Rules
 
 **NEVER:**
-- ❌ Hardcode paths (e.g., `00-Inbox/`, `Templates/`)
-- ❌ Hardcode values (e.g., `status: ["backlog", "done"]`)
-- ❌ Hardcode keywords (e.g., `if text.includes("meeting")`)
-- ❌ Assume folder structure
-- ❌ Make changes without user confirmation
+- ❌ [Anti-pattern 1]
+- ❌ [Anti-pattern 2]
 
 **ALWAYS:**
-- ✅ Run Step 0 (Discovery) first
-- ✅ Extract values from templates/files at runtime
-- ✅ Use pattern-based detection (not keywords)
-- ✅ Ask user when ambiguous
-- ✅ Provide preview before making changes
+- ✅ [Best practice 1]
+- ✅ [Best practice 2]
 
 ## Example Usage
 
-\`\`\`
-User: [example command matching trigger]
+**Example 1: [Scenario]**
 
-Agent: [Step-by-step response]
-
-1. **Discovery Phase**
-   - Found templates at: [path]
-   - Detected types: [list]
-   
-2. **Execution Phase**
-   - [Action taken]
-   - [Result produced]
-
-3. **Confirmation**
-   - Preview: [show what will change]
-   - Confirm? (Yes/No) > Yes
-
-✅ [Success message]
-\`\`\`
+Input:
 ```
+user> [command]
+```
+
+Output:
+```
+[Expected result]
+```
+```
+
+### Frontmatter Fields
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `name` | ✅ Yes | Unique identifier (lowercase-with-hyphens) |
+| `description` | ✅ Yes | When to use + what it does. **Include trigger phrases.** |
+| `triggers` | ⚠️ Recommended | Array of trigger phrases for better detection |
+| `version` | ⚠️ Recommended | SemVer version (X.Y.Z) |
+
+### Sections
+
+| Section | Required | Purpose |
+|---------|----------|---------|
+| **Purpose** | ✅ Yes | Detailed explanation of goal |
+| **When to Use** | ✅ Yes | Specific scenarios for invocation |
+| **Workflow** | ✅ Yes | Step-by-step instructions |
+| **Critical Rules** | ✅ Yes | NEVER/ALWAYS guidelines |
+| **Example Usage** | ⚠️ Recommended | Real-world examples (3-5) |
 
 ---
 
-## README.md Requirements
+## 📖 README.md Structure
 
-### When to Create README
-
-**ALWAYS create a README.md** for every skill in both locations:
-- `.github/skills/<skill-name>/README.md`
-- `.claude/skills/<skill-name>/README.md`
-
-### README.md Structure
-
-Each skill README must include:
-
-1. **📋 Overview** - What the skill does
-2. **✨ Zero-Config Discovery** - How auto-discovery works
-3. **🚀 How to Use** - Activation commands and examples
-4. **📊 [Type] Supported** - What the skill handles (dynamic list)
-5. **🔄 Customization Examples** - Works with custom templates/structure
-6. **🔧 Integration** - How it chains with other skills
-7. **🐛 Troubleshooting** - Common issues
-8. **📖 Resources** - Links to related skills
-9. **Version info** - Version, date, platform, zero-config status
-
-### Platform-Specific Adaptations
-
-When copying README between platforms:
-
-**GitHub Copilot → Claude Code:**
-- Replace `copilot>` with `claude>`
-- Replace "GitHub Copilot CLI" with "Claude Code CLI"
-- Keep all other content identical
-
-**Example replacement:**
-```bash
-# Before
-copilot> create note from "text"
-**Compatibility:** GitHub Copilot CLI
-
-# After
-claude> create note from "text"
-**Compatibility:** Claude Code CLI
-```
-
-### README Version Footer
-
-Always include at the end:
+User-facing documentation (recommended for all skills):
 
 ```markdown
----
+# Skill Name
 
 **Version:** X.Y.Z  
-**Last updated:** YYYY-MM-DD  
-**Compatibility:** [GitHub Copilot CLI | Claude Code CLI]
-**Zero-Config:** ✅ [Description of what's auto-discovered]
-```
+**Status:** [Zero-Config / Requires Setup]
 
-### Index README Updates
+[Brief description]
 
-When creating/updating a skill, **always update index READMEs**:
+## Overview
 
-**Files to update:**
-- `.github/skills/README.md`
-- `.claude/skills/README.md`
+[What the skill does, why it's useful]
 
-**What to add:**
-- Skill name and description
-- Trigger phrases
-- Quick usage example
-- Key features (with zero-config highlights)
+## Features
+
+- ✨ [Feature 1]
+- 🎯 [Feature 2]
+- 🔄 [Feature 3]
+
+## Quick Start
+
+[How to use with examples]
+
+## Triggers
+
+- `trigger phrase 1`
+- `trigger phrase 2`
+
+## Examples
+
+[3-5 realistic examples showing input → output]
+
+## FAQ
+
+[Common questions]
+
+## Installation
+
+[Setup instructions if needed]
 
 ---
 
-## Versioning Guidelines
+**v[X.Y.Z]** | [Zero-Config / Custom status]
+```
 
-Skills follow **Semantic Versioning** (SemVer):
+---
 
-### Version Format: X.Y.Z
+## 🔧 Available Tools
 
-- **X (Major)** - Breaking changes, incompatible workflow changes
-- **Y (Minor)** - New features, backward-compatible additions
-- **Z (Patch)** - Bug fixes, documentation updates, minor tweaks
+### Claude Code
 
-### When to Increment
+| Tool | Purpose |
+|------|---------|
+| `Read` | Read file contents |
+| `Edit` | Modify existing files |
+| `Write` | Create new files |
+| `Bash` | Execute shell commands |
+| `Glob` | Search files by pattern |
+| `Grep` | Search content in files |
 
-| Change Type | Version Bump | Example |
-|-------------|--------------|---------|
-| Added zero-config discovery | Major (1.x.x → 2.0.0) | Removed hardcoding, added Step 0 |
-| Added new workflow step | Minor (2.0.x → 2.1.0) | Added duplicate detection |
-| Fixed typo in SKILL.md | Patch (2.1.0 → 2.1.1) | Corrected description text |
-| Updated README examples | Patch (2.1.1 → 2.1.2) | Improved user guide |
-| Changed trigger phrases | Major (2.x.x → 3.0.0) | Users must adapt commands |
-| Added optional parameter | Minor (2.1.x → 2.2.0) | Backward-compatible |
+### GitHub Copilot
 
-### Version Locations
+| Tool | Purpose |
+|------|---------|
+| `view` | Read file contents |
+| `edit` | Modify existing files |
+| `run` | Execute shell commands |
+
+---
+
+## 🔄 Platform Synchronization
+
+When creating skills for both platforms, maintain functional parity:
+
+### Tool Name Conversion
+
+| Claude Code | GitHub Copilot |
+|-------------|----------------|
+| `Read` | `view` |
+| `Edit` | `edit` |
+| `Write` | `edit` (for creation) |
+| `Bash` | `run` |
+| `Glob` | Manual pattern search |
+| `Grep` | Manual content search |
+
+### Synchronization Checklist
+
+**SKILL.md Parity:**
+- [ ] Frontmatter `name` is identical
+- [ ] Frontmatter `description` has same triggers
+- [ ] Frontmatter `triggers` array is identical
+- [ ] Frontmatter `version` matches
+- [ ] Discovery logic (Step 0) is functionally identical
+- [ ] Main workflow steps are equivalent
+- [ ] Critical Rules are the same
+- [ ] Examples cover same use cases
+- [ ] Tool references are correctly converted
+
+**README.md Parity:**
+- [ ] Overview is identical
+- [ ] Features list is identical
+- [ ] Usage examples have correct prompts (`copilot>` vs `claude>`)
+- [ ] Version numbers match
+- [ ] Installation instructions are platform-specific
+- [ ] Status badges are consistent
+
+**Index Updates:**
+- [ ] Both index READMEs updated (`.github/skills/README.md`, `.claude/skills/README.md`)
+- [ ] Skill description consistent across all files
+
+### Workflow Logic Must Be Identical
+
+⚠️ **Critical:** Only tool names and prompt prefixes should differ between platforms.
+
+**Claude Code prompts:**
+```
+claude> create a new note
+```
+
+**GitHub Copilot prompts:**
+```
+copilot> create a new note
+```
+
+The actual workflow steps should produce the same results.
+
+---
+
+## 📋 Workflow: Creating a New Skill
+
+### 12-Step Process
+
+1. **Define Purpose** - What problem does the skill solve?
+2. **List Triggers** - What phrases should activate it?
+3. **Design Discovery** (if needed) - What must be discovered at runtime?
+4. **Write Workflow** - Step-by-step instructions
+5. **Add Critical Rules** - NEVER/ALWAYS guidelines (focus on zero-config)
+6. **Create Examples** - 3-5 realistic scenarios with input/output
+7. **Write SKILL.md** - For both platforms (Claude + Copilot)
+8. **Write README.md** - For both platforms
+9. **Update Index READMEs** - Add skill to both index files
+10. **Validate** - Use testing checklist (see Testing & Validation section)
+11. **Test Manually** - Invoke skill and verify behavior
+12. **Commit** - Semantic commit message with version
+
+---
+
+## 🎨 Versioning Guidelines
+
+Follow **Semantic Versioning (SemVer)**: `MAJOR.MINOR.PATCH`
+
+### Version Changes
+
+| Type | Version | When to Use |
+|------|---------|-------------|
+| **Major** | X.0.0 | Breaking changes (workflow restructure, removed features) |
+| **Minor** | X.Y.0 | New features, backward-compatible enhancements |
+| **Patch** | X.Y.Z | Bug fixes, documentation updates, minor improvements |
+
+### Examples
+
+- `1.0.0` → `2.0.0` - Switched from hardcoded values to zero-config discovery (breaking)
+- `1.2.0` → `1.3.0` - Added support for new file types (backward-compatible)
+- `1.2.3` → `1.2.4` - Fixed typo in example, updated README (patch)
+
+### Version Fields
 
 Update version in:
-1. README.md footer (both `.github` and `.claude`)
-2. Git commit message (e.g., `feat(skill): v2.0.0 - zero-config discovery`)
-3. Optional: Frontmatter in SKILL.md (if you want to track it there)
-
-### Example Version History
-
-```markdown
-## Changelog
-
-### 2.0.0 (2026-02-01)
-- **Breaking:** Removed all hardcoded paths and values
-- **Added:** Step 0 Discovery workflow
-- **Added:** Pattern-based type detection
-- **Added:** Zero-Config README sections
-
-### 1.1.0 (2026-01-15)
-- **Added:** Duplicate detection before creation
-- **Improved:** Auto-extraction of dates
-
-### 1.0.0 (2025-12-20)
-- **Initial release**
-```
+- [ ] SKILL.md frontmatter (`version: X.Y.Z`)
+- [ ] README.md header (`**Version:** X.Y.Z`)
+- [ ] README.md footer (`**vX.Y.Z**`)
+- [ ] Index README when adding/updating skill
+- [ ] Commit message (`feat: add skill-name v1.0.0`)
 
 ---
 
-## Testing & Validation
+## ✅ Testing & Validation
 
 ### Pre-Commit Checklist
 
-Before committing a new or updated skill, verify:
+**Code Quality:**
+- [ ] No hardcoded paths or values
+- [ ] Discovery logic handles edge cases (not found, multiple results)
+- [ ] User interaction prompts are clear and concise
+- [ ] Tool references are platform-correct
+- [ ] Examples use realistic scenarios
 
-**SKILL.md:**
-- [ ] Frontmatter has `name` and `description`
-- [ ] Triggers are listed in `description`
-- [ ] Step 0 (Discovery) exists and is complete
-- [ ] Workflow steps are numbered and detailed
-- [ ] No hardcoded paths, values, or keywords
-- [ ] Restrictions section exists
-- [ ] Example usage provided
+**Documentation:**
+- [ ] README.md exists with examples
+- [ ] Triggers clearly listed
+- [ ] Version numbers consistent across files
+- [ ] Index READMEs updated
 
-**README.md:**
-- [ ] Created for both `.github` and `.claude` versions
-- [ ] Zero-Config Discovery section exists
-- [ ] Customization Examples section exists
-- [ ] Version footer is present and correct
-- [ ] Platform-specific prompts are correct (`copilot>` vs `claude>`)
+**Synchronization (if multi-platform):**
+- [ ] Both SKILL.md files exist (.github + .claude)
+- [ ] Workflow logic is identical
+- [ ] Tool names are correctly converted
+- [ ] Prompt prefixes are correct (`copilot>` vs `claude>`)
 
-**Index READMEs:**
-- [ ] Skill listed in `.github/skills/README.md`
-- [ ] Skill listed in `.claude/skills/README.md`
-- [ ] Trigger phrases match SKILL.md
-- [ ] Quick example provided
+**Manual Testing:**
+- [ ] Skill triggers correctly
+- [ ] Discovery handles missing resources gracefully
+- [ ] Output format is correct
+- [ ] Works with different project structures
 
-**Synchronization:**
-- [ ] SKILL.md exists in both `.github` and `.claude`
-- [ ] README.md exists in both `.github` and `.claude`
-- [ ] Workflow is functionally identical (only tool names differ)
-- [ ] Tool references converted correctly (Read↔view, Bash↔run, etc.)
+### Validation Commands
 
-### Manual Testing
-
-Test the skill manually before committing:
-
+**Check for hardcoded patterns:**
 ```bash
-# 1. Activate Claude Code or GitHub Copilot
-# 2. Try trigger phrases:
-"create note from sample text"
-"validate note path/to/note.md"
-"add wikilinks"
-
-# 3. Verify skill activates correctly
-# 4. Check discovery step runs
-# 5. Verify no hardcoded errors (paths not found, etc.)
-# 6. Confirm output is correct
+# Search for common hardcoding anti-patterns
+grep -r "00-\|01-\|02-\|03-\|04-\|05-" ".github/skills/your-skill/SKILL.md"
+grep -r "INBOX\|PROJECTS\|AREAS" ".github/skills/your-skill/SKILL.md"
+grep -r 'status: \["' ".github/skills/your-skill/SKILL.md"
 ```
 
-### Validation Script (Optional)
-
-Create a validation script:
-
+**Check version consistency:**
 ```bash
-#!/bin/bash
-# validate-skill.sh
-
-SKILL_NAME=$1
-
-echo "Validating skill: $SKILL_NAME"
-
-# Check SKILL.md exists
-[ -f ".github/skills/$SKILL_NAME/SKILL.md" ] || echo "❌ Missing .github SKILL.md"
-[ -f ".claude/skills/$SKILL_NAME/SKILL.md" ] || echo "❌ Missing .claude SKILL.md"
-
-# Check README.md exists
-[ -f ".github/skills/$SKILL_NAME/README.md" ] || echo "❌ Missing .github README.md"
-[ -f ".claude/skills/$SKILL_NAME/README.md" ] || echo "❌ Missing .claude README.md"
-
-# Check for hardcoded paths
-grep -r "00-Inbox\|02-Projects\|04-Resources" ".github/skills/$SKILL_NAME/SKILL.md" && echo "⚠️ Hardcoded paths found"
-
-# Check index READMEs
-grep "$SKILL_NAME" ".github/skills/README.md" > /dev/null || echo "❌ Not listed in .github index"
-grep "$SKILL_NAME" ".claude/skills/README.md" > /dev/null || echo "❌ Not listed in .claude index"
-
-echo "✅ Validation complete"
+# Extract versions from all files
+grep "version:" ".github/skills/your-skill/SKILL.md"
+grep "Version:" ".github/skills/your-skill/README.md"
 ```
 
 ---
 
-## Troubleshooting
+## 🤝 Contributing to Skills
 
-### Skill não aparece no Claude Code
+### Commit Message Format
 
-1. Verifique se o arquivo é `SKILL.md` (maiúsculo)
-2. Verifique se está em `.claude/skills/<nome>/SKILL.md`
-3. Reinicie o Claude Code
-4. Execute `/skills` para listar
+Use semantic commit messages:
 
-### Skill não aparece no GitHub Copilot
+```bash
+# New skill
+git commit -m "feat: add <skill-name> skill v1.0.0"
 
-1. Verifique se o arquivo é `SKILL.md` (maiúsculo)
-2. Verifique se está em `.github/skills/<nome>/SKILL.md`
-3. Recarregue a janela do VS Code
-4. Verifique se Copilot está ativo
+# Enhancement
+git commit -m "feat(skill-name): add support for X"
 
-### Skill não é ativada automaticamente
+# Bug fix
+git commit -m "fix(skill-name): correct Y detection"
 
-1. Revise a `description` - inclui triggers claros?
-2. A descrição explica QUANDO usar?
-3. Teste invocação direta: `/nome-da-skill`
+# Documentation
+git commit -m "docs(skill-name): add example for Z"
+
+# Breaking change
+git commit -m "feat(skill-name)!: migrate to zero-config discovery
+
+BREAKING CHANGE: Removed hardcoded paths. Skills now discover structure at runtime."
+```
+
+### Pull Request Template
+
+```markdown
+## Description
+[What does this PR do?]
+
+## Type
+- [ ] New skill
+- [ ] Enhancement
+- [ ] Bug fix
+- [ ] Documentation
+
+## Skill Details
+- **Name:** [skill-name]
+- **Version:** [X.Y.Z]
+- **Platforms:** [Copilot / Claude / Both]
+
+## Testing
+- [ ] Tested on GitHub Copilot CLI
+- [ ] Tested on Claude Code
+- [ ] Examples verified
+- [ ] Zero-config compliance checked
+- [ ] No hardcoded values
+
+## Checklist
+- [ ] SKILL.md created for both platforms
+- [ ] README.md created for both platforms
+- [ ] Index READMEs updated
+- [ ] Version numbers consistent
+- [ ] Examples are realistic
+- [ ] Critical Rules include anti-hardcoding
+```
 
 ---
 
-## Skills deste Projeto
+## 🛠️ Skill Development Tools
 
-| Skill | Claude Code | GitHub Copilot |
-|-------|-------------|----------------|
-| wikilink-validator | `.claude/skills/wikilink-validator/SKILL.md` | `.github/skills/wikilink-validator/SKILL.md` |
-| note-validator | `.claude/skills/note-validator/SKILL.md` | `.github/skills/note-validator/SKILL.md` |
-| note-creator | `.claude/skills/note-creator/SKILL.md` | `.github/skills/note-creator/SKILL.md` |
+### Directory Setup
+
+**Create new skill:**
+```bash
+# For both platforms
+mkdir -p .github/skills/my-skill .claude/skills/my-skill
+touch .github/skills/my-skill/SKILL.md
+touch .claude/skills/my-skill/SKILL.md
+```
+
+### Quick Validation
+
+**Check skill structure:**
+```bash
+SKILL_NAME="my-skill"
+
+# Check files exist
+test -f ".github/skills/$SKILL_NAME/SKILL.md" && echo "✅ Copilot SKILL.md exists"
+test -f ".claude/skills/$SKILL_NAME/SKILL.md" && echo "✅ Claude SKILL.md exists"
+
+# Check frontmatter
+grep "^name:" ".github/skills/$SKILL_NAME/SKILL.md"
+grep "^version:" ".github/skills/$SKILL_NAME/SKILL.md"
+```
+
+---
+
+## 📚 Additional Resources
+
+### Learning
+
+- **Agent Skills Standard:** https://agentskills.io
+- **Prompt Engineering Guide:** https://www.promptingguide.ai
+- **SemVer Specification:** https://semver.org
+
+### Examples
+
+Study existing skills in this repository:
+- `prompt-engineer` - Complex skill with framework selection
+- (Add more as they're created)
+
+### Community
+
+- GitHub Discussions: Share skills and get feedback
+- Issues: Report bugs or request features
+
+---
+
+## 🎓 Best Practices Summary
+
+### DO ✅
+
+- **Discovery over configuration** - Scan for resources at runtime
+- **Ask over assume** - Interactive clarification when ambiguous
+- **Patterns over exact matches** - `*template*` not `/templates/`
+- **Extract over hardcode** - Parse files for valid values
+- **Document with examples** - Show real input → output flows
+- **Version consistently** - Match across all files
+- **Test on both platforms** - Ensure parity
+
+### DON'T ❌
+
+- **Hardcode paths** - Never assume folder structure
+- **Hardcode values** - Never embed enum lists
+- **Assume resources exist** - Always check and handle missing cases
+- **Skip discovery** - Most skills benefit from Step 0
+- **Forget README** - Documentation is critical
+- **Break synchronization** - Keep platforms functionally identical
+
+---
+
+**Version:** 1.0.0  
+**Last Updated:** February 2025  
+**Status:** Zero-Config Compliant ✨
