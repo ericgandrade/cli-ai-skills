@@ -103,67 +103,73 @@ The **prompt-engineer** skill analyzes your input and:
 
 ## 🚀 Installation
 
-### Global Setup (GitHub Copilot CLI)
+### Quick Install (Recommended)
 
 1. **Clone this repository:**
    ```bash
-   git clone https://github.com/eric.andrade/cli-ai-skills.git
+   git clone https://github.com/ericgandrade/cli-ai-skills.git
    cd cli-ai-skills
    ```
 
-2. **Configure Copilot to use skills globally:**
-
-   Edit or create `~/.copilot/config.json`:
-   ```json
-   {
-     "skills": {
-       "directories": [
-         "/absolute/path/to/cli-ai-skills/.github/skills"
-       ]
-     }
-   }
-   ```
-
-   Replace `/absolute/path/to/` with your actual path.
-
-3. **Verify installation:**
+2. **Run the install script:**
    ```bash
-   copilot> list skills
+   ./scripts/install-skills.sh ~/path/to/cli-ai-skills
+   
+   # Or use current directory
+   ./scripts/install-skills.sh $(pwd)
    ```
 
-   You should see `prompt-engineer` in the list.
+   This creates **symlinks** in:
+   - `~/.copilot/skills/` (for GitHub Copilot CLI)
+   - `~/.claude/skills/` (for Claude Code)
+
+3. **Open a NEW terminal** and test:
+   ```bash
+   # GitHub Copilot - use any trigger
+   gh copilot -p "melhore este prompt: criar API REST"
+   
+   # Claude Code - start interactive session
+   claude
+   ```
+
+**Benefits of symlink installation:**
+- ✅ Updates automatically when you `git pull`
+- ✅ No config file editing needed
+- ✅ Single source of truth
 
 ---
 
-### Global Setup (Claude Code)
+### Manual Installation
 
-1. **Clone this repository** (if you haven't already):
-   ```bash
-   git clone https://github.com/eric.andrade/cli-ai-skills.git
-   cd cli-ai-skills
-   ```
+#### GitHub Copilot CLI
 
-2. **Configure Claude to use skills globally:**
+Skills auto-discover from `~/.copilot/skills/`:
 
-   Edit or create `~/.claude/config.json`:
-   ```json
-   {
-     "skills": {
-       "directories": [
-         "/absolute/path/to/cli-ai-skills/.claude/skills"
-       ]
-     }
-   }
-   ```
+```bash
+# Create skills directory
+mkdir -p ~/.copilot/skills
 
-   Replace `/absolute/path/to/` with your actual path.
+# Copy or symlink skills
+cp -r cli-ai-skills/.github/skills/* ~/.copilot/skills/
 
-3. **Verify installation:**
-   ```bash
-   claude> list skills
-   ```
+# Or create symlink (recommended)
+ln -s /full/path/to/cli-ai-skills/.github/skills/prompt-engineer ~/.copilot/skills/prompt-engineer
+```
 
-   You should see `prompt-engineer` in the list.
+#### Claude Code
+
+Skills auto-discover from `~/.claude/skills/`:
+
+```bash
+# Create skills directory
+mkdir -p ~/.claude/skills
+
+# Copy or symlink skills
+cp -r cli-ai-skills/.claude/skills/* ~/.claude/skills/
+
+# Or create symlink (recommended)
+ln -s /full/path/to/cli-ai-skills/.claude/skills/prompt-engineer ~/.claude/skills/prompt-engineer
+```
 
 ---
 
