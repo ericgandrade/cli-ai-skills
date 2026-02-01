@@ -44,7 +44,7 @@ Transform raw prompts into optimized prompts using **11 established frameworks**
 
 ---
 
-### 🛠️ **skill-creator** v1.0.0
+### 🛠️ **skill-creator** v1.1.0
 
 Automate CLI skill creation with best practices built-in.
 
