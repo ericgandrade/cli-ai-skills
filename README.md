@@ -381,4 +381,4 @@ Inspired by:
 
 **Built with ❤️ by [Eric Andrade](https://github.com/eric.andrade)**
 
-*Version 1.0.0 | Last updated: February 2025*
+*Version 1.1.0 | Last updated: February 2026*
