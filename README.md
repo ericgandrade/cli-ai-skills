@@ -77,6 +77,40 @@ Automate CLI skill creation with best practices built-in.
 
 ---
 
+### 🎥 **youtube-summarizer** v1.0.0
+
+Extract transcripts from YouTube videos and generate comprehensive, detailed summaries.
+
+**Status:** ✨ Zero-Config | 🌍 Universal
+
+**Capabilities:**
+- 📹 Automatic transcript extraction using `youtube-transcript-api`
+- ✅ Video validation (checks accessibility and transcript availability)
+- 🌍 Multi-language support (Portuguese/English with auto-fallback)
+- 📊 Comprehensive summaries using STAR + R-I-S-E framework
+- 📝 Structured Markdown output with sections and insights
+- 🔍 Includes video metadata (title, channel, duration, URL)
+- 🛠️ Automatic dependency management
+
+**Triggers:**
+- `resume este video`
+- `resumir video do youtube`
+- `extrair transcript youtube`
+- `summarize youtube video`
+
+**Features:**
+- 🎯 Validates YouTube URL format (multiple formats supported)
+- ✅ Checks video and transcript availability before processing
+- 📝 Generates verbose summaries prioritizing completeness
+- 💡 Extracts key insights, concepts, and terminology
+- 🔗 Documents resources and references mentioned in video
+- ⚡ Clear error messages for all failure scenarios
+- 📦 Bundled scripts for dependency installation and transcript extraction
+
+**[→ Full Documentation](./.github/skills/youtube-summarizer/README.md)**
+
+---
+
 ### 🔮 Coming Soon
 
 More skills are in development! This library will grow with:

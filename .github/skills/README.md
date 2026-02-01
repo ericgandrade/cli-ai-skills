@@ -32,6 +32,55 @@ Transform raw prompts into optimized prompts using 11 established frameworks (RT
 
 ---
 
+### 🛠️ **skill-creator** v1.0.0
+
+**Status:** ✨ Zero-Config | 🌍 Universal | 🔧 Meta-Skill
+
+Automate CLI skill creation with best practices built-in. Interactive 5-phase workflow from brainstorming to installation.
+
+**Triggers:**
+- `create a new skill`
+- `build a skill`
+- `make a custom skill`
+- `develop a CLI skill`
+- `extend the CLI`
+
+**Features:**
+- 🎯 Interactive brainstorming workflow
+- ✨ Template-driven file generation
+- 🔍 Automatic validation (YAML + content + style)
+- 📦 Flexible installation (local/global/hybrid)
+- 📊 Visual progress tracking
+- 🔗 Optional prompt-engineer integration
+
+**[→ Full Documentation](./skill-creator/README.md)**
+
+---
+
+### 🎥 **youtube-summarizer** v1.0.0
+
+**Status:** ✨ Zero-Config | 🌍 Universal
+
+Extract transcripts from YouTube videos and generate comprehensive, detailed summaries using STAR + R-I-S-E framework.
+
+**Triggers:**
+- `resume este video`
+- `resumir video do youtube`
+- `extrair transcript youtube`
+- `summarize youtube video`
+
+**Features:**
+- 📹 Automatic transcript extraction
+- ✅ Video and transcript validation
+- 🌍 Multi-language support (pt/en)
+- 📊 Verbose summaries with structured sections
+- 🔍 Includes metadata and insights
+- 🛠️ Automatic dependency management
+
+**[→ Full Documentation](./youtube-summarizer/README.md)**
+
+---
+
 ## 🚀 Installation
 
 See the [main README](../../README.md#installation) for global setup instructions.
@@ -46,5 +95,5 @@ See the [main README](../../README.md#installation) for global setup instruction
 
 ---
 
-**Total Skills:** 1  
-**Last Updated:** February 2025
+**Total Skills:** 3  
+**Last Updated:** February 2026
