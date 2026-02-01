@@ -2,6 +2,37 @@
 
 Based on [Anthropic Official Guide](https://github.com/anthropics/claude-plugins-official/blob/main/plugins/plugin-dev/skills/skill-development/SKILL.md)
 
+## Naming Conventions
+
+### Skill Names - ALWAYS Use kebab-case
+
+**Format:** `lowercase-words-separated-by-hyphens`
+
+✅ **Correct:**
+```yaml
+name: prompt-engineer
+```
+```yaml
+name: skill-creator
+```
+```markdown
+# prompt-engineer
+```
+
+❌ **Incorrect:**
+```yaml
+name: Prompt Engineer  # Title Case - WRONG
+name: prompt_engineer  # snake_case - WRONG
+name: promptEngineer   # camelCase - WRONG
+```
+```markdown
+# Prompt Engineer  # Title Case in H1 - WRONG
+```
+
+**Rule:** The `name:` field and H1 heading MUST match the directory name exactly (kebab-case).
+
+---
+
 ## Imperative/Infinitive Form
 
 ✅ **Correct:** To create a hook, define the event type.

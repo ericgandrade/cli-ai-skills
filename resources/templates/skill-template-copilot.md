@@ -12,6 +12,8 @@ date: {{DATE}}
 
 # {{SKILL_NAME}}
 
+## Purpose
+
 {{PURPOSE}}
 
 ## About This Skill

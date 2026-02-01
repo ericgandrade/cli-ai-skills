@@ -1,5 +1,5 @@
 ---
-name: Skill Creator
+name: skill-creator
 description: This skill should be used when the user asks to "create a new skill", "build a skill", "make a custom skill", "develop a CLI skill", or wants to extend the CLI with new capabilities. Automates the entire skill creation workflow from brainstorming to installation.
 version: 1.0.0
 author: Eric Andrade
@@ -7,7 +7,7 @@ created: 2025-02-01
 platforms: [github-copilot-cli, claude-code]
 ---
 
-# Skill Creator
+# skill-creator
 
 ## Purpose
 

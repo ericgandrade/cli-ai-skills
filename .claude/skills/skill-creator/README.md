@@ -1,10 +1,10 @@
-# Skill Creator
+# skill-creator
 
 **Automate CLI skill creation with best practices built-in.**
 
 ## What It Does
 
-The Skill Creator automates the entire workflow of creating new CLI skills for GitHub Copilot CLI and Claude Code. It guides you through brainstorming, applies standardized templates, validates content quality, and handles installation—all while following Anthropic's official best practices.
+The skill-creator automates the entire workflow of creating new CLI skills for GitHub Copilot CLI and Claude Code. It guides you through brainstorming, applies standardized templates, validates content quality, and handles installation—all while following Anthropic's official best practices.
 
 ## Key Features
 
