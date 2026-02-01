@@ -8,9 +8,22 @@ Reusable AI skills for **GitHub Copilot CLI** and **Claude Code** that work glob
 
 ### 🎯 **prompt-engineer** v1.0.0
 
-Transform raw prompts into optimized prompts using 11 established frameworks (RTF, Chain of Thought, RISEN, RODES, Chain of Density, R-A-C-E, R-I-S-E, S-T-A-R, S-O-A-P, C-L-E-A-R, G-R-O-W).
+Transform raw prompts into optimized prompts using **11 established frameworks**.
 
 **Status:** ✨ Zero-Config | 🌍 Universal
+
+**Supported Frameworks:**
+- **RTF** (Role-Task-Format) - Role-based tasks
+- **Chain of Thought** - Step-by-step reasoning
+- **RISEN** (Role, Instructions, Steps, End goal, Narrowing) - Structured projects
+- **RODES** (Role, Objective, Details, Examples, Sense check) - Complex design
+- **Chain of Density** - Summarization and compression
+- **R-A-C-E** (Role, Audience, Context, Expectation) - Communication tasks
+- **R-I-S-E** (Research, Investigate, Synthesize, Evaluate) - Investigation
+- **S-T-A-R** (Situation, Task, Action, Result) - Contextual problem-solving
+- **S-O-A-P** (Subjective, Objective, Assessment, Plan) - Structured documentation
+- **C-L-E-A-R** (Collaborative, Limited, Emotional, Appreciable, Refinable) - Goal-setting
+- **G-R-O-W** (Goal, Reality, Options, Will) - Coaching and development
 
 **Triggers:**
 - `melhore este prompt`
@@ -22,12 +35,69 @@ Transform raw prompts into optimized prompts using 11 established frameworks (RT
 
 **Features:**
 - 🎯 Intelligent intent analysis
-- 🔄 Framework blending
+- 🔄 Framework blending (combines 2-3 frameworks when needed)
 - ❓ Interactive clarification when ambiguous
 - 📏 Adaptive output (short/long based on context)
 - 🪄 Magic mode (no technical explanations)
 
-**[→ Documentation](./.github/skills/prompt-engineer/README.md)**
+**[→ Full Documentation](./.github/skills/prompt-engineer/README.md)**
+
+---
+
+### 🔮 Coming Soon
+
+More skills are in development! This library will grow with:
+- 📝 Code review and analysis skills
+- 📚 Documentation generation skills
+- 🧪 Testing and validation skills
+- 🔍 Codebase exploration skills
+- And more...
+
+**Want to contribute?** See [CONTRIBUTING.md](./CONTRIBUTING.md)
+
+---
+
+## 📚 Frameworks Reference
+
+The skills in this library leverage established prompting frameworks to optimize AI interactions. Below is a comprehensive reference of all frameworks used.
+
+### Prompt Engineering Frameworks (Used by `prompt-engineer`)
+
+| Framework | Acronym | Best For | Key Components |
+|-----------|---------|----------|----------------|
+| **Role-Task-Format** | RTF | Role-based tasks requiring specific expertise | Role → Task → Format |
+| **Chain of Thought** | CoT | Step-by-step reasoning, debugging, logic | Problem → Steps → Solution |
+| **RISEN** | RISEN | Structured multi-phase projects | Role, Instructions, Steps, End goal, Narrowing |
+| **RODES** | RODES | Complex design and system architecture | Role, Objective, Details, Examples, Sense check |
+| **Chain of Density** | CoD | Summarization and iterative compression | Verbose → Iterative compression → Dense |
+| **R-A-C-E** | RACE | Communication and presentations | Role, Audience, Context, Expectation |
+| **R-I-S-E** | RISE | Investigation and systematic analysis | Research, Investigate, Synthesize, Evaluate |
+| **S-T-A-R** | STAR | Contextual problem-solving | Situation, Task, Action, Result |
+| **S-O-A-P** | SOAP | Structured documentation and records | Subjective, Objective, Assessment, Plan |
+| **C-L-E-A-R** | CLEAR | Goal-setting and measurable objectives | Collaborative, Limited, Emotional, Appreciable, Refinable |
+| **G-R-O-W** | GROW | Coaching and personal development | Goal, Reality, Options, Will |
+
+### Framework Selection Logic
+
+The **prompt-engineer** skill analyzes your input and:
+1. **Detects task type** (coding, writing, analysis, design, etc.)
+2. **Identifies complexity** (simple, moderate, complex)
+3. **Selects primary framework** (best match for your task)
+4. **Blends secondary frameworks** when it improves results
+
+**Common Framework Blends:**
+- **RODES + Chain of Thought** → Complex technical projects requiring step-by-step planning
+- **C-L-E-A-R + G-R-O-W** → Leadership and personal development goals
+- **R-A-C-E + S-T-A-R** → Strategic communication with rich context
+
+**You never choose the framework manually** - the skill does it automatically based on your needs.
+
+### Further Reading
+
+- **[Prompt Engineering Guide](https://www.promptingguide.ai)** - Comprehensive guide to prompting techniques
+- **[Anthropic Prompt Engineering](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering)** - Claude-specific best practices
+- **[OpenAI Prompt Engineering](https://platform.openai.com/docs/guides/prompt-engineering)** - GPT best practices
+- **[PromptCowboy](https://promptcowboy.com/)** - Framework-driven prompt optimization inspiration
 
 ---
 

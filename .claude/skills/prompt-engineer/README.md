@@ -172,29 +172,299 @@ Formato de saída: Playbook prático com templates, exemplos e métricas.
 
 ## 📚 Supported Frameworks
 
-| Framework | Best For | Example Use Case |
-|-----------|----------|------------------|
-| **RTF** | Role-based tasks | "Act as expert developer and create..." |
-| **Chain of Thought** | Step-by-step reasoning | Debugging, mathematical proofs, logic |
-| **RISEN** | Structured projects | Multi-phase deliverables with clear end goal |
-| **RODES** | Complex design/analysis | System architecture, research proposals |
-| **Chain of Density** | Summarization | Compress articles, synthesize reports |
-| **R-A-C-E** | Communication | Executive emails, presentations, storytelling |
-| **R-I-S-E** | Investigation | Research questions, diagnostic analysis |
-| **S-T-A-R** | Contextual situations | Problem-solving with background |
-| **S-O-A-P** | Documentation | Medical records, technical logs |
-| **C-L-E-A-R** | Goal-setting | OKRs, objectives, measurable targets |
-| **G-R-O-W** | Coaching/development | Mentoring, skill building, growth plans |
+The **Prompt Engineer** skill uses **11 established frameworks** to optimize your prompts. The skill automatically selects and blends these frameworks based on your task - you never need to know or choose them manually.
 
-### Framework Blending
+---
 
-The skill **automatically combines frameworks** when it improves results:
+### 1. **RTF (Role-Task-Format)**
 
-- **Complex technical project:** RODES + Chain of Thought
-- **Leadership decision:** C-L-E-A-R + G-R-O-W
-- **Strategic communication:** R-A-C-E + S-T-A-R
+**Structure:** Role → Task → Format
 
-You don't choose the framework - the skill selects (and blends) the best fit based on your task.
+**Best for:** Tasks requiring specific expertise or perspective
+
+**Components:**
+- **Role:** "You are a [expert identity]"
+- **Task:** "Your task is to [specific action]"
+- **Format:** "Output format: [structure/style]"
+
+**Example:**
+```
+You are a senior Python developer.
+Task: Refactor this code for better performance.
+Format: Provide refactored code with inline comments explaining changes.
+```
+
+---
+
+### 2. **Chain of Thought**
+
+**Structure:** Problem → Step 1 → Step 2 → ... → Solution
+
+**Best for:** Complex reasoning, debugging, mathematical problems, logic puzzles
+
+**Components:**
+- Break problem into sequential steps
+- Show reasoning at each stage
+- Build toward final solution
+
+**Example:**
+```
+Solve this problem step-by-step:
+1. Identify the core issue
+2. Analyze contributing factors
+3. Propose solution approach
+4. Validate solution against requirements
+```
+
+---
+
+### 3. **RISEN**
+
+**Structure:** Role, Instructions, Steps, End goal, Narrowing
+
+**Best for:** Multi-phase projects with clear deliverables and constraints
+
+**Components:**
+- **Role:** Expert identity
+- **Instructions:** What to do
+- **Steps:** Sequential actions
+- **End goal:** Desired outcome
+- **Narrowing:** Constraints and focus areas
+
+**Example:**
+```
+Role: You are a DevOps architect.
+Instructions: Design a CI/CD pipeline for microservices.
+Steps: 1) Analyze requirements 2) Select tools 3) Design workflow 4) Document
+End goal: Automated deployment with zero-downtime releases.
+Narrowing: Focus on AWS, limit to 3 environments (dev/staging/prod).
+```
+
+---
+
+### 4. **RODES**
+
+**Structure:** Role, Objective, Details, Examples, Sense check
+
+**Best for:** Complex design, system architecture, research proposals
+
+**Components:**
+- **Role:** Expert perspective
+- **Objective:** What to achieve
+- **Details:** Context and requirements
+- **Examples:** Concrete illustrations
+- **Sense check:** Validation criteria
+
+**Example:**
+```
+Role: You are a system architect.
+Objective: Design a scalable e-commerce platform.
+Details: Handle 100k concurrent users, sub-200ms response time, multi-region.
+Examples: Show database schema, caching strategy, load balancing.
+Sense check: Validate solution meets latency and scalability requirements.
+```
+
+---
+
+### 5. **Chain of Density**
+
+**Structure:** Iteration 1 (verbose) → Iteration 2 → ... → Iteration 5 (maximum density)
+
+**Best for:** Summarization, compression, synthesis of long content
+
+**Process:**
+- Start with verbose explanation
+- Iteratively compress while preserving key information
+- End with maximally dense version (high information per word)
+
+**Example:**
+```
+Compress this article into progressively denser summaries:
+1. Initial summary (300 words)
+2. Compressed (200 words)
+3. Further compressed (100 words)
+4. Dense (50 words)
+5. Maximum density (25 words, all critical points)
+```
+
+---
+
+### 6. **R-A-C-E**
+
+**Structure:** Role, Audience, Context, Expectation
+
+**Best for:** Communication, presentations, stakeholder updates, storytelling
+
+**Components:**
+- **Role:** Communicator identity
+- **Audience:** Who you're addressing (expertise level, concerns)
+- **Context:** Background/situation
+- **Expectation:** What audience needs to know or do
+
+**Example:**
+```
+Role: You are a product manager.
+Audience: Non-technical executives.
+Context: Quarterly business review, product performance down 5%.
+Expectation: Explain root causes and recovery plan in non-technical terms.
+```
+
+---
+
+### 7. **R-I-S-E**
+
+**Structure:** Research, Investigate, Synthesize, Evaluate
+
+**Best for:** Analysis, investigation, systematic exploration, diagnostic work
+
+**Process:**
+1. **Research:** Gather information
+2. **Investigate:** Deep dive into findings
+3. **Synthesize:** Combine insights
+4. **Evaluate:** Assess and recommend
+
+**Example:**
+```
+Analyze customer churn data using R-I-S-E:
+Research: Collect churn metrics, exit surveys, support tickets.
+Investigate: Identify patterns in churned users.
+Synthesize: Combine findings into themes.
+Evaluate: Recommend retention strategies based on evidence.
+```
+
+---
+
+### 8. **S-T-A-R**
+
+**Structure:** Situation, Task, Action, Result
+
+**Best for:** Problem-solving with rich context, case studies, retrospectives
+
+**Components:**
+- **Situation:** Background context
+- **Task:** Specific challenge
+- **Action:** What needs doing
+- **Result:** Expected outcome
+
+**Example:**
+```
+Situation: Legacy monolith causing deployment delays (2 weeks per release).
+Task: Modernize architecture to enable daily deployments.
+Action: Migrate to microservices, implement CI/CD, containerize.
+Result: Deploy 10+ times per day with <5% rollback rate.
+```
+
+---
+
+### 9. **S-O-A-P**
+
+**Structure:** Subjective, Objective, Assessment, Plan
+
+**Best for:** Structured documentation, medical records, technical logs, incident reports
+
+**Components:**
+- **Subjective:** Reported information (symptoms, complaints)
+- **Objective:** Observable facts (metrics, data)
+- **Assessment:** Analysis and diagnosis
+- **Plan:** Recommended actions
+
+**Example:**
+```
+Incident Report (SOAP):
+Subjective: Users report slow page loads starting 10 AM.
+Objective: Average response time increased from 200ms to 3s. CPU at 95%.
+Assessment: Database connection pool exhausted due to traffic spike.
+Plan: 1) Scale pool size 2) Add monitoring alerts 3) Review query performance.
+```
+
+---
+
+### 10. **C-L-E-A-R**
+
+**Structure:** Collaborative, Limited, Emotional, Appreciable, Refinable
+
+**Best for:** Goal-setting, OKRs, measurable objectives, team alignment
+
+**Components:**
+- **Collaborative:** Who's involved
+- **Limited:** Scope boundaries (time, resources)
+- **Emotional:** Why it matters (motivation)
+- **Appreciable:** Measurable progress indicators
+- **Refinable:** How to iterate and improve
+
+**Example:**
+```
+Q1 Objective (CLEAR):
+Collaborative: Engineering + Product teams.
+Limited: Complete by March 31, budget $50k, 2 engineers allocated.
+Emotional: Reduces customer support load by 30%, improves satisfaction.
+Appreciable: Track weekly via tickets resolved, NPS score, deployment count.
+Refinable: Bi-weekly retrospectives, adjust priorities based on feedback.
+```
+
+---
+
+### 11. **G-R-O-W**
+
+**Structure:** Goal, Reality, Options, Will
+
+**Best for:** Coaching, personal development, growth planning, mentorship
+
+**Components:**
+- **Goal:** What to achieve
+- **Reality:** Current situation (strengths, gaps)
+- **Options:** Possible approaches
+- **Will:** Commitment to action
+
+**Example:**
+```
+Career Development (GROW):
+Goal: Become senior engineer within 12 months.
+Reality: Strong coding skills, weak in system design and leadership.
+Options: 1) Take system design course 2) Lead a project 3) Find mentor.
+Will: Commit to 5 hours/week study, lead Q2 project, find mentor by Feb.
+```
+
+---
+
+### Framework Selection Logic
+
+The skill analyzes your input and:
+
+1. **Detects task type**
+   - Coding, writing, analysis, design, communication, etc.
+
+2. **Identifies complexity**
+   - Simple (1-2 sentences) → Fast, minimal structure
+   - Moderate (paragraph) → Standard framework
+   - Complex (detailed requirements) → Advanced framework or blend
+
+3. **Selects primary framework**
+   - RTF → Role-based tasks
+   - Chain of Thought → Step-by-step reasoning
+   - RISEN/RODES → Complex projects
+   - R-A-C-E → Communication
+   - S-T-A-R → Contextual problems
+   - And so on...
+
+4. **Blends secondary frameworks when needed**
+   - RODES + Chain of Thought → Complex technical projects
+   - C-L-E-A-R + G-R-O-W → Leadership goals
+   - R-A-C-E + S-T-A-R → Strategic communication
+
+**You never choose the framework manually** - the skill does it automatically in "magic mode."
+
+---
+
+### Common Framework Blends
+
+| Task Type | Primary Framework | Blended With | Result |
+|-----------|------------------|--------------|--------|
+| Complex technical design | RODES | Chain of Thought | Structured design with step-by-step reasoning |
+| Leadership development | C-L-E-A-R | G-R-O-W | Measurable goals with action commitment |
+| Strategic communication | R-A-C-E | S-T-A-R | Audience-aware storytelling with context |
+| Incident investigation | R-I-S-E | S-O-A-P | Systematic analysis with structured documentation |
+| Project planning | RISEN | RTF | Multi-phase delivery with role clarity |
 
 ---
 
