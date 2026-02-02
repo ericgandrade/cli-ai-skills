@@ -57,7 +57,7 @@ Automate CLI skill creation with best practices built-in. Interactive 5-phase wo
 
 ---
 
-### 🎥 **youtube-summarizer** v1.1.0
+### 🎥 **youtube-summarizer** v1.2.0
 
 **Status:** ✨ Zero-Config | 🌍 Universal
 
@@ -77,7 +77,7 @@ Extract transcripts from YouTube videos and generate comprehensive, detailed sum
 - 🔍 Includes metadata and insights
 - 🛠️ Automatic dependency management
 - 📊 Visual progress gauge during processing
-- 💾 Save summary to .md (with optional raw transcript)
+- 💾 Flexible save options: summary-only, summary+transcript, or transcript-only (NEW v1.2.0)
 
 **[→ Full Documentation](./youtube-summarizer/README.md)**
 

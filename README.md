@@ -77,7 +77,7 @@ Automate CLI skill creation with best practices built-in.
 
 ---
 
-### 🎥 **youtube-summarizer** v1.1.1
+### 🎥 **youtube-summarizer** v1.2.0
 
 Extract transcripts from YouTube videos and generate comprehensive, detailed summaries. Powered by [youtube-transcript-api](https://github.com/jdepoix/youtube-transcript-api) by [Julien Depoix](https://github.com/jdepoix).
 
@@ -429,4 +429,4 @@ Inspired by:
 
 **Built with ❤️ by [Eric Andrade](https://github.com/eric.andrade)**
 
-*Version 1.1.0 | Last updated: February 2026*
+*Version 1.2.0 | Last updated: February 2026*
