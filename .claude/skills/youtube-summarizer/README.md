@@ -2,7 +2,7 @@
 
 > Extract transcripts from YouTube videos and generate comprehensive, detailed summaries
 
-**Version:** 1.1.1
+**Version:** 1.2.0
 **Status:** ✨ Zero-Config | 🌍 Universal
 **Platforms:** GitHub Copilot CLI, Claude Code
 
@@ -25,7 +25,7 @@ The **youtube-summarizer** skill automates the extraction of YouTube video trans
 - ⚡ **Error handling** - Clear messages for all failure scenarios
 - 🛠️ **Dependency management** - Offers to install requirements automatically
 - 📊 **Progress gauge** - Visual processing tracker across all steps
-- 💾 **Save to file** - Export summary (and optionally the raw transcript) as `.md`
+- 💾 **Flexible save options** - Summary-only, summary+transcript, or transcript-only (NEW v1.2.0)
 
 ---
 
@@ -288,7 +288,21 @@ Possible reasons:
 
 ### Q: Can I save the summary to a file?
 
-**A:** Yes! After the summary is generated, the skill automatically asks if you'd like to save it. You can also choose to include the raw transcript in the same file. The summary is saved as `resumo-{VIDEO_ID}-{YYYY-MM-DD}.md`.
+**A:** Yes! After the summary is generated, the skill offers flexible save options:
+- **Summary only** - Markdown file with structured summary
+- **Summary + transcript** - Markdown file with summary and raw transcript appended
+- **Transcript only** - Plain text file with raw transcript (NEW in v1.2.0)
+- **Display only** - No files saved, summary shown in terminal
+
+Files are saved as `resumo-{VIDEO_ID}-{YYYY-MM-DD}.md` (summary) or `transcript-{VIDEO_ID}-{YYYY-MM-DD}.txt` (transcript-only).
+
+### Q: When should I save just the transcript?
+
+**A:** Use the transcript-only option when you:
+- Need raw content for further analysis
+- Want to process the text with other tools
+- Prefer to create your own summary later
+- Need the transcript for documentation or archival purposes
 
 ---
 
