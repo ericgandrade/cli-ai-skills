@@ -1,0 +1,55 @@
+{
+  "name": "cli-ai-skills",
+  "version": "1.0.0",
+  "description": "Install AI skills for GitHub Copilot CLI and Claude Code",
+  "main": "lib/index.js",
+  "bin": {
+    "cli-ai-skills": "bin/cli.js"
+  },
+  "scripts": {
+    "test": "node bin/cli.js --help",
+    "link": "npm link",
+    "unlink": "npm unlink -g cli-ai-skills",
+    "prepublishOnly": "npm test",
+    "version": "git add -A",
+    "postversion": "git push && git push --tags"
+  },
+  "keywords": [
+    "copilot",
+    "claude",
+    "ai",
+    "skills",
+    "cli",
+    "prompt-engineering",
+    "github-copilot",
+    "claude-code"
+  ],
+  "author": "Eric Andrade",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "README.md"
+  ],
+  "dependencies": {
+    "axios": "^1.6.5",
+    "chalk": "^4.1.2",
+    "commander": "^11.1.0",
+    "fs-extra": "^11.2.0",
+    "inquirer": "^8.2.5",
+    "js-yaml": "^4.1.0",
+    "ora": "^5.4.1",
+    "semver": "^7.5.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ericgandrade/cli-ai-skills.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ericgandrade/cli-ai-skills/issues"
+  },
+  "homepage": "https://github.com/ericgandrade/cli-ai-skills#readme"
+}
