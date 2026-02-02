@@ -6,7 +6,7 @@ triggers:
   - "resumir video do youtube"
   - "extrair transcript youtube"
   - "summarize youtube video"
-version: 1.0.0
+version: 1.1.0
 author: Eric Andrade
 created: 2026-02-01
 platforms: [github-copilot-cli, claude-code]
@@ -74,6 +74,36 @@ python3 -c "import youtube_transcript_api; print('✅ youtube-transcript-api ins
 
 ## Main Workflow
 
+### Progress Tracking Guidelines
+
+Throughout the workflow, display a visual progress gauge before each step to keep the user informed. The gauge format is:
+
+```bash
+echo "[████░░░░░░░░░░░░░░░░] 20% - Step 1/5: Validating URL"
+```
+
+**Format specifications:**
+- 20 characters wide (use █ for filled, ░ for empty)
+- Percentage increments: Step 1=20%, Step 2=40%, Step 3=60%, Step 4=80%, Step 5=100%
+- Step counter showing current/total (e.g., "Step 3/5")
+- Brief description of current phase
+
+**Display the initial status box before Step 1:**
+
+```
+╔══════════════════════════════════════════════════════════════╗
+║     📹  YOUTUBE SUMMARIZER - Processing Video                ║
+╠══════════════════════════════════════════════════════════════╣
+║ → Step 1: Validating URL                 [IN PROGRESS]       ║
+║ ○ Step 2: Checking Availability                              ║
+║ ○ Step 3: Extracting Transcript                              ║
+║ ○ Step 4: Generating Summary                                 ║
+║ ○ Step 5: Formatting Output                                  ║
+╠══════════════════════════════════════════════════════════════╣
+║ Progress: ██████░░░░░░░░░░░░░░░░░░░░░░░░  20%               ║
+╚══════════════════════════════════════════════════════════════╝
+```
+
 ### Step 1: Validate YouTube URL
 
 **Objective:** Extract video ID and validate URL format.
@@ -117,6 +147,11 @@ Example: https://www.youtube.com/watch?v=dQw4w9WgXcQ
 ```
 
 ### Step 2: Check Video & Transcript Availability
+
+**Progress:**
+```bash
+echo "[████████░░░░░░░░░░░░] 40% - Step 2/5: Checking Availability"
+```
 
 **Objective:** Verify video exists and transcript is accessible.
 
@@ -164,6 +199,11 @@ except Exception as e:
 
 ### Step 3: Extract Transcript
 
+**Progress:**
+```bash
+echo "[████████████░░░░░░░░] 60% - Step 3/5: Extracting Transcript"
+```
+
 **Objective:** Retrieve transcript in preferred language.
 
 **Actions:**
@@ -209,6 +249,11 @@ except Exception as e:
 
 ### Step 4: Generate Comprehensive Summary
 
+**Progress:**
+```bash
+echo "[████████████████░░░░] 80% - Step 4/5: Generating Summary"
+```
+
 **Objective:** Apply enhanced STAR + R-I-S-E prompt to create detailed summary.
 
 **Prompt Applied:**
@@ -246,6 +291,11 @@ Read "$TRANSCRIPT_FILE"  # Read transcript into context
 Then apply the full summarization prompt (from enhanced version in Phase 2).
 
 ### Step 5: Format and Present Output
+
+**Progress:**
+```bash
+echo "[████████████████████] 100% - Step 5/5: Formatting Output"
+```
 
 **Objective:** Deliver the summary in clean, well-structured Markdown.
 
@@ -317,9 +367,76 @@ Then apply the full summarization prompt (from enhanced version in Phase 2).
 **Presentation:**
 
 - Display the full Markdown summary to the user
-- Offer to save to a file if user requests
 - Include video metadata in header for reference
 - Use emojis and formatting for readability
+- Proceed to Step 6 for save options
+
+### Step 6: Save Options
+
+**Objective:** Ask user if they want to save the summary as a Markdown file, optionally including the raw transcript.
+
+**Actions:**
+
+Use `AskUserQuestion` to present the following decisions:
+
+**Question 1 — Save summary:**
+```
+Você quer salvar o resumo como arquivo .md?
+- Yes — Salvar resumo como arquivo Markdown
+- No — Apenas exibir no terminal
+```
+
+**Question 2 — Include raw transcript (only ask if user answered Yes to Q1):**
+```
+Você quer incluir o raw transcript no arquivo?
+- Yes — Incluir transcript completo após o resumo
+- No — Apenas o resumo
+```
+
+**If user chose to save:**
+
+1. Generate filename using the video ID and current date:
+   ```
+   resumo-{VIDEO_ID}-{YYYY-MM-DD}.md
+   ```
+
+2. If user chose to include the raw transcript, append the following section at the end of the summary content before writing:
+   ```markdown
+   ---
+
+   ## 📄 Raw Transcript
+
+   > *Transcrição original extraída do vídeo usando youtube-transcript-api*
+
+   {full transcript text}
+   ```
+
+3. Use the `Write` tool to save the file in the current working directory.
+
+4. Confirm to the user:
+   ```
+   ✅ Arquivo salvo: resumo-{VIDEO_ID}-{YYYY-MM-DD}.md
+   ```
+
+**If user chose not to save:** Confirm that the summary was displayed and the workflow is complete.
+
+**Display completion gauge:**
+```bash
+echo "[████████████████████] 100% - ✓ Processamento concluído!"
+```
+
+```
+╔══════════════════════════════════════════════════════════════╗
+║ ✓ Step 1: URL Validated                                      ║
+║ ✓ Step 2: Availability Checked                               ║
+║ ✓ Step 3: Transcript Extracted                               ║
+║ ✓ Step 4: Summary Generated                                  ║
+║ ✓ Step 5: Output Formatted                                   ║
+║ ✅ PROCESSING COMPLETE!                                      ║
+╠══════════════════════════════════════════════════════════════╣
+║ Progress: ██████████████████████████████  100%              ║
+╚══════════════════════════════════════════════════════════════╝
+```
 
 ## Error Handling
 
@@ -400,6 +517,8 @@ Possible solutions:
 - ❌ Process private or restricted videos (respect access controls)
 - ❌ Truncate summaries for brevity (prioritize completeness)
 - ❌ Omit video metadata from output
+- ❌ Skip the progress gauge during processing
+- ❌ Save files without asking the user first (Step 6)
 
 ### **ALWAYS:**
 
@@ -413,6 +532,9 @@ Possible solutions:
 - ✅ Include video metadata (title, channel, URL, duration)
 - ✅ Prioritize detail and completeness over conciseness
 - ✅ Provide source attribution in output
+- ✅ Display progress gauge before each processing step
+- ✅ Ask user about save options after summary generation (Step 6)
+- ✅ Use AskUserQuestion for save and transcript inclusion decisions
 
 ## Example Usage
 
@@ -426,13 +548,17 @@ claude> resume este video: https://www.youtube.com/watch?v=dQw4w9WgXcQ
 **Skill Process:**
 
 ```
+[████░░░░░░░░░░░░░░░░] 20% - Step 1/5: Validating URL
 📹 Video ID extracted: dQw4w9WgXcQ
-✅ Checking video availability...
+[████████░░░░░░░░░░░░] 40% - Step 2/5: Checking Availability
 ✅ Video accessible
 📝 Available transcripts: English (en) [Auto-generated]
+[████████████░░░░░░░░] 60% - Step 3/5: Extracting Transcript
 ✅ Transcript extracted successfully
 📊 Transcript length: 4,523 characters
+[████████████████░░░░] 80% - Step 4/5: Generating Summary
 🤖 Generating comprehensive summary...
+[████████████████████] 100% - Step 5/5: Formatting Output
 ```
 
 **Output:**
@@ -445,6 +571,19 @@ claude> resume este video: https://www.youtube.com/watch?v=dQw4w9WgXcQ
 **URL:** https://www.youtube.com/watch?v=dQw4w9WgXcQ
 
 [... full detailed summary following the structured template ...]
+```
+
+**Save Options:**
+
+```
+Você quer salvar o resumo como arquivo .md?
+→ Yes — Salvar resumo como arquivo Markdown
+
+Você quer incluir o raw transcript no arquivo?
+→ No — Apenas o resumo
+
+✅ Arquivo salvo: resumo-dQw4w9WgXcQ-2026-02-01.md
+[████████████████████] 100% - ✓ Processamento concluído!
 ```
 
 ---
@@ -532,12 +671,17 @@ claude> resumir video do youtube: https://www.youtube.com/watch?v=exemplo123
 **Skill Process:**
 
 ```
+[████░░░░░░░░░░░░░░░░] 20% - Step 1/5: Validating URL
 📹 Video ID extracted: exemplo123
+[████████░░░░░░░░░░░░] 40% - Step 2/5: Checking Availability
 ✅ Video accessible
 📝 Available transcripts: Portuguese (pt) [Manual], English (en) [Auto-generated]
 ✅ Using Portuguese transcript (manual)
+[████████████░░░░░░░░] 60% - Step 3/5: Extracting Transcript
 📊 Transcript length: 12,845 characters
+[████████████████░░░░] 80% - Step 4/5: Generating Summary
 🤖 Generating comprehensive summary...
+[████████████████████] 100% - Step 5/5: Formatting Output
 ```
 
 **Output:**
@@ -557,6 +701,19 @@ claude> resumir video do youtube: https://www.youtube.com/watch?v=exemplo123
 Este vídeo oferece uma introdução abrangente aos conceitos fundamentais de Inteligência Artificial (IA), destinado a iniciantes e profissionais que desejam compreender os fundamentos técnicos e aplicações práticas da IA moderna. O instrutor aborda desde definições básicas até algoritmos de aprendizado de máquina, utilizando exemplos práticos e visualizações para facilitar a compreensão.
 
 [... continued detailed summary ...]
+```
+
+**Save Options:**
+
+```
+Você quer salvar o resumo como arquivo .md?
+→ Yes — Salvar resumo como arquivo Markdown
+
+Você quer incluir o raw transcript no arquivo?
+→ Yes — Incluir transcript completo após o resumo
+
+✅ Arquivo salvo: resumo-exemplo123-2026-02-01.md (inclui raw transcript)
+[████████████████████] 100% - ✓ Processamento concluído!
 ```
 
 ---
@@ -637,6 +794,6 @@ Sample output showing what a complete summary looks like (see Example 5 above fo
 
 ---
 
-**Version:** 1.0.0  
-**Last Updated:** 2026-02-01  
+**Version:** 1.1.0
+**Last Updated:** 2026-02-01
 **Maintained By:** Eric Andrade
