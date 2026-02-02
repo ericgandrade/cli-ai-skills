@@ -4,6 +4,7 @@ const PlatformDetector = require('../core/detector');
 const SkillDownloader = require('../core/downloader');
 const VersionChecker = require('../core/version-checker');
 const SkillInstaller = require('../core/installer');
+const RequirementsInstaller = require('../core/requirements-installer');
 const InstallationPrompts = require('../ui/prompts');
 const ProgressGauge = require('../ui/progress-gauge');
 const path = require('path');
@@ -195,6 +196,67 @@ async function installCommand(skillNames, options) {
               results.installed.push(skillName);
               console.log(chalk.green(`  ✅ Installed successfully`));
             }
+            
+            // Check for Python requirements
+            const requirementsInstaller = new RequirementsInstaller();
+            const firstPlatform = selectedPlatforms[0];
+            const skillPath = path.join(installPaths[firstPlatform], skillName);
+            
+            const requirements = await requirementsInstaller.detectRequirements(skillPath);
+            
+            if (requirements.hasRequirements) {
+              console.log(chalk.blue('\n  📦 This skill requires Python dependencies'));
+              
+              // Check Python availability
+              const pythonCheck = await requirementsInstaller.verifyPython();
+              
+              if (!pythonCheck.available) {
+                console.log(chalk.yellow('  ⚠️  Python 3 not found'));
+                console.log(chalk.dim('     Please install Python 3.8+ to use this skill'));
+                console.log(chalk.dim('     Download: https://www.python.org/downloads/'));
+                continue;
+              }
+              
+              console.log(chalk.green(`  ✅ Python detected: ${pythonCheck.version}`));
+              
+              // Ask user if they want to install requirements
+              let installRequirements = options.yes;
+              
+              if (!options.yes) {
+                const inquirer = require('inquirer');
+                const answer = await inquirer.prompt([
+                  {
+                    type: 'confirm',
+                    name: 'install',
+                    message: 'Install Python requirements now?',
+                    default: true
+                  }
+                ]);
+                installRequirements = answer.install;
+              }
+              
+              if (installRequirements) {
+                const installResult = await requirementsInstaller.installRequirements(requirements, {
+                  verbose: options.verbose
+                });
+                
+                if (!installResult.success) {
+                  console.log(chalk.yellow('\n  💡 You can install requirements later:'));
+                  if (requirements.type === 'bash') {
+                    console.log(chalk.dim(`     bash ${requirements.scriptPath}`));
+                  } else if (requirements.type === 'pip') {
+                    console.log(chalk.dim(`     pip install --user ${requirements.packages.join(' ')}`));
+                  }
+                }
+              } else {
+                console.log(chalk.blue('\n  ℹ️  Skipped requirements installation'));
+                console.log(chalk.dim('     You can install later:'));
+                if (requirements.type === 'bash') {
+                  console.log(chalk.dim(`     bash ${path.relative(process.cwd(), requirements.scriptPath)}`));
+                }
+              }
+            }
+            
           } else {
             results.failed.push(skillName);
             console.log(chalk.red(`  ❌ Failed: ${result.errors.join(', ')}`));

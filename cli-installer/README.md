@@ -14,6 +14,7 @@ npx cli-ai-skills install
 - 🌍 **Global or Local** - Install globally or per-repository
 - 🔗 **Symlink Support** - Auto-updates with repository changes
 - 📊 **Progress Gauge** - Visual progress tracking
+- 🐍 **Python Requirements** - Auto-installs Python dependencies for skills that need them
 - 🏥 **Doctor Command** - Diagnose installation issues
 
 ## 🚀 Quick Start
@@ -46,6 +47,9 @@ You'll be prompted to select:
 - **prompt-engineer** - Transform prompts using 11 established frameworks
 - **skill-creator** - Create new skills interactively
 - **youtube-summarizer** - Extract and summarize YouTube videos
+- **audio-transcriber** 🐍 - Transcribe audio to text with meeting minutes and summaries
+
+> 🐍 = Requires Python dependencies (auto-installed during setup)
 
 ## 📖 Commands
 
@@ -126,6 +130,53 @@ Checks:
 - ✅ Platform installations (Copilot/Claude)
 - ✅ Directory permissions
 - ✅ Network connectivity
+- ✅ Python environment (for audio-transcriber skill)
+- ✅ Whisper and ffmpeg installation
+
+## 🐍 Python Requirements
+
+Some skills (like **audio-transcriber**) require Python dependencies. The installer handles this automatically:
+
+### Automatic Installation
+
+```bash
+$ npx cli-ai-skills install audio-transcriber
+
+📦 Downloading audio-transcriber v1.0.0...
+✅ Installed successfully
+
+📦 This skill requires Python dependencies
+✅ Python detected: 3.11.7
+? Install Python requirements now? (Y/n) Y
+
+🔧 Running install-requirements.sh...
+✅ pkg-config installed
+✅ ffmpeg installed
+✅ openai-whisper installed
+
+🎉 audio-transcriber ready to use!
+```
+
+### Manual Installation
+
+If you skip auto-install, you can run it later:
+
+```bash
+# Using the skill's install script
+bash ~/.copilot/skills/audio-transcriber/scripts/install-requirements.sh
+
+# Or manually with pip
+pip install --user openai-whisper
+brew install ffmpeg  # macOS
+```
+
+### Checking Python Status
+
+```bash
+npx cli-ai-skills doctor
+```
+
+Shows Python version, Whisper, and ffmpeg status.
 
 ## 🎨 Example Usage
 

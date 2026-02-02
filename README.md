@@ -60,6 +60,7 @@ With the **skills** in this repository, you add new specialized capabilities to 
 - 🎯 **prompt-engineer**: Transforms simple prompts into optimized prompts using 11 frameworks
 - 🎥 **youtube-summarizer**: Automatically summarizes YouTube videos
 - 🛠️ **skill-creator**: Creates new custom skills with best practices built-in
+- 🎙️ **audio-transcriber**: Transcribes audio to Markdown with meeting minutes and summaries
 
 **Without skills:** The tools only answer basic questions.  
 **With skills:** They gain specialized superpowers! 🚀
@@ -172,6 +173,45 @@ Extract transcripts from YouTube videos and generate comprehensive, detailed sum
 - 📦 Bundled scripts for dependency installation and transcript extraction
 
 **[→ Full Documentation](./.github/skills/youtube-summarizer/README.md)**
+
+---
+
+### 🎙️ **audio-transcriber** v1.0.0
+
+Transform audio recordings into professional Markdown documentation with meeting minutes, speaker identification, and intelligent summaries.
+
+**Status:** ✨ Zero-Config | 🌍 Universal | 🤖 AI-Enhanced | 🐍 Python
+
+**Capabilities:**
+- 📝 Rich Markdown output with technical metadata (file size, duration, language, speakers)
+- 🎙️ Speaker diarization (automatically identifies different speakers)
+- 📋 Automatic meeting minutes generation (topics, decisions, action items)
+- 💡 Executive summaries (3-5 paragraphs with key points)
+- 🌍 99 languages with automatic detection
+- ⚡ Auto-install dependencies (Whisper + ffmpeg via script)
+- 🔒 100% local processing (privacy-first, no cloud uploads)
+- 📄 Multiple output formats (Markdown, TXT, SRT, VTT, JSON)
+- 🚀 Batch processing support
+- ⚙️ Uses Faster-Whisper (4-5x faster) or OpenAI Whisper (fallback)
+
+**Triggers:**
+- `transcribe audio to markdown`
+- `transcreva este áudio`
+- `convert audio file to text`
+- `extract speech from audio`
+- `áudio para texto com metadados`
+
+**Requirements:**
+- Python 3.8+ (auto-checked)
+- `openai-whisper` or `faster-whisper` (auto-installed via script)
+- `ffmpeg` (optional, auto-installed on macOS via Homebrew)
+
+**Supported Audio Formats:**
+MP3, WAV, M4A, OGG, FLAC, WEBM, MP4
+
+**Inspired by:** [Plaud AI](https://www.plaud.ai/) recorder
+
+**[→ Full Documentation](./.github/skills/audio-transcriber/README.md)**
 
 ---
 

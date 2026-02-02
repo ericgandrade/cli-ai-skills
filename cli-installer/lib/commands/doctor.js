@@ -1,5 +1,6 @@
 const chalk = require('chalk');
 const PlatformDetector = require('../core/detector');
+const RequirementsInstaller = require('../core/requirements-installer');
 const { execSync } = require('child_process');
 
 async function doctorCommand() {
@@ -78,6 +79,57 @@ async function doctorCommand() {
   } else {
     console.log(chalk.yellow('  ⚠️  Not detected'));
     console.log(chalk.dim(`     Install: https://claude.ai/code`));
+  }
+
+  console.log(chalk.cyan('\n' + '━'.repeat(60)));
+  console.log(chalk.bold('\nPython Environment (for audio-transcriber):\n'));
+
+  const requirementsInstaller = new RequirementsInstaller();
+  
+  // Check Python
+  console.log(chalk.bold('Python:'));
+  const pythonCheck = await requirementsInstaller.verifyPython();
+  if (pythonCheck.available) {
+    console.log(chalk.green(`  ✅ ${pythonCheck.version}`));
+  } else {
+    console.log(chalk.yellow('  ⚠️  Python 3 not found'));
+    console.log(chalk.dim('     Required for audio-transcriber skill'));
+    console.log(chalk.dim('     Install: https://www.python.org/downloads/'));
+    warnings++;
+  }
+
+  // Check Whisper (if Python available)
+  if (pythonCheck.available) {
+    console.log(chalk.bold('\nWhisper (Audio Transcription):'));
+    const fasterWhisperInstalled = await requirementsInstaller.isPackageInstalled('faster_whisper');
+    const whisperInstalled = await requirementsInstaller.isPackageInstalled('whisper');
+    
+    if (fasterWhisperInstalled) {
+      console.log(chalk.green('  ✅ Faster-Whisper installed (optimized)'));
+    } else if (whisperInstalled) {
+      console.log(chalk.green('  ✅ OpenAI Whisper installed'));
+    } else {
+      console.log(chalk.yellow('  ⚠️  Whisper not installed'));
+      console.log(chalk.dim('     Required for audio-transcriber skill'));
+      console.log(chalk.dim('     Install: pip install --user openai-whisper'));
+      warnings++;
+    }
+    
+    // Check ffmpeg
+    console.log(chalk.bold('\nffmpeg (Audio Processing):'));
+    try {
+      execSync('which ffmpeg', { stdio: 'pipe' });
+      const ffmpegVersion = execSync('ffmpeg -version 2>&1 | head -1', { 
+        encoding: 'utf-8',
+        stdio: 'pipe' 
+      }).trim();
+      console.log(chalk.green(`  ✅ Installed`));
+      console.log(chalk.dim(`     ${ffmpegVersion.split('\n')[0]}`));
+    } catch {
+      console.log(chalk.yellow('  ⚠️  Not installed (optional)'));
+      console.log(chalk.dim('     Recommended for audio format conversion'));
+      console.log(chalk.dim('     Install: brew install ffmpeg (macOS)'));
+    }
   }
 
   console.log(chalk.cyan('\n' + '━'.repeat(60)));

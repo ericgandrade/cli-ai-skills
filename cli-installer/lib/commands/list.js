@@ -2,6 +2,7 @@ const chalk = require('chalk');
 const PlatformDetector = require('../core/detector');
 const SkillDownloader = require('../core/downloader');
 const VersionChecker = require('../core/version-checker');
+const RequirementsInstaller = require('../core/requirements-installer');
 const path = require('path');
 
 async function listCommand(options) {
@@ -10,6 +11,7 @@ async function listCommand(options) {
   const detector = new PlatformDetector();
   const downloader = new SkillDownloader();
   const versionChecker = new VersionChecker();
+  const requirementsInstaller = new RequirementsInstaller();
 
   try {
     // Get available skills
@@ -25,6 +27,7 @@ async function listCommand(options) {
       let installedStatus = '⬜';
       let versionInfo = '';
       let platformList = [];
+      let requirementsStatus = '';
 
       // Check if installed in each platform
       for (const [platform, dirPath] of Object.entries(installPaths)) {
@@ -33,6 +36,20 @@ async function listCommand(options) {
 
         if (updateStatus.installed) {
           platformList.push(platform);
+          
+          // Check requirements status only once
+          if (!requirementsStatus) {
+            const reqStatus = await requirementsInstaller.checkRequirementsStatus(skillPath);
+            if (reqStatus.hasRequirements) {
+              if (reqStatus.status === 'installed') {
+                requirementsStatus = chalk.green(` 🐍 (${reqStatus.details.join(', ')})`);
+              } else if (reqStatus.status === 'not-installed') {
+                requirementsStatus = chalk.yellow(` 🐍 (requirements not installed)`);
+              } else {
+                requirementsStatus = chalk.dim(` 🐍`);
+              }
+            }
+          }
           
           if (updateStatus.needsUpdate) {
             installedStatus = '⚠️ ';
@@ -44,7 +61,7 @@ async function listCommand(options) {
         }
       }
 
-      console.log(`${installedStatus} ${chalk.bold(skill.name)} v${skill.version}${versionInfo}`);
+      console.log(`${installedStatus} ${chalk.bold(skill.name)} v${skill.version}${versionInfo}${requirementsStatus}`);
       console.log(chalk.dim(`   ${skill.description}`));
       
       if (platformList.length > 0) {

@@ -5,6 +5,53 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-02-02
+
+### Added
+- 🐍 **Python requirements support** for skills with external dependencies
+  - `RequirementsInstaller` class for detecting and managing Python packages
+  - Auto-detection of `scripts/install-requirements.sh` and `requirements.txt`
+  - Interactive prompts after skill installation to install Python dependencies
+  - Silent mode support with `--yes` flag for automation
+- 📋 **Enhanced `list` command**
+  - Shows 🐍 indicator for skills with Python requirements
+  - Displays requirements installation status (Whisper, ffmpeg, etc.)
+  - Color-coded status (green = installed, yellow = missing)
+- 🔍 **Enhanced `doctor` command**
+  - Python version detection and validation
+  - Whisper installation check (Faster-Whisper and OpenAI Whisper)
+  - ffmpeg availability check
+  - Detailed diagnostics for audio-transcriber skill dependencies
+- 🎙️ **audio-transcriber skill support**
+  - Auto-installs Whisper and ffmpeg during skill installation
+  - Handles macOS "externally-managed" Python environments (PEP 668)
+  - Multiple installation fallback methods (`--user`, `--break-system-packages`)
+  - System dependencies installation via Homebrew (pkg-config, ffmpeg)
+
+### Changed
+- `install` command now checks for Python requirements after successful installation
+- Requirements installation integrated into main workflow (Step 6 of 8)
+- Improved error messages for Python environment issues
+- Better handling of missing dependencies with manual installation instructions
+
+### Technical Details
+- **New class**: `RequirementsInstaller` with methods:
+  - `detectRequirements()` - Finds install-requirements.sh or requirements.txt
+  - `verifyPython()` - Checks Python 3 availability
+  - `installRequirements()` - Executes bash script or pip install
+  - `checkRequirementsStatus()` - Verifies Whisper/ffmpeg installation
+  - `isPackageInstalled()` - Checks Python package availability
+- **Supported methods**: Bash scripts (preferred), requirements.txt (fallback)
+- **macOS compatibility**: Handles Homebrew Python PEP 668 restrictions
+
+### Documentation
+- Updated main README with audio-transcriber skill
+- Updated cli-installer README with Python requirements info
+
+## [1.1.0] - 2026-02-02 (superseded by 1.2.0)
+
+*Skipped - merged into 1.2.0 release*
+
 ## [1.0.0] - 2026-02-02
 
 ### Added
