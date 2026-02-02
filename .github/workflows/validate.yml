@@ -1,0 +1,74 @@
+name: Validate
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  validate-workflows:
+    name: Validate GitHub Actions
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Validate workflow YAML syntax
+        run: ./scripts/validate-workflows.sh
+
+  validate-skills:
+    name: Validate Skills
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Validate GitHub Copilot skills
+        run: |
+          echo "Validating GitHub Copilot skills..."
+          for skill in .github/skills/*/; do
+            [ -d "$skill" ] || continue
+            echo "Checking: $skill"
+            ./scripts/validate-skill-yaml.sh "$skill"
+            ./scripts/validate-skill-content.sh "$skill"
+          done
+          
+      - name: Validate Claude Code skills
+        run: |
+          echo "Validating Claude Code skills..."
+          for skill in .claude/skills/*/; do
+            [ -d "$skill" ] || continue
+            echo "Checking: $skill"
+            ./scripts/validate-skill-yaml.sh "$skill"
+            ./scripts/validate-skill-content.sh "$skill"
+          done
+
+  validate-package:
+    name: Validate npm Package
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Install dependencies
+        working-directory: ./cli-installer
+        run: npm ci
+        
+      - name: Run tests
+        working-directory: ./cli-installer
+        run: npm test
+        
+      - name: Check package contents
+        working-directory: ./cli-installer
+        run: npm pack --dry-run

@@ -37,6 +37,48 @@ Found a problem? [Open an issue](https://github.com/eric.andrade/cli-ai-skills/i
 
 ---
 
+## 🚀 CI/CD & Version Control Guidelines
+
+Before making contributions, please review our CI/CD guidelines to avoid common errors:
+
+### Documentation
+
+- **GitHub Actions Workflows:** See [.github/WORKFLOWS.md](.github/WORKFLOWS.md) for workflow structure, YAML best practices, and troubleshooting
+- **Package Versioning:** See [cli-installer/VERSIONING.md](cli-installer/VERSIONING.md) for SemVer guidelines and release workflow
+
+### Validation Scripts
+
+Run validation scripts before pushing:
+
+```bash
+# Validate GitHub Actions workflows
+./scripts/validate-workflows.sh
+
+# Validate skills
+./scripts/validate-skill-yaml.sh <skill-path>
+./scripts/validate-skill-content.sh <skill-path>
+
+# Check package before publishing
+./scripts/pre-publish-check.sh
+
+# Bump version safely
+./scripts/bump-version.sh [patch|minor|major]
+```
+
+### Pre-Push Checklist
+
+Before pushing changes:
+
+- [ ] Code tested locally
+- [ ] Skills validated with validation scripts (if applicable)
+- [ ] Workflows validated with `./scripts/validate-workflows.sh` (if modified)
+- [ ] If modified `package.json`: version bumped with `./scripts/bump-version.sh`
+- [ ] If modified `package.json`: tests passed with `npm test`
+- [ ] Commit message follows [Conventional Commits](https://www.conventionalcommits.org/) (feat/fix/docs/chore)
+- [ ] README updated if necessary
+
+---
+
 ## 📋 Contribution Workflow
 
 ### Step 1: Fork & Clone

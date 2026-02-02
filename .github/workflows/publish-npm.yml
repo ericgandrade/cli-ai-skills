@@ -7,7 +7,39 @@ on:
   workflow_dispatch:  # Allows manual trigger from GitHub UI
 
 jobs:
+  validate:
+    name: Pre-publish Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Check version not already published
+        working-directory: ./cli-installer
+        run: |
+          CURRENT=$(node -p "require('./package.json').version")
+          PUBLISHED=$(npm view cli-ai-skills version 2>/dev/null || echo "0.0.0")
+          
+          echo "Current version: $CURRENT"
+          echo "Published version: $PUBLISHED"
+          
+          if [ "$CURRENT" = "$PUBLISHED" ]; then
+            echo "❌ Version $CURRENT is already published on npm!"
+            echo "Please bump the version using: ./scripts/bump-version.sh [patch|minor|major]"
+            exit 1
+          fi
+          
+          echo "✅ Version $CURRENT is new (ready to publish)"
+
   publish:
+    name: Publish to npm
+    needs: validate
     runs-on: ubuntu-latest
 
     steps:
