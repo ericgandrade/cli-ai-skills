@@ -6,7 +6,7 @@ triggers:
   - "resumir video do youtube"
   - "extrair transcript youtube"
   - "summarize youtube video"
-version: 1.1.1
+version: 1.2.0
 author: Eric Andrade
 created: 2026-02-01
 platforms: [github-copilot-cli, claude-code]
@@ -519,6 +519,7 @@ Possible solutions:
 - ❌ Omit video metadata from output
 - ❌ Skip the progress gauge during processing
 - ❌ Save files without asking the user first (Step 6)
+- ❌ Save transcript without asking user preference (Step 6 is mandatory)
 
 ### **ALWAYS:**
 
@@ -534,6 +535,8 @@ Possible solutions:
 - ✅ Provide source attribution in output
 - ✅ Display progress gauge before each processing step
 - ✅ Ask user about save options after summary generation (Step 6)
+- ✅ Offer all 4 save options to user (summary, summary+transcript, transcript only, nothing)
+- ✅ Use descriptive filenames for transcript-only files (transcript-{VIDEO_ID}-{DATE}.txt)
 - ✅ Use AskUserQuestion for save and transcript inclusion decisions
 
 ## Example Usage
@@ -576,11 +579,8 @@ claude> summarize this video: https://www.youtube.com/watch?v=dQw4w9WgXcQ
 **Save Options:**
 
 ```
-Do you want to save the summary as a .md file?
-→ Yes — Save summary as Markdown file
-
-Do you want to include the raw transcript in the file?
-→ No — Summary only
+What would you like to save?
+→ Summary only
 
 ✅ File saved: resumo-dQw4w9WgXcQ-2026-02-01.md
 [████████████████████] 100% - ✓ Processing complete!
@@ -706,14 +706,71 @@ This video provides a comprehensive introduction to the fundamental concepts of 
 **Save Options:**
 
 ```
-Do you want to save the summary as a .md file?
-→ Yes — Save summary as Markdown file
-
-Do you want to include the raw transcript in the file?
-→ Yes — Include full transcript after the summary
+What would you like to save?
+→ Summary + raw transcript
 
 ✅ File saved: resumo-exemplo123-2026-02-01.md (includes raw transcript)
 [████████████████████] 100% - ✓ Processing complete!
+```
+
+---
+
+### **Example 6: Save Transcript Only**
+
+**User Input:**
+```
+claude> extract transcript from https://youtube.com/watch?v=tech456
+```
+
+**Skill Process:**
+
+```
+[████░░░░░░░░░░░░░░░░] 20% - Step 1/5: Validating URL
+📹 Video ID extracted: tech456
+[████████░░░░░░░░░░░░] 40% - Step 2/5: Checking Availability
+✅ Video accessible
+📝 Available transcripts: English (en) [Auto-generated]
+[████████████░░░░░░░░] 60% - Step 3/5: Extracting Transcript
+✅ Transcript extracted successfully
+📊 Transcript length: 8,234 characters
+[████████████████░░░░] 80% - Step 4/5: Generating Summary
+🤖 Generating comprehensive summary...
+[████████████████████] 100% - Step 5/5: Formatting Output
+```
+
+**Output:**
+
+```markdown
+# Machine Learning Fundamentals - Complete Tutorial
+
+**Channel:** Tech Academy  
+**Duration:** 28:45  
+**URL:** https://www.youtube.com/watch?v=tech456
+
+[... full detailed summary following the structured template ...]
+```
+
+**Save Options:**
+
+```
+What would you like to save?
+→ Raw transcript only
+
+✅ File saved: transcript-tech456-2026-02-02.txt
+[████████████████████] 100% - ✓ Processing complete!
+```
+
+**File Content (transcript-tech456-2026-02-02.txt):**
+
+```
+YouTube Transcript
+Video ID: tech456
+URL: https://youtube.com/watch?v=tech456
+Extracted: 2026-02-02
+
+---
+
+Welcome to this comprehensive tutorial on machine learning fundamentals. In today's video, we'll explore the core concepts that power modern AI systems...
 ```
 
 ---
@@ -794,6 +851,6 @@ Sample output showing what a complete summary looks like (see Example 5 above fo
 
 ---
 
-**Version:** 1.1.1
-**Last Updated:** 2026-02-01
+**Version:** 1.2.0
+**Last Updated:** 2026-02-02
 **Maintained By:** Eric Andrade
