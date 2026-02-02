@@ -272,6 +272,106 @@ The **prompt-engineer** skill analyzes your input and:
 
 ---
 
+## 📋 System Requirements
+
+### Base Requirements (All Skills)
+
+- **Operating System:** macOS, Linux, or Windows (WSL recommended)
+- **GitHub Copilot CLI** or **Claude Code** (see [Supported Tools](#-supported-tools))
+
+### Skill-Specific Dependencies
+
+Some skills require additional dependencies for full functionality:
+
+#### 🎥 youtube-summarizer
+
+**Required:**
+- **Python 3.8+** with pip
+
+**Python Package:**
+- `youtube-transcript-api` (auto-installed by skill)
+
+**Installation:**
+```bash
+# The skill offers automatic installation, or install manually:
+pip3 install youtube-transcript-api
+```
+
+---
+
+#### 🎙️ audio-transcriber
+
+**Required:**
+- **Python 3.8+** with pip
+- **ffmpeg** (for audio format conversion)
+
+**Python Packages (choose one):**
+- `faster-whisper` (recommended, faster performance)
+- `openai-whisper` (alternative, original Whisper)
+
+**Installation:**
+```bash
+# The skill offers automatic installation via bundled script:
+~/.copilot/skills/audio-transcriber/scripts/install-requirements.sh
+
+# Or install manually:
+# Option 1: Faster-Whisper (recommended)
+pip3 install faster-whisper
+
+# Option 2: OpenAI Whisper
+pip3 install openai-whisper
+
+# System dependencies
+# macOS:
+brew install ffmpeg
+
+# Linux:
+sudo apt install ffmpeg  # Debian/Ubuntu
+sudo yum install ffmpeg  # CentOS/RHEL
+```
+
+---
+
+#### 🎯 prompt-engineer
+
+**No external dependencies required** - Works out of the box! ✨
+
+---
+
+#### 🛠️ skill-creator
+
+**No external dependencies required** - Works out of the box! ✨
+
+---
+
+### Dependency Installation
+
+Skills with dependencies follow a **zero-config philosophy**:
+
+1. **Automatic detection** - Skills check if dependencies are installed
+2. **Interactive installation** - Offers to install missing dependencies automatically
+3. **Bundled scripts** - Each skill includes installation scripts in `scripts/` folder
+4. **Manual fallback** - Clear instructions provided if automatic installation fails
+
+**Example workflow:**
+```bash
+# When you trigger a skill with dependencies
+copilot> summarize this video: https://youtube.com/watch?v=xyz
+
+# Skill checks dependencies
+✅ Python 3.11 detected
+❌ youtube-transcript-api not found
+
+# Offers installation
+Would you like to install youtube-transcript-api now? [Y/n]
+
+# Installs automatically
+📦 Installing youtube-transcript-api...
+✅ Installation complete!
+```
+
+---
+
 ## 🚀 Installation
 
 ### ⚡ Quick Install via npx (Easiest)
