@@ -113,14 +113,14 @@ Extract transcripts from YouTube videos and generate comprehensive, detailed sum
 
 ---
 
-### 🔮 Coming Soon
+### 🗺️ Roadmap
 
-More skills are in development! This library will grow with:
-- 📝 Code review and analysis skills
-- 📚 Documentation generation skills
-- 🧪 Testing and validation skills
-- 🔍 Codebase exploration skills
-- And more...
+Próximos itens em desenvolvimento:
+
+- 📦 **npx installer** — Instalar skills diretamente via `npx`, sem clone ou symlink manual ([#1](https://github.com/ericgandrade/cli-ai-skills/issues/1))
+- 🤖 **Gemini skill** — Skill nativa para integração com Google Gemini ([#2](https://github.com/ericgandrade/cli-ai-skills/issues/2))
+- 💻 **OpenCode skill** — Skill nativa para integração com OpenCode ([#3](https://github.com/ericgandrade/cli-ai-skills/issues/3))
+- 🤖 **Codex skill** — Skill nativa para integração com OpenAI Codex ([#4](https://github.com/ericgandrade/cli-ai-skills/issues/4))
 
 **Want to contribute?** See [CONTRIBUTING.md](./CONTRIBUTING.md)
 
