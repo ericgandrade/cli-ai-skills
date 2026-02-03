@@ -1,13 +1,6 @@
 ---
 name: prompt-engineer
 description: Transforms user prompts into optimized prompts using frameworks (RTF, RISEN, Chain of Thought, RODES, Chain of Density, RACE, RISE, STAR, SOAP, CLEAR, GROW)
-triggers:
-  - "melhore este prompt"
-  - "otimize prompt"
-  - "refine prompt"
-  - "prompt engineering"
-  - "transforme em prompt"
-  - "crie prompt para"
 version: 1.0.2
 ---
 
@@ -379,7 +372,7 @@ Validation: Ensure code runs without errors on sample data and produces readable
 
 **User Input:**
 ```
-copilot> improve this prompt: help me write Python code
+codex> improve this prompt: help me write Python code
 ```
 
 **Skill Internal Process:**
@@ -421,7 +414,7 @@ Output format: Complete, well-commented Python code with usage examples.
 
 **User Input:**
 ```
-copilot> create prompt for: I need to build a product recommendation system considering purchase history, user preferences, and market trends
+codex> create prompt for: I need to build a product recommendation system considering purchase history, user preferences, and market trends
 ```
 
 **Skill Internal Process:**
@@ -468,7 +461,7 @@ Output format: Technical design document with architecture diagrams, algorithm j
 
 **User Input:**
 ```
-copilot> transform into prompt: I want to improve my process
+codex> transform into prompt: I want to improve my process
 ```
 
 **Skill Internal Process:**
@@ -545,7 +538,7 @@ Output format: Practical decision-making playbook with templates, examples, and 
 
 **User Input:**
 ```
-copilot> optimize prompt: my Python code isn't working, needs debugging
+codex> optimize prompt: my Python code isn't working, needs debugging
 ```
 
 **Skill Internal Process:**
@@ -590,7 +583,7 @@ Include a working example to verify the fix.
 
 **User Input:**
 ```
-copilot> create prompt for: write a professional email to executives about strategic change
+codex> create prompt for: write a professional email to executives about strategic change
 ```
 
 **Skill Internal Process:**

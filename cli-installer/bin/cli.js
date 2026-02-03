@@ -1,108 +1,69 @@
 #!/usr/bin/env node
 
-const { Command } = require('commander');
-const chalk = require('chalk');
-const packageJson = require('../package.json');
+const { detectTools, getInstallInstructions } = require('../lib/detector');
+const { promptPlatforms } = require('../lib/interactive');
+const path = require('path');
 
-const program = new Command();
+// Importar installers existentes
+const copilotInstaller = require('../lib/copilot');
+const claudeInstaller = require('../lib/claude');
+const codexInstaller = require('../lib/codex');
 
-program
-  .name('cli-ai-skills')
-  .description(chalk.cyan('🤖 Install AI skills for GitHub Copilot CLI and Claude Code'))
-  .version(packageJson.version, '-v, --version', 'Output the current version');
-
-// Command: install
-program
-  .command('install [skills...]')
-  .description('Install AI skills')
-  .option('-a, --all', 'Install all available skills')
-  .option('-g, --global', 'Install globally (default)')
-  .option('-l, --local', 'Install in current repository')
-  .option('--copilot', 'Install only for GitHub Copilot CLI')
-  .option('--claude', 'Install only for Claude Code')
-  .option('-y, --yes', 'Skip confirmations')
-  .option('--copy', 'Copy files instead of symlinks')
-  .action(async (skillNames, options) => {
-    try {
-      const installCommand = require('../lib/commands/install');
-      await installCommand(skillNames, options);
-    } catch (error) {
-      console.error(chalk.red(`\n❌ Error: ${error.message}`));
-      process.exit(1);
-    }
-  });
-
-// Command: uninstall
-program
-  .command('uninstall <skill>')
-  .description('Uninstall a skill')
-  .option('-g, --global', 'Uninstall from global location')
-  .option('-l, --local', 'Uninstall from local repository')
-  .action(async (skill, options) => {
-    try {
-      const uninstallCommand = require('../lib/commands/uninstall');
-      await uninstallCommand(skill, options);
-    } catch (error) {
-      console.error(chalk.red(`\n❌ Error: ${error.message}`));
-      process.exit(1);
-    }
-  });
-
-// Command: list
-program
-  .command('list')
-  .alias('ls')
-  .description('List available and installed skills')
-  .option('-i, --installed', 'Show only installed skills')
-  .option('-a, --available', 'Show only available skills')
-  .action(async (options) => {
-    try {
-      const listCommand = require('../lib/commands/list');
-      await listCommand(options);
-    } catch (error) {
-      console.error(chalk.red(`\n❌ Error: ${error.message}`));
-      process.exit(1);
-    }
-  });
-
-// Command: update
-program
-  .command('update [skills...]')
-  .description('Update installed skills')
-  .option('-a, --all', 'Update all skills')
-  .option('-y, --yes', 'Skip confirmations')
-  .action(async (skillNames, options) => {
-    try {
-      const updateCommand = require('../lib/commands/update');
-      await updateCommand(skillNames, options);
-    } catch (error) {
-      console.error(chalk.red(`\n❌ Error: ${error.message}`));
-      process.exit(1);
-    }
-  });
-
-// Command: doctor
-program
-  .command('doctor')
-  .description('Diagnose installation issues')
-  .action(async () => {
-    try {
-      const doctorCommand = require('../lib/commands/doctor');
-      await doctorCommand();
-    } catch (error) {
-      console.error(chalk.red(`\n❌ Error: ${error.message}`));
-      process.exit(1);
-    }
-  });
-
-// Error handling
-program.configureOutput({
-  writeErr: (str) => process.stderr.write(chalk.red(str))
-});
-
-program.parse(process.argv);
-
-// Show help if no command
-if (!process.argv.slice(2).length) {
-  program.outputHelp();
+async function main() {
+  console.log('\n🚀 cli-ai-skills v1.4.0 - Tri-Platform Installer\n');
+  console.log('🔍 Detectando ferramentas AI CLI instaladas...\n');
+  
+  const detected = detectTools();
+  const hasAny = detected.copilot || detected.claude || detected.codex;
+  
+  if (!hasAny) {
+    console.log(getInstallInstructions());
+    process.exit(1);
+  }
+  
+  // Mostrar ferramentas detectadas
+  console.log('Ferramentas detectadas:');
+  if (detected.copilot) console.log('  ✅ GitHub Copilot CLI');
+  if (detected.claude) console.log('  ✅ Claude Code');
+  if (detected.codex) console.log('  ✅ OpenAI Codex');
+  console.log('');
+  
+  // Perguntar quais plataformas instalar
+  const platforms = await promptPlatforms(detected);
+  
+  if (platforms.length === 0) {
+    console.log('\n❌ Instalação cancelada.\n');
+    process.exit(0);
+  }
+  
+  console.log(`\n📦 Instalando skills para: ${platforms.join(', ')}\n`);
+  
+  // Detectar repo path (2 níveis acima de bin/)
+  const repoPath = path.resolve(__dirname, '../..');
+  console.log(`📂 Repositório: ${repoPath}\n`);
+  
+  // Instalar para plataformas selecionadas
+  if (platforms.includes('copilot')) {
+    copilotInstaller.installCopilotSkills(repoPath);
+  }
+  
+  if (platforms.includes('claude')) {
+    claudeInstaller.installClaudeSkills(repoPath);
+  }
+  
+  if (platforms.includes('codex')) {
+    codexInstaller.install(repoPath);
+  }
+  
+  console.log('\n✅ Instalação concluída!\n');
+  console.log('📚 Para usar os skills:');
+  if (platforms.includes('copilot')) console.log('   gh copilot');
+  if (platforms.includes('claude')) console.log('   claude');
+  if (platforms.includes('codex')) console.log('   codex (invoque com @skill-name)');
+  console.log('');
 }
+
+main().catch(error => {
+  console.error('\n❌ Erro durante instalação:', error.message);
+  process.exit(1);
+});

@@ -7,7 +7,7 @@ triggers:
   - "convert audio file to text"
   - "extract speech from audio"
   - "áudio para texto com metadados"
-version: 1.1.0
+version: 1.1.1
 author: Eric Andrade
 created: 2026-02-02
 updated: 2026-02-03

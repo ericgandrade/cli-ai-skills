@@ -8,7 +8,7 @@ triggers:
   - "prompt engineering"
   - "transforme em prompt"
   - "crie prompt para"
-version: 1.0.1
+version: 1.0.2
 ---
 
 ## Purpose

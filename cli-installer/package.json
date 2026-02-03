@@ -1,7 +1,7 @@
 {
   "name": "cli-ai-skills",
-  "version": "1.3.1",
-  "description": "Install AI skills for GitHub Copilot CLI and Claude Code",
+  "version": "1.4.0",
+  "description": "Install AI skills for GitHub Copilot CLI, Claude Code, and OpenAI Codex",
   "main": "lib/index.js",
   "bin": {
     "cli-ai-skills": "bin/cli.js"
@@ -17,12 +17,14 @@
   "keywords": [
     "copilot",
     "claude",
+    "codex",
     "ai",
     "skills",
     "cli",
     "prompt-engineering",
     "github-copilot",
-    "claude-code"
+    "claude-code",
+    "openai-codex"
   ],
   "author": "Eric Andrade",
   "license": "MIT",

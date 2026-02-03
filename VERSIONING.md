@@ -233,3 +233,32 @@ diff .github/skills/README.md .claude/skills/README.md
 
 **Last Updated:** February 3, 2026  
 **Maintainer:** Eric Andrade
+
+## Platform Addition Versioning Strategy
+
+When adding support for a new platform (e.g., Codex):
+
+1. **Skills:** PATCH bump (X.Y.Z → X.Y.Z+1)
+   - Rationale: Technical adaptation, not new functionality
+   - Changes: Remove/add platform-specific elements (triggers, examples)
+   - Workflows remain 100% identical
+
+2. **NPM Package:** MINOR bump (X.Y.Z → X.Y+1.0)
+   - Rationale: New platform = new feature for end users
+   - Reflects repository-level enhancement
+
+Example (v1.4.0):
+  - prompt-engineer: 1.0.1 → 1.0.2
+  - skill-creator: 1.1.0 → 1.1.1
+  - youtube-summarizer: 1.1.0 → 1.1.1
+  - audio-transcriber: 1.1.0 → 1.1.1
+  - cli-ai-skills (NPM): 1.3.1 → 1.4.0
+
+## Tri-Platform Synchronization Matrix
+
+| Component | .github | .claude | .codex | Sync Required? |
+|-----------|---------|---------|--------|----------------|
+| SKILL.md workflows | ✓ | ✓ | ✓ | YES (100% identical) |
+| YAML frontmatter | Triggers ✓ | Triggers ✓ | No triggers | Partial |
+| Examples | copilot> | claude> | codex> | Platform-specific |
+| Zero-config design | ✓ | ✓ | ✓ | YES (philosophy) |

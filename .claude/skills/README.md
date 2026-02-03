@@ -6,7 +6,7 @@ Custom skills for Claude Code that work globally across all projects.
 
 ## 📦 Available Skills
 
-### 🎯 **prompt-engineer** v1.0.1
+### 🎯 **prompt-engineer** v1.0.2
 
 **Status:** ✨ Zero-Config | 🌍 Universal
 
@@ -32,7 +32,7 @@ Transform raw prompts into optimized prompts using 11 established frameworks (RT
 
 ---
 
-### 🛠️ **skill-creator** v1.1.0
+### 🛠️ **skill-creator** v1.1.1
 
 **Status:** ✨ Zero-Config | 🌍 Universal | 🔧 Meta-Skill
 
@@ -83,7 +83,7 @@ Extract transcripts from YouTube videos and generate comprehensive, detailed sum
 
 ---
 
-### 🎙️ **audio-transcriber** v1.1.0
+### 🎙️ **audio-transcriber** v1.1.1
 
 **Status:** ✨ Zero-Config | 🌍 Universal | 🤖 AI-Enhanced | 🐍 Python | 🎯 Interactive
 
@@ -131,7 +131,7 @@ See the [main README](../../README.md#installation) for global setup instruction
 
 ---
 
-### 🛠️ **skill-creator** v1.1.0
+### 🛠️ **skill-creator** v1.1.1
 
 **Status:** ✨ Zero-Config | 🌍 Universal | 🔧 Meta-Skill
 

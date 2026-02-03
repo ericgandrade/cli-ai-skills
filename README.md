@@ -60,7 +60,7 @@ With the **skills** in this repository, you add new specialized capabilities to 
 - 🎯 **prompt-engineer**: Transforms simple prompts into optimized prompts using 11 frameworks
 - 🎥 **youtube-summarizer**: Automatically summarizes YouTube videos
 - 🛠️ **skill-creator**: Creates new custom skills with best practices built-in
-- 🎙️ **audio-transcriber** v1.1.0: Transcribes audio with intelligent ata/summaries using LLM integration
+- 🎙️ **audio-transcriber** v1.1.1: Transcribes audio with intelligent ata/summaries using LLM integration
 
 **Without skills:** The tools only answer basic questions.  
 **With skills:** They gain specialized superpowers! 🚀
@@ -69,7 +69,7 @@ With the **skills** in this repository, you add new specialized capabilities to 
 
 ## 📦 Available Skills
 
-### 🎯 **prompt-engineer** v1.0.1
+### 🎯 **prompt-engineer** v1.0.2
 
 Transform raw prompts into optimized prompts using **11 established frameworks**.
 
@@ -107,7 +107,7 @@ Transform raw prompts into optimized prompts using **11 established frameworks**
 
 ---
 
-### 🛠️ **skill-creator** v1.1.0
+### 🛠️ **skill-creator** v1.1.1
 
 Automate CLI skill creation with best practices built-in.
 
@@ -176,13 +176,13 @@ Extract transcripts from YouTube videos and generate comprehensive, detailed sum
 
 ---
 
-### 🎙️ **audio-transcriber** v1.1.0
+### 🎙️ **audio-transcriber** v1.1.1
 
 Transform audio recordings into professional Markdown documentation with **intelligent atas/summaries using LLM integration** (Claude/Copilot CLI) and **automatic prompt engineering**.
 
 **Status:** ✨ Zero-Config | 🌍 Universal | 🤖 AI-Enhanced | 🐍 Python | 🎯 Interactive
 
-**🆕 New in v1.1.0:**
+**🆕 New in v1.1.1:**
 - ✨ **LLM Integration** - Claude CLI (primary) or GitHub Copilot CLI (fallback) for intelligent processing
 - 🧠 **Smart Prompts** - Automatic integration with prompt-engineer skill
   - User prompts → Automatically improved → Show both versions → User chooses
@@ -672,4 +672,4 @@ Skills in this repository use the following open-source projects:
 
 **Built with ❤️ by [Eric Andrade](https://github.com/eric.andrade)**
 
-*Version 1.3.1 | Last updated: February 3, 2026*
+*Version 1.4.0 | Last updated: February 3, 2026*
