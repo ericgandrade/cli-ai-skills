@@ -58,7 +58,7 @@ cd /path/to/cli-ai-skills
 ### Basic Transcription
 
 ```bash
-claude> transcribe audio to markdown: meeting.mp3
+copilot> transcribe audio to markdown: meeting.mp3
 ```
 
 **Output:**
@@ -67,7 +67,7 @@ claude> transcribe audio to markdown: meeting.mp3
 ### With Subtitles
 
 ```bash
-claude> convert audio file to text with subtitles: interview.wav
+copilot> convert audio file to text with subtitles: interview.wav
 ```
 
 **Generates:**
@@ -77,7 +77,7 @@ claude> convert audio file to text with subtitles: interview.wav
 ### Batch Processing
 
 ```bash
-claude> transcreva estes áudios: recordings/*.mp3
+copilot> transcreva estes áudios: recordings/*.mp3
 ```
 
 **Processes all MP3 files in the directory.**
@@ -257,7 +257,7 @@ Force output in specific language:
 
 Process specific file types only:
 ```bash
-claude> transcribe audio: recordings/*.wav  # Only WAV files
+copilot> transcribe audio: recordings/*.wav  # Only WAV files
 ```
 
 ## 📚 FAQ

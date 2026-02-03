@@ -99,6 +99,18 @@ else
     fi
 fi
 
+# Install UI/progress libraries (tqdm, rich)
+echo ""
+echo -e "${BLUE}📦 Installing UI libraries (tqdm, rich)...${NC}"
+
+if python3 -m pip install tqdm rich --quiet 2>/dev/null; then
+    echo -e "${GREEN}✅ tqdm and rich installed successfully${NC}"
+elif python3 -m pip install --user --break-system-packages tqdm rich --quiet 2>/dev/null; then
+    echo -e "${GREEN}✅ tqdm and rich installed successfully (user mode)${NC}"
+else
+    echo -e "${YELLOW}⚠️  Optional UI libraries not installed (skill will still work)${NC}"
+fi
+
 # Check ffmpeg (optional but recommended)
 echo ""
 if command -v ffmpeg &>/dev/null; then

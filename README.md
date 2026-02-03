@@ -60,7 +60,7 @@ With the **skills** in this repository, you add new specialized capabilities to 
 - 🎯 **prompt-engineer**: Transforms simple prompts into optimized prompts using 11 frameworks
 - 🎥 **youtube-summarizer**: Automatically summarizes YouTube videos
 - 🛠️ **skill-creator**: Creates new custom skills with best practices built-in
-- 🎙️ **audio-transcriber**: Transcribes audio to Markdown with meeting minutes and summaries
+- 🎙️ **audio-transcriber** v1.1.0: Transcribes audio with intelligent ata/summaries using LLM integration
 
 **Without skills:** The tools only answer basic questions.  
 **With skills:** They gain specialized superpowers! 🚀
@@ -176,22 +176,31 @@ Extract transcripts from YouTube videos and generate comprehensive, detailed sum
 
 ---
 
-### 🎙️ **audio-transcriber** v1.0.0
+### 🎙️ **audio-transcriber** v1.1.0
 
-Transform audio recordings into professional Markdown documentation with meeting minutes, speaker identification, and intelligent summaries.
+Transform audio recordings into professional Markdown documentation with **intelligent atas/summaries using LLM integration** (Claude/Copilot CLI) and **automatic prompt engineering**.
 
-**Status:** ✨ Zero-Config | 🌍 Universal | 🤖 AI-Enhanced | 🐍 Python
+**Status:** ✨ Zero-Config | 🌍 Universal | 🤖 AI-Enhanced | 🐍 Python | 🎯 Interactive
 
-**Capabilities:**
+**🆕 New in v1.1.0:**
+- ✨ **LLM Integration** - Claude CLI (primary) or GitHub Copilot CLI (fallback) for intelligent processing
+- 🧠 **Smart Prompts** - Automatic integration with prompt-engineer skill
+  - User prompts → Automatically improved → Show both versions → User chooses
+  - No prompt → Analyzes transcript → Suggests format → Generates structured prompt → User confirms
+- 📊 **Progress Indicators** - Visual progress bars (tqdm) and spinners (rich)
+- 📁 **Timestamp Filenames** - `transcript-YYYYMMDD-HHMMSS.md` + `ata-YYYYMMDD-HHMMSS.md`
+- 🧹 **Auto-Cleanup** - Removes temporary `metadata.json` and `transcription.json`
+- 🎨 **Rich Terminal UI** - Beautiful formatted output with panels and colors
+
+**Core Capabilities:**
 - 📝 Rich Markdown output with technical metadata (file size, duration, language, speakers)
 - 🎙️ Speaker diarization (automatically identifies different speakers)
-- 📋 Automatic meeting minutes generation (topics, decisions, action items)
-- 💡 Executive summaries (3-5 paragraphs with key points)
+- 📋 Automatic meeting minutes generation (topics, decisions, action items) **via LLM**
+- 💡 Executive summaries (3-5 paragraphs with key points) **via LLM**
 - 🌍 99 languages with automatic detection
-- ⚡ Auto-install dependencies (Whisper + ffmpeg via script)
-- 🔒 100% local processing (privacy-first, no cloud uploads)
-- 📄 Multiple output formats (Markdown, TXT, SRT, VTT, JSON)
-- 🚀 Batch processing support
+- ⚡ Auto-install dependencies (Whisper + ffmpeg + tqdm + rich via script)
+- 🔒 100% local processing (privacy-first, no cloud uploads for Whisper)
+- 🚀 Intelligent or transcript-only mode (user choice)
 - ⚙️ Uses Faster-Whisper (4-5x faster) or OpenAI Whisper (fallback)
 
 **Triggers:**
@@ -199,19 +208,21 @@ Transform audio recordings into professional Markdown documentation with meeting
 - `transcreva este áudio`
 - `convert audio file to text`
 - `extract speech from audio`
-- `áudio para texto com metadados`
 
 **Requirements:**
 - Python 3.8+ (auto-checked)
 - `openai-whisper` or `faster-whisper` (auto-installed via script)
+- `tqdm` and `rich` (auto-installed for UI)
 - `ffmpeg` (optional, auto-installed on macOS via Homebrew)
+- **Optional:** Claude CLI or GitHub Copilot CLI (for intelligent ata/summary generation)
+- **Optional:** prompt-engineer skill (for automatic prompt optimization)
 
 **Supported Audio Formats:**
 MP3, WAV, M4A, OGG, FLAC, WEBM, MP4
 
 **Inspired by:** [Plaud AI](https://www.plaud.ai/) recorder
 
-**[→ Full Documentation](./.github/skills/audio-transcriber/README.md)**
+**[→ Full Documentation](./.github/skills/audio-transcriber/README.md)** | **[→ Changelog](./github/skills/audio-transcriber/CHANGELOG.md)**
 
 ---
 

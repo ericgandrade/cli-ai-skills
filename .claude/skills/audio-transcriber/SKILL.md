@@ -7,9 +7,10 @@ triggers:
   - "convert audio file to text"
   - "extract speech from audio"
   - "áudio para texto com metadados"
-version: 1.0.0
+version: 1.1.0
 author: Eric Andrade
 created: 2026-02-02
+updated: 2026-02-03
 ---
 
 ## Purpose
@@ -70,7 +71,7 @@ Offer automatic installation using the provided script:
 echo "⚠️  No transcription tool found"
 echo ""
 echo "🔧 Auto-install dependencies? (Recommended)"
-Read -p "Run installation script? [Y/n]: " AUTO_INSTALL
+read -p "Run installation script? [Y/n]: " AUTO_INSTALL
 
 if [[ ! "$AUTO_INSTALL" =~ ^[Nn] ]]; then
     # Get skill directory (works for both repo and symlinked installations)
@@ -78,7 +79,7 @@ if [[ ! "$AUTO_INSTALL" =~ ^[Nn] ]]; then
     
     # Run installation script
     if [[ -f "$SKILL_DIR/scripts/install-requirements.sh" ]]; then
-        Bash "$SKILL_DIR/scripts/install-requirements.sh"
+        bash "$SKILL_DIR/scripts/install-requirements.sh"
     else
         echo "❌ Installation script not found"
         echo ""
@@ -118,7 +119,71 @@ This ensures users can install dependencies with one confirmation, or opt for ma
 
 **If transcriber found:**
 
-Proceed to Step 1 with detected engine.
+Proceed to Step 0b (CLI Detection).
+
+---
+
+### Step 0b: Detect AI CLI Tools
+
+**Objective:** Identify available LLM CLI tools for intelligent processing (ata generation, summaries).
+
+**Actions:**
+
+Check for AI CLI availability in priority order:
+
+```python
+import shutil
+import subprocess
+
+def detect_cli_tool():
+    # Preferência: Claude > GitHub Copilot
+    if shutil.which('claude'):
+        return 'claude'
+    elif shutil.which('gh'):
+        result = subprocess.run(['gh', 'copilot', '--version'], 
+                                capture_output=True)
+        if result.returncode == 0:
+            return 'gh-copilot'
+    return None
+```
+
+**Output scenarios:**
+
+1. **Claude CLI found:**
+   ```bash
+   ✅ Claude CLI detectada (/opt/homebrew/bin/claude)
+   → Usar como primário para processamento inteligente
+   ```
+
+2. **GitHub Copilot CLI found (fallback):**
+   ```bash
+   ✅ GitHub Copilot CLI detectada (v0.0.400)
+   → Usar como fallback para processamento
+   ```
+
+3. **No CLI found:**
+   ```bash
+   ⚠️  Nenhuma CLI de IA detectada
+   ℹ️  Skill gerará apenas transcript.md (sem ata/resumo)
+   
+   💡 Para habilitar processamento inteligente:
+      - Instale Claude CLI: pip install claude-cli
+      - Ou GitHub Copilot CLI: npm install -g @githubnext/github-copilot-cli
+   ```
+
+**Check for prompt-engineer skill:**
+
+```bash
+if [[ -f ~/.copilot/skills/prompt-engineer/SKILL.md ]]; then
+    echo "✅ prompt-engineer skill disponível"
+    PROMPT_ENGINEER_AVAILABLE=true
+else
+    echo "ℹ️  prompt-engineer não encontrado (usará prompts padrão)"
+    PROMPT_ENGINEER_AVAILABLE=false
+fi
+```
+
+This detection is critical for the intelligent workflow in Step 3b.
 
 ---
 
@@ -189,21 +254,63 @@ fi
 
 ### Step 2: Transcribe Audio
 
-**Objective:** Process audio file and generate timestamped transcription.
+**Objective:** Process audio file and generate timestamped transcription **with progress indicators**.
 
 **Actions:**
 
-**Using Faster-Whisper (Preferred):**
+**Using Faster-Whisper (Preferred) with tqdm progress bar:**
 
 ```python
 from faster_whisper import WhisperModel
+from tqdm import tqdm
 import json
 from datetime import datetime
 
 # Initialize model (auto-downloads on first run)
 model = WhisperModel("base", device="cpu", compute_type="int8")
 
-print(f"🎙️  Processing: {audio_file}")
+print(f"🎙️  Transcrevendo áudio com faster-whisper...")
+print(f"⏱️  Duration: {duration_hms}")
+
+# Transcribe with speaker diarization
+segments, info = model.transcribe(
+    audio_file,
+    language=None,      # Auto-detect
+    vad_filter=True,    # Voice Activity Detection
+    word_timestamps=True
+)
+
+# Extract results WITH PROGRESS BAR
+transcription_data = {
+    "language": info.language,
+    "language_probability": round(info.language_probability, 2),
+    "duration": info.duration,
+    "segments": []
+}
+
+# Show progress while processing segments
+print("Processando segmentos...")
+for segment in tqdm(segments, desc="Segmentos", unit="seg"):
+    transcription_data["segments"].append({
+        "start": round(segment.start, 2),
+        "end": round(segment.end, 2),
+        "text": segment.text.strip(),
+        "speaker": f"Speaker {segment.id % 5 + 1}"  # Simple speaker estimation
+    })
+```
+
+**Progress output example:**
+
+```bash
+🎙️  Transcrevendo áudio com faster-whisper...
+⏱️  Duration: 00:45:32
+
+Processando segmentos...
+Segmentos: 100%|████████████████████| 342/342 [00:02<00:00, 156.23seg/s]
+
+✅ Transcrição completa! Idioma: PT-BR
+   342 segmentos processados
+```
 print(f"⏱️  Duration: {duration_hms}")
 
 # Transcribe with speaker diarization
@@ -377,9 +484,264 @@ def generate_summary(segments, max_paragraphs=5):
 **Output file naming:**
 
 ```bash
-OUTPUT_FILE="${AUDIO_FILE%.*}.md"
-echo "$MARKDOWN_CONTENT" > "$OUTPUT_FILE"
-echo "✅ Saved: $OUTPUT_FILE"
+# v1.1.0: Use timestamp para evitar sobrescrever
+TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+TRANSCRIPT_FILE="transcript-${TIMESTAMP}.md"
+ATA_FILE="ata-${TIMESTAMP}.md"
+
+echo "$TRANSCRIPT_CONTENT" > "$TRANSCRIPT_FILE"
+echo "✅ Transcript salvo: $TRANSCRIPT_FILE"
+
+if [[ -n "$ATA_CONTENT" ]]; then
+    echo "$ATA_CONTENT" > "$ATA_FILE"
+    echo "✅ Ata salva: $ATA_FILE"
+fi
+```
+
+---
+
+### Step 3b: Intelligent Prompt Workflow (v1.1.0)
+
+**Objective:** Process transcript with LLM using optimized prompts (custom or auto-generated).
+
+**This is the NEW CORE FEATURE of v1.1.0** - integrates with prompt-engineer skill for intelligent ata/summary generation.
+
+**Workflow Decision Tree:**
+
+```
+┌─────────────────────────────┐
+│ User provided prompt?       │
+└─────────────────────────────┘
+       ↓              ↓
+     YES             NO
+       ↓              ↓
+  SCENARIO A     SCENARIO B
+```
+
+---
+
+#### **SCENARIO A: User Provided Custom Prompt**
+
+**Workflow:**
+
+1. **Display user's prompt:**
+   ```
+   📝 Prompt fornecido pelo usuário:
+   ┌──────────────────────────────────┐
+   │ [User's prompt preview]          │
+   └──────────────────────────────────┘
+   ```
+
+2. **Automatically improve with prompt-engineer (if available):**
+   ```bash
+   🔧 Melhorando prompt com prompt-engineer...
+   [Invokes: gh copilot -p "melhore este prompt: {user_prompt}"]
+   ```
+
+3. **Show both versions:**
+   ```
+   ✨ Versão melhorada:
+   ┌──────────────────────────────────┐
+   │ Role: Você é um documentador...  │
+   │ Instructions: Transforme...      │
+   │ Steps: 1) ... 2) ...             │
+   │ End Goal: ...                    │
+   └──────────────────────────────────┘
+
+   📝 Versão original:
+   ┌──────────────────────────────────┐
+   │ [User's original prompt]         │
+   └──────────────────────────────────┘
+   ```
+
+4. **Ask which to use:**
+   ```bash
+   💡 Usar versão melhorada? [s/n] (default: s):
+   ```
+
+5. **Process with selected prompt:**
+   - If "s": use improved
+   - If "n": use original
+
+---
+
+#### **SCENARIO B: No Prompt Provided (Auto-Generation)**
+
+**Workflow:**
+
+1. **Offer auto-generation:**
+   ```
+   ⚠️  Nenhum prompt fornecido.
+   Posso analisar o transcript e sugerir um formato de resumo/ata?
+
+   💡 Gerar prompt automaticamente? [s/n] (default: s):
+   ```
+
+2. **If user declines ("n"):**
+   ```
+   ✅ Ok, gerando apenas transcript.md (sem ata)
+   [Skip LLM processing, save only transcript]
+   ```
+
+3. **If user accepts ("s"):**
+
+   **Step B1:** Analyze transcript and suggest document type
+   ```bash
+   🔍 Analisando transcript...
+   
+   [Invokes prompt-engineer with meta-prompt:]
+   "Analise este transcript (5000 caracteres) e sugira:
+    1. Tipo de conteúdo (reunião, palestra, etc.)
+    2. Formato recomendado (ata, resumo, notas)
+    3. Framework ideal (RISEN, RODES, STAR)
+    
+    Primeiras 1000 palavras: {transcript[:4000]}"
+   ```
+
+   **Step B2:** Show suggestion
+   ```
+   💡 Sugestão de formato:
+   ┌──────────────────────────────────────────┐
+   │ Reunião corporativa detectada.           │
+   │ Recomendo: Ata formal (framework RISEN)  │
+   │ com seções de decisões e ações.          │
+   └──────────────────────────────────────────┘
+
+   💡 Usar este formato? [s/n] (default: s):
+   ```
+
+   **Step B3:** If accepted, generate full prompt
+   ```bash
+   ✨ Gerando prompt estruturado...
+   
+   [Invokes prompt-engineer:]
+   "Crie prompt completo (RISEN) para: {suggestion}
+    Instruir IA a transformar transcript em documento
+    profissional Markdown."
+   ```
+
+   **Step B4:** Show generated prompt
+   ```
+   ✅ Prompt gerado:
+   ┌──────────────────────────────────────────┐
+   │ Role: Você é um documentador...          │
+   │ Instructions: Crie ata formal com...     │
+   │ Steps: 1) Identifique... 2) Extraia...   │
+   │ End Goal: Ata estruturada...             │
+   └──────────────────────────────────────────┘
+
+   💡 Usar este prompt? [s/n] (default: s):
+   ```
+
+   **Step B5:** Process with final prompt
+   - If "s": use generated prompt
+   - If "n": fallback to DEFAULT_MEETING_PROMPT
+
+---
+
+#### **LLM Processing (Both Scenarios)**
+
+Once prompt is finalized:
+
+```python
+from rich.progress import Progress, SpinnerColumn, TextColumn
+
+def process_with_llm(transcript, prompt, cli_tool='claude'):
+    full_prompt = f"{prompt}\n\n---\n\nTranscrição:\n\n{transcript}"
+    
+    with Progress(
+        SpinnerColumn(),
+        TextColumn("[progress.description]{task.description}"),
+        transient=True
+    ) as progress:
+        progress.add_task(
+            description=f"🤖 Processando com {cli_tool}...",
+            total=None
+        )
+        
+        if cli_tool == 'claude':
+            result = subprocess.run(
+                ['claude', '-'],
+                input=full_prompt,
+                capture_output=True,
+                text=True,
+                timeout=300  # 5 minutes
+            )
+        elif cli_tool == 'gh-copilot':
+            result = subprocess.run(
+                ['gh', 'copilot', 'suggest', '-t', 'shell', full_prompt],
+                capture_output=True,
+                text=True,
+                timeout=300
+            )
+    
+    if result.returncode == 0:
+        return result.stdout.strip()
+    else:
+        return None
+```
+
+**Progress output:**
+```
+🤖 Processando com claude... ⠋
+[After completion:]
+✅ Ata gerada com sucesso!
+```
+
+---
+
+#### **Cleanup Temporary Files**
+
+```python
+def cleanup_temp_files(output_dir=".", keep_temp=False):
+    """Remove arquivos JSON temporários."""
+    if keep_temp:
+        return
+    
+    temp_files = ["metadata.json", "transcription.json"]
+    removed = []
+    
+    for filename in temp_files:
+        filepath = Path(output_dir) / filename
+        if filepath.exists():
+            filepath.unlink()
+            removed.append(filename)
+    
+    if removed:
+        print(f"🧹 Removidos: {', '.join(removed)}")
+```
+
+**Always execute cleanup** after saving outputs (unless `--keep-temp` flag).
+
+---
+
+#### **Final Output**
+
+**Success (both files):**
+```bash
+💾 Salvando arquivos...
+
+✅ Arquivos criados:
+  - transcript-20260203-023045.md  (transcript puro)
+  - ata-20260203-023045.md         (processado com LLM)
+
+🧹 Removidos arquivos temporários: metadata.json, transcription.json
+
+✅ Concluído! Tempo total: 3m 45s
+```
+
+**Transcript only (user declined LLM):**
+```bash
+💾 Salvando arquivos...
+
+✅ Arquivo criado:
+  - transcript-20260203-023045.md
+
+ℹ️  Ata não gerada (processamento LLM recusado pelo usuário)
+
+🧹 Removidos arquivos temporários: metadata.json, transcription.json
+
+✅ Concluído!
 ```
 
 ---
@@ -400,7 +762,7 @@ echo "  2. SRT (subtitles for video)"
 echo "  3. VTT (WebVTT subtitles)"
 echo "  4. JSON (structured data with timestamps)"
 echo ""
-Read -p "Generate additional format? [1-4 / N]: " choice
+read -p "Generate additional format? [1-4 / N]: " choice
 ```
 
 **TXT Format:**
@@ -525,7 +887,7 @@ echo "  3. Track action items to completion"
 
 **User Input:**
 ```bash
-claude> transcribe audio to markdown: meeting-2026-02-02.mp3
+copilot> transcribe audio to markdown: meeting-2026-02-02.mp3
 ```
 
 **Skill Output:**
@@ -570,7 +932,7 @@ claude> transcribe audio to markdown: meeting-2026-02-02.mp3
 
 **User Input:**
 ```bash
-claude> convert audio file to text with subtitles: interview.wav
+copilot> convert audio file to text with subtitles: interview.wav
 ```
 
 **Skill asks:**
@@ -613,7 +975,7 @@ Generate additional format? [1-4 / N]:
 
 **User Input:**
 ```bash
-claude> transcreva estes áudios: recordings/*.mp3
+copilot> transcreva estes áudios: recordings/*.mp3
 ```
 
 **Skill Output:**
@@ -645,7 +1007,7 @@ claude> transcreva estes áudios: recordings/*.mp3
 
 **User Input:**
 ```bash
-claude> extract speech from audio: lecture.mp3
+copilot> extract speech from audio: lecture.mp3
 ```
 
 **Skill Output:**
@@ -674,7 +1036,7 @@ After installation, run this command again.
 
 **User Input:**
 ```bash
-claude> transcribe audio to markdown: conference-keynote.mp3
+copilot> transcribe audio to markdown: conference-keynote.mp3
 ```
 
 **Skill Output:**
@@ -759,4 +1121,4 @@ apt install ffmpeg   # Linux
 
 ---
 
-This skill is **platform-agnostic** and works in any terminal context where Claude Code is available. It does not depend on specific project configurations or external APIs, following the zero-configuration philosophy.
+This skill is **platform-agnostic** and works in any terminal context where GitHub Copilot CLI is available. It does not depend on specific project configurations or external APIs, following the zero-configuration philosophy.
