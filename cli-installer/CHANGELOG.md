@@ -5,11 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.2.1] - 2026-02-03
+## [1.3.1] - 2026-02-03
+
+### Changed
+- 🎙️ **audio-transcriber skill upgraded to v1.1.0**
+  - LLM Integration (Claude CLI / GitHub Copilot CLI) for intelligent ata/summary generation
+  - Automatic prompt engineering integration (improves user prompts or suggests formats)
+  - Progress indicators (tqdm progress bars + rich terminal UI)
+  - Timestamp-based filenames to prevent overwriting
+  - Auto-cleanup of temporary JSON files
+  - Rich formatted terminal output with panels and colors
+  - New Python dependencies: `tqdm`, `rich` (auto-installed)
 
 ### Fixed
 - Avoid running `pip install` with no packages when `requirements.txt` is empty
 - Show manual `pip install` guidance when users skip installing requirements
+
+### Technical Details
+- audio-transcriber now requires `tqdm` and `rich` packages (auto-installed via install-requirements.sh)
+- Skills installer automatically detects and installs new dependencies
+- See audio-transcriber CHANGELOG.md for complete v1.1.0 details
 
 ## [1.2.0] - 2026-02-02
 
