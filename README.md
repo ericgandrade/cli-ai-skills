@@ -1,12 +1,12 @@
 # 🤖 CLI AI Skills
 
-Reusable AI skills for **GitHub Copilot CLI** and **Claude Code** that work globally across all your projects.
+Reusable AI skills for **GitHub Copilot CLI**, **Claude Code**, and **OpenAI Codex CLI/App** that work globally across all your projects.
 
 ---
 
 ## 🧠 What Is This Project?
 
-This repository provides **reusable skills** for **terminal-based AI assistants** like GitHub Copilot CLI and Claude Code.
+This repository provides **reusable skills** for **terminal-based AI assistants** like GitHub Copilot CLI, Claude Code, and OpenAI Codex CLI/App.
 
 ### What Are Skills?
 
@@ -14,7 +14,7 @@ Skills are "specialized instructions" that teach AI assistants how to perform sp
 
 ### Who Is This For?
 
-If you use **GitHub Copilot CLI** or **Claude Code** in your terminal and want to extend their capabilities with specialized workflows, this project is for you.
+If you use **GitHub Copilot CLI**, **Claude Code**, or **OpenAI Codex** in your terminal and want to extend their capabilities with specialized workflows, this project is for you.
 
 ---
 
@@ -53,17 +53,55 @@ claude
 
 ---
 
+### OpenAI Codex CLI/App
+
+**What it is:** OpenAI's intelligent coding assistant available both as a **CLI tool** and **desktop application**. Built on the Codex model (powers GitHub Copilot), it provides conversational AI assistance for coding tasks directly in your terminal or dedicated app.
+
+**What's included:**
+- **Codex CLI:** Terminal-based interface for command-line workflows
+- **Codex App (Desktop):** Standalone desktop application with enhanced UI (launched Feb 2, 2026)
+
+**How to install:**
+- **CLI:** `npm install -g @openai/codex-cli` (requires OpenAI API key)
+- **Desktop App:** Download from [openai.com/codex/app](https://openai.com/codex/app)
+- Official docs: [platform.openai.com/docs/guides/codex](https://platform.openai.com/docs/guides/codex)
+
+**Example usage:**
+```bash
+# CLI
+codex "create a Python REST API"
+
+# With skills (manual invocation)
+codex "@prompt-engineer improve: create REST API"
+```
+
+**Key difference:** Codex requires **manual skill invocation** using `@skill-name` syntax (no automatic triggers like Copilot/Claude).
+
+---
+
 ### ✨ What This Project Adds
 
-With the **skills** in this repository, you add new specialized capabilities to the tools above:
+With the **skills** in this repository, you add new specialized capabilities to all three platforms:
 
 - 🎯 **prompt-engineer**: Transforms simple prompts into optimized prompts using 11 frameworks
 - 🎥 **youtube-summarizer**: Automatically summarizes YouTube videos
 - 🛠️ **skill-creator**: Creates new custom skills with best practices built-in
-- 🎙️ **audio-transcriber** v1.1.1: Transcribes audio with intelligent ata/summaries using LLM integration
+- 🎙️ **audio-transcriber**: Transcribes audio with intelligent summaries using LLM integration
 
 **Without skills:** The tools only answer basic questions.  
 **With skills:** They gain specialized superpowers! 🚀
+
+### 🆕 v1.4.0: Tri-Platform Support
+
+Now supports **three platforms** with 100% workflow parity:
+
+| Platform | Invocation | Installation | Skills |
+|----------|------------|--------------|--------|
+| **GitHub Copilot CLI** | Auto triggers | `gh extension install` | 4 skills |
+| **Claude Code** | Auto triggers | NPM/manual symlinks | 4 skills |
+| **OpenAI Codex** | Manual `@skill-name` | `$skill-installer` / NPM | 4 skills |
+
+**All platforms:** Same workflows, same capabilities, same quality!
 
 ---
 
@@ -231,9 +269,9 @@ MP3, WAV, M4A, OGG, FLAC, WEBM, MP4
 Upcoming features in development:
 
 - ✅ **npx installer** — ~~Install skills directly via `npx`, without manual clone or symlink~~ **RELEASED v1.0.0** 🎉
+- ✅ **Codex CLI/App support** — ~~Native skill support for OpenAI Codex integration~~ **RELEASED v1.4.0** 🎉
 - 🤖 **Gemini skill** — Native skill for Google Gemini integration ([#2](https://github.com/ericgandrade/cli-ai-skills/issues/2))
 - 💻 **OpenCode skill** — Native skill for OpenCode integration ([#3](https://github.com/ericgandrade/cli-ai-skills/issues/3))
-- 🤖 **Codex skill** — Native skill for OpenAI Codex integration ([#4](https://github.com/ericgandrade/cli-ai-skills/issues/4))
 
 **Want to contribute?** See [CONTRIBUTING.md](./CONTRIBUTING.md)
 
@@ -385,44 +423,43 @@ Would you like to install youtube-transcript-api now? [Y/n]
 
 ## 🚀 Installation
 
-### ⚡ Quick Install via npx (Easiest)
+### ⚡ Quick Install via npx (Easiest - Recommended)
 
 [![npm version](https://img.shields.io/npm/v/cli-ai-skills.svg)](https://www.npmjs.com/package/cli-ai-skills)
 [![npm downloads](https://img.shields.io/npm/dm/cli-ai-skills.svg)](https://www.npmjs.com/package/cli-ai-skills)
 
-Install AI skills directly from npm without cloning this repository:
+**NEW in v1.4.0:** Smart installer with automatic platform detection and interactive selection!
 
 ```bash
-# Install all skills globally with interactive prompts
-npx cli-ai-skills install
+# Smart installer - detects installed AI CLI tools and prompts which to use
+npx cli-ai-skills
 
-# Or install all skills without prompts (auto-detect platforms)
-npx cli-ai-skills install --all --yes
-
-# Install specific skill
-npx cli-ai-skills install prompt-engineer
-
-# List available skills
-npx cli-ai-skills list
-
-# Update installed skills
-npx cli-ai-skills update
-
-# Diagnose installation issues
-npx cli-ai-skills doctor
+# Or use legacy commands:
+npx cli-ai-skills install         # Interactive mode
+npx cli-ai-skills install --all   # Install for all detected platforms
+npx cli-ai-skills list            # List available skills
+npx cli-ai-skills update          # Update installed skills
+npx cli-ai-skills doctor          # Diagnose installation issues
 ```
+
+**How it works:**
+1. 🔍 **Auto-detects** installed AI CLI tools (GitHub Copilot, Claude Code, OpenAI Codex)
+2. 📋 **Interactive menu** - select which platforms to install skills for (multi-select)
+3. 🔗 **Creates symlinks** to appropriate directories for each platform
+4. ✅ **Done!** Skills are immediately available
 
 **Features:**
 - 🚀 **No git clone required** - works from any directory
-- 🎯 **Interactive prompts** - choose platform (Copilot/Claude), scope (global/local), and skills
-- 📊 **Visual progress** - real-time gauges during installation
+- 🎯 **Tri-platform support** - Copilot, Claude, and Codex detected automatically
+- 📊 **Visual progress** - real-time feedback during installation
 - ✅ **Version checking** - automatically detects outdated skills and offers updates
-- 🔍 **Platform detection** - auto-discovers GitHub Copilot CLI and Claude Code
+- 🔍 **Smart detection** - auto-discovers all three AI CLI tools
 - 🛠️ **Built-in diagnostics** - `doctor` command for troubleshooting
 
 **Installation locations:**
-- **Global:** `~/.copilot/skills/` and `~/.claude/skills/` (recommended)
-- **Local:** `.github/skills/` and `.claude/skills/` in current project
+- **GitHub Copilot CLI:** `~/.github/skills/` (global) or `.github/skills/` (local)
+- **Claude Code:** `~/.claude/skills/` (global) or `.claude/skills/` (local)
+- **OpenAI Codex:** `~/.codex/skills/` (global) or `.codex/skills/` (local)
 
 ---
 
@@ -500,7 +537,7 @@ ln -s /full/path/to/cli-ai-skills/.claude/skills/prompt-engineer ~/.claude/skill
 
 ## 🎯 Quick Start
 
-### Example: Improve a Simple Prompt
+### Example 1: Improve a Simple Prompt (GitHub Copilot / Claude Code)
 
 **Input:**
 ```bash
@@ -535,6 +572,28 @@ Output format: Complete and commented Python code with usage examples.
 
 ---
 
+### Example 2: Using Skills with OpenAI Codex
+
+**OpenAI Codex requires manual skill invocation** using `@skill-name`:
+
+```bash
+# Prompt engineering
+codex> @prompt-engineer improve: create REST API in Python
+
+# Create new skill
+codex> @skill-creator new skill for database migrations
+
+# Summarize YouTube video
+codex> @youtube-summarizer https://youtube.com/watch?v=dQw4w9WgXcQ
+
+# Transcribe audio
+codex> @audio-transcriber meeting-recording.m4a summarize key decisions
+```
+
+**Key difference:** Copilot and Claude support automatic triggers, but Codex requires explicit `@skill-name` invocation.
+
+---
+
 ## 📚 Resources
 
 ### For Users
@@ -545,6 +604,7 @@ Output format: Complete and commented Python code with usage examples.
 
 - **[Skills Development Guide](./resources/skills-development.md)** - Learn how to create your own AI skills
 - **[Contributing Guide](./CONTRIBUTING.md)** - How to contribute new skills to this repository
+- **[Versioning Guide](./VERSIONING.md)** - Tri-platform versioning strategy and sync rules
 
 ---
 
@@ -557,9 +617,10 @@ Want to create your own AI skills? Check out our comprehensive guide:
 Topics covered:
 - ✅ Zero-Config Design Principles
 - ✅ Skill structure and conventions
-- ✅ Platform synchronization (Copilot ↔ Claude)
+- ✅ Tri-platform synchronization (Copilot ↔ Claude ↔ Codex)
 - ✅ README requirements
 - ✅ Versioning guidelines
+- ✅ Platform-specific adaptations (triggers, invocation methods)
 - ✅ Testing & validation
 
 ---
