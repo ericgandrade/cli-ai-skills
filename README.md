@@ -672,4 +672,4 @@ Skills in this repository use the following open-source projects:
 
 **Built with ❤️ by [Eric Andrade](https://github.com/eric.andrade)**
 
-*Version 1.2.1 | Last updated: February 2026*
+*Version 1.3.1 | Last updated: February 3, 2026*
