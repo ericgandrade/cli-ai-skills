@@ -8,14 +8,18 @@ Thank you for your interest in contributing! This guide will help you create hig
 
 ### 1. **Create New Skills**
 
-Follow our comprehensive guide: **[Skills Development Guide](./resources/skills-development.md)**
+Follow our guides:
+- **[Skill Anatomy Guide](./docs/guides/skill-anatomy.md)** - Structure and metadata
+- **[Quality Standards](./docs/guides/quality-standards.md)** - Best practices checklist
+- **[Skills Development Guide](./docs/references/skills-development.md)** - Advanced creation
 
 Key requirements:
 - ✅ Zero-config design (no hardcoded paths/values)
-- ✅ Both platforms supported (GitHub Copilot + Claude Code)
-- ✅ Comprehensive README.md documentation
+- ✅ All 3 platforms supported (Copilot, Claude, Codex)
+- ✅ Comprehensive documentation (1500-2000 words)
+- ✅ Complete metadata (category, tags, risk, platforms)
 - ✅ Semantic versioning (SemVer)
-- ✅ Example usage with real scenarios
+- ✅ Realistic examples (3-5 scenarios)
 
 ### 2. **Improve Existing Skills**
 
