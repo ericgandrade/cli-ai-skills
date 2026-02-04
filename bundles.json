@@ -1,0 +1,65 @@
+{
+  "version": "1.0.0",
+  "generated": "2026-02-04T14:35:00Z",
+  "bundles": {
+    "essential": {
+      "name": "Essential Skills",
+      "description": "Core skills for getting started with AI-assisted development. Perfect for beginners.",
+      "skills": [
+        "skill-creator",
+        "prompt-engineer"
+      ],
+      "use_cases": [
+        "Creating custom AI skills",
+        "Optimizing AI prompts",
+        "Learning best practices"
+      ],
+      "target": "Beginners, skill developers"
+    },
+    "content": {
+      "name": "Content Creation",
+      "description": "Skills for processing video and audio content. Extract transcripts, summaries, and insights.",
+      "skills": [
+        "youtube-summarizer",
+        "audio-transcriber"
+      ],
+      "use_cases": [
+        "Summarizing YouTube videos",
+        "Transcribing audio recordings",
+        "Creating meeting notes",
+        "Extracting video insights"
+      ],
+      "target": "Content creators, researchers"
+    },
+    "developer": {
+      "name": "Skill Developer",
+      "description": "Tools for creating and managing custom skills with best practices.",
+      "skills": [
+        "skill-creator"
+      ],
+      "use_cases": [
+        "Building custom skills",
+        "Extending CLI capabilities",
+        "Creating team-specific tools"
+      ],
+      "target": "Skill developers, power users"
+    },
+    "all": {
+      "name": "All Skills",
+      "description": "Complete collection of all available skills for comprehensive functionality.",
+      "skills": [
+        "skill-creator",
+        "prompt-engineer",
+        "youtube-summarizer",
+        "audio-transcriber"
+      ],
+      "use_cases": [
+        "Complete AI assistance",
+        "All content processing",
+        "Custom skill development",
+        "Prompt optimization"
+      ],
+      "target": "Power users, comprehensive setup"
+    }
+  }
+}

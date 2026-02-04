@@ -124,3 +124,24 @@ MIT - See [LICENSE](./LICENSE) for details.
 **Built with ❤️ by [Eric Andrade](https://github.com/ericgandrade)**
 
 *Version 1.5.0 | February 2026*
+
+## 🎁 Get Started
+
+Choose a bundle that fits your workflow:
+
+- **[Essential](docs/bundles/bundles.md#-essential-bundle)** - skill-creator, prompt-engineer
+- **[Content](docs/bundles/bundles.md#-content-creation-bundle)** - youtube-summarizer, audio-transcriber  
+- **[Developer](docs/bundles/bundles.md#-developer-bundle)** - skill-creator for power users
+- **[All](docs/bundles/bundles.md#-all-skills-bundle)** - Complete toolkit
+
+See [detailed comparison](docs/bundles/bundles.md#-bundle-comparison).
+
+## 🛠️ Advanced Usage
+
+- **[Skill Anatomy](docs/guides/skill-anatomy.md)** - How to build skills
+- **[Skills Development](docs/references/skills-development.md)** - Advanced creation
+- **[Changelog](CHANGELOG.md)** - Version history
+
+---
+
+**Getting Started? Check [Quick Start](docs/guides/getting-started.md) or run `npx cli-ai-skills` now!**
