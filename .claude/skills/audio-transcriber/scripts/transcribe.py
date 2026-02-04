@@ -407,24 +407,6 @@ def save_outputs(transcript_text, ata_text, audio_file, output_dir="."):
     return str(transcript_path), str(ata_path) if ata_path else None
 
 
-def cleanup_temp_files(output_dir=".", keep_temp=False):
-    """Remove arquivos temporários JSON se não for para manter."""
-    if keep_temp:
-        return
-    
-    temp_files = ["metadata.json", "transcription.json"]
-    removed = []
-    
-    for filename in temp_files:
-        filepath = Path(output_dir) / filename
-        if filepath.exists():
-            filepath.unlink()
-            removed.append(filename)
-    
-    if removed:
-        console.print(f"[dim]🧹 Removidos arquivos temporários: {', '.join(removed)}[/dim]")
-
-
 def main():
     """Função principal."""
     import argparse
@@ -434,7 +416,6 @@ def main():
     parser.add_argument("--prompt", help="Prompt customizado para processar transcript")
     parser.add_argument("--model", default="base", help="Modelo Whisper (tiny/base/small/medium/large)")
     parser.add_argument("--output-dir", default=".", help="Diretório de saída")
-    parser.add_argument("--keep-temp", action="store_true", help="Manter arquivos temporários JSON")
     
     args = parser.parse_args()
     
@@ -470,8 +451,7 @@ def main():
         console.print("[dim]ℹ️  Salvando apenas transcript.md...[/dim]")
         
         save_outputs(transcript_text, None, args.audio_file, args.output_dir)
-        cleanup_temp_files(args.output_dir, args.keep_temp)
-        
+
         console.print("\n[cyan]💡 Para gerar ata/resumo:[/cyan]")
         console.print("  - Instale Claude CLI: pip install claude-cli")
         console.print("  - Ou GitHub Copilot CLI já está instalado (gh copilot)")
@@ -485,7 +465,6 @@ def main():
     if final_prompt is None:
         # Usuário recusou processamento
         save_outputs(transcript_text, None, args.audio_file, args.output_dir)
-        cleanup_temp_files(args.output_dir, args.keep_temp)
         return
     
     # Step 4: Processar com LLM
@@ -499,10 +478,7 @@ def main():
     # Step 5: Salvar arquivos
     console.print("\n[cyan]💾 Salvando arquivos...[/cyan]")
     save_outputs(transcript_text, ata_text, args.audio_file, args.output_dir)
-    
-    # Step 6: Cleanup
-    cleanup_temp_files(args.output_dir, args.keep_temp)
-    
+
     console.print("\n[bold green]✅ Concluído![/bold green]")
 
 
