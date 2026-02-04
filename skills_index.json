@@ -1,10 +1,10 @@
 {
   "version": "1.0.0",
-  "generated": "2026-02-04T14:32:36.489201Z",
+  "generated": "2026-02-04T18:56:15.328788Z",
   "skills": [
     {
       "name": "audio-transcriber",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "description": "Transform audio recordings into professional Markdown documentation with intelligent summaries using LLM integration",
       "category": "content",
       "tags": [
@@ -62,7 +62,7 @@
     },
     {
       "name": "youtube-summarizer",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "description": "Extract transcripts from YouTube videos and generate comprehensive, detailed summaries using intelligent analysis frameworks",
       "category": "content",
       "tags": [

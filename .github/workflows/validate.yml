@@ -9,6 +9,29 @@ on:
       - main
 
 jobs:
+  verify-skills-sync:
+    name: Verify Skills Sync
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Build skills from source
+        run: ./scripts/build-skills.sh
+        
+      - name: Check for sync differences
+        run: |
+          if [ -n "$(git status --porcelain .github/skills .claude/skills .codex/skills)" ]; then
+            echo "❌ ERROR: Skills are out of sync!"
+            echo "Run './scripts/build-skills.sh' locally and commit the changes."
+            echo ""
+            echo "Changes detected:"
+            git status --porcelain .github/skills .claude/skills .codex/skills
+            exit 1
+          fi
+          echo "✅ Skills are in sync"
+
   validate-workflows:
     name: Validate GitHub Actions
     runs-on: ubuntu-latest
@@ -28,20 +51,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         
-      - name: Validate GitHub Copilot skills
+      - name: Validate skills from source
         run: |
-          echo "Validating GitHub Copilot skills..."
-          for skill in .github/skills/*/; do
-            [ -d "$skill" ] || continue
-            echo "Checking: $skill"
-            ./scripts/validate-skill-yaml.sh "$skill"
-            ./scripts/validate-skill-content.sh "$skill"
-          done
-          
-      - name: Validate Claude Code skills
-        run: |
-          echo "Validating Claude Code skills..."
-          for skill in .claude/skills/*/; do
+          echo "Validating skills from source directory..."
+          for skill in skills/*/; do
             [ -d "$skill" ] || continue
             echo "Checking: $skill"
             ./scripts/validate-skill-yaml.sh "$skill"

@@ -7,6 +7,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.2.1] - 2026-02-04
+
+### 🔒 Security
+
+- **CRITICAL: Removed unsafe file deletion** in `cleanup_temp_files()`
+  - **Issue:** Function was deleting files with fixed names (`metadata.json`, `transcription.json`) from user's output directory without verifying the script created them
+  - **Risk:** Could accidentally delete unrelated user files with the same names
+  - **Root Cause:** Script doesn't actually create these JSON files, cleanup was attempting to delete non-existent files (and would delete user files if they existed)
+  - **Solution:** Removed `cleanup_temp_files()` function entirely
+  - **Impact:** Script now only creates and manages files it's supposed to:
+    - `transcript-TIMESTAMP.md` (always created)
+    - `ata-TIMESTAMP.md` (optional, if LLM processing succeeds)
+
+### 🗑️ Removed
+
+- `cleanup_temp_files()` function (26 lines removed)
+- `--keep-temp` CLI argument (no longer needed)
+- All calls to `cleanup_temp_files()` (3 locations)
+
+### 📝 Notes
+
+- **Breaking Change:** `--keep-temp` flag removed (was non-functional anyway)
+- **Backward Compatibility:** All other functionality unchanged
+- **Migration:** Remove `--keep-temp` from scripts if used
+
+### 🔗 Related
+
+- Identified by Codex automated review in antigravity-awesome-skills PR #62
+- Also fixed in antigravity-awesome-skills fork (commit eb49312)
+
+---
+
 ## [1.1.0] - 2026-02-03
 
 ### ✨ Added

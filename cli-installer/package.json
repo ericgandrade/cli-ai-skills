@@ -1,6 +1,6 @@
 {
   "name": "cli-ai-skills",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "Install AI skills for GitHub Copilot CLI, Claude Code, and OpenAI Codex",
   "main": "lib/index.js",
   "bin": {
@@ -8,12 +8,14 @@
   },
   "scripts": {
     "test": "echo '✅ cli-ai-skills v1.5.0 - test passed'",
+    "build": "cd .. && ./scripts/build-skills.sh",
+    "prebuild": "cd .. && ./scripts/build-skills.sh",
     "link": "npm link",
     "unlink": "npm unlink -g cli-ai-skills",
-    "generate-index": "python3 scripts/generate-skills-index.py",
-    "generate-catalog": "python3 scripts/generate-catalog.py",
-    "generate-all": "npm run generate-index && npm run generate-catalog",
-    "prepublishOnly": "npm test",
+    "generate-index": "cd .. && python3 scripts/generate-skills-index.py",
+    "generate-catalog": "cd .. && python3 scripts/generate-catalog.py",
+    "generate-all": "npm run build && npm run generate-index && npm run generate-catalog",
+    "prepublishOnly": "npm run build && npm test",
     "version": "git add -A",
     "postversion": "git push && git push --tags"
   },

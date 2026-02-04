@@ -1,7 +1,7 @@
 ---
 name: youtube-summarizer
 description: "Extract transcripts from YouTube videos and generate comprehensive, detailed summaries using intelligent analysis frameworks"
-version: 1.2.0
+version: 1.2.1
 author: Eric Andrade
 created: 2025-02-01
 updated: 2026-02-04
@@ -284,7 +284,7 @@ TRANSCRIPT_FILE="/tmp/transcript_${VIDEO_ID}.txt"
 # 3. Generate comprehensive Markdown output
 # 4. Structure with headers, lists, and highlights
 
-view "$TRANSCRIPT_FILE"  # Read transcript into context
+Read "$TRANSCRIPT_FILE"  # Read transcript into context
 ```
 
 Then apply the full summarization prompt (from enhanced version in Phase 2).
@@ -303,10 +303,10 @@ echo "[████████████████████] 100% - Step
 ```markdown
 # [Video Title]
 
-**Channel:** [Channel Name]  
-**Duration:** [Duration]  
+**Canal:** [Channel Name]  
+**Duração:** [Duration]  
 **URL:** [https://youtube.com/watch?v=VIDEO_ID]  
-**Publication Date:** [Date if available]
+**Data de Publicação:** [Date if available]
 
 
 ## 📝 Detailed Summary
@@ -339,7 +339,7 @@ echo "[████████████████████] 100% - Step
 
 **User Input:**
 ```
-copilot> summarize this youtube video https://youtu.be/abc123
+claude> summarize this youtube video https://youtu.be/abc123
 ```
 
 **Skill Response:**
@@ -368,7 +368,7 @@ Successfully installed youtube-transcript-api-0.6.1
 
 **User Input:**
 ```
-copilot> summarize youtube video www.youtube.com/some-video
+claude> summarize youtube video www.youtube.com/some-video
 ```
 
 **Skill Response:**

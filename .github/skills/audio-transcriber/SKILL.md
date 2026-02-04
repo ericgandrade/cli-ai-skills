@@ -1,7 +1,7 @@
 ---
 name: audio-transcriber
 description: "Transform audio recordings into professional Markdown documentation with intelligent summaries using LLM integration"
-version: 1.2.0
+version: 1.2.1
 author: Eric Andrade
 created: 2025-02-01
 updated: 2026-02-04

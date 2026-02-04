@@ -1,6 +1,6 @@
 # 📚 CLI AI Skills Catalog
 
-**Generated:** 2026-02-04T14:32:45.476714Z  
+**Generated:** 2026-02-04T18:56:15.529710Z  
 **Total Skills:** 4  
 **Platforms:** GitHub Copilot CLI, Claude Code, OpenAI Codex
 
@@ -10,10 +10,10 @@
 
 | Skill | Version | Category | Tags | Risk | Platforms |
 |-------|---------|----------|------|------|-----------|
-| **audio-transcriber** | 1.2.0 | content | audio, transcription, whisper | safe | 🤖 🧠 ⚙️ |
+| **audio-transcriber** | 1.2.1 | content | audio, transcription, whisper | safe | 🤖 🧠 ⚙️ |
 | **prompt-engineer** | 1.1.0 | automation | prompt-engineering, optimization, frameworks | safe | 🤖 🧠 ⚙️ |
 | **skill-creator** | 1.3.0 | meta | automation, scaffolding, skill-creation | safe | 🤖 🧠 ⚙️ |
-| **youtube-summarizer** | 1.2.0 | content | video, summarization, transcription | safe | 🤖 🧠 ⚙️ |
+| **youtube-summarizer** | 1.2.1 | content | video, summarization, transcription | safe | 🤖 🧠 ⚙️ |
 
 ---
 
@@ -27,11 +27,11 @@
 
 ### Content
 
-- **audio-transcriber** (v1.2.0)
+- **audio-transcriber** (v1.2.1)
   - Description: Transform audio recordings into professional Markdown documentation with intelligent summaries using...
   - Tags: audio, transcription, whisper, meeting-minutes, speech-to-text
 
-- **youtube-summarizer** (v1.2.0)
+- **youtube-summarizer** (v1.2.1)
   - Description: Extract transcripts from YouTube videos and generate comprehensive, detailed summaries using intelli...
   - Tags: video, summarization, transcription, youtube, content-analysis
 

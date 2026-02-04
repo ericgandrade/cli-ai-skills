@@ -264,7 +264,7 @@ For issues or questions:
 
 ---
 
-**Version:** 1.1.0  
+**Version:** 1.3.0  
 **Platform:** GitHub Copilot CLI, Claude Code  
 **Author:** Eric Andrade  
 **Last Updated:** 2026-02-01

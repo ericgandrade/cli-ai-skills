@@ -43,6 +43,7 @@ Before starting skill creation, gather runtime information:
 # Detect available platforms
 COPILOT_INSTALLED=false
 CLAUDE_INSTALLED=false
+CODEX_INSTALLED=false
 
 if command -v gh &>/dev/null && gh copilot --version &>/dev/null 2>&1; then
     COPILOT_INSTALLED=true
@@ -50,6 +51,10 @@ fi
 
 if [[ -d "$HOME/.claude" ]]; then
     CLAUDE_INSTALLED=true
+fi
+
+if [[ -d "$HOME/.codex" ]]; then
+    CODEX_INSTALLED=true
 fi
 
 # Determine working directory
@@ -68,7 +73,7 @@ EMAIL=$(git config user.email || echo "")
 ```
 
 **Key Information Needed:**
-- Which platforms to target (Copilot, Claude, or both)
+- Which platforms to target (Copilot, Claude, Codex, or all three)
 - Installation preference (local, global, or both)
 - Skill name and purpose
 - Skill type (general, code, documentation, analysis)
@@ -132,8 +137,9 @@ Display progress:
 
 4. **Which platforms should support this skill?**
    - [ ] GitHub Copilot CLI
+   - [ ] Claude Code
    - [ ] Codex
-   - [ ] Both (recommended)
+   - [ ] All three (recommended)
 
 5. **Provide a one-sentence description** (will appear in metadata)
    - Example: "Analyzes Python stack traces and suggests fixes"
@@ -203,12 +209,16 @@ fi
 if [[ "$PLATFORM" =~ "claude" ]]; then
     mkdir -p ".claude/skills/$SKILL_NAME"/{references,examples,scripts}
 fi
+
+if [[ "$PLATFORM" =~ "codex" ]]; then
+    mkdir -p ".codex/skills/$SKILL_NAME"/{references,examples,scripts}
+fi
 ```
 
 **Apply templates:**
 
 1. **SKILL.md** - Use appropriate template:
-   - `skill-template-copilot.md` or `skill-template-claude.md`
+   - `skill-template-copilot.md`, `skill-template-claude.md`, or `skill-template-codex.md`
    - Substitute placeholders:
      - `{{SKILL_NAME}}` → kebab-case name
      - `{{DESCRIPTION}}` → one-line description
@@ -242,12 +252,28 @@ sed "s/{{SKILL_NAME}}/$SKILL_NAME/g; \
 sed "s/{{SKILL_NAME}}/$SKILL_NAME/g" \
     resources/templates/readme-template.md \
     > ".github/skills/$SKILL_NAME/README.md"
+
+# Apply template for Codex if selected
+if [[ "$PLATFORM" =~ "codex" ]]; then
+    sed "s/{{SKILL_NAME}}/$SKILL_NAME/g; \
+         s/{{DESCRIPTION}}/$DESCRIPTION/g; \
+         s/{{AUTHOR}}/$AUTHOR/g; \
+         s/{{DATE}}/$(date +%Y-%m-%d)/g" \
+        resources/templates/skill-template-codex.md \
+        > ".codex/skills/$SKILL_NAME/SKILL.md"
+    
+    sed "s/{{SKILL_NAME}}/$SKILL_NAME/g" \
+        resources/templates/readme-template.md \
+        > ".codex/skills/$SKILL_NAME/README.md"
+fi
 ```
 
 **Display created structure:**
 ```
 ✅ Created:
-   .github/skills/your-skill-name/
+   .github/skills/your-skill-name/ (if Copilot selected)
+   .claude/skills/your-skill-name/ (if Claude selected)
+   .codex/skills/your-skill-name/ (if Codex selected)
    ├── SKILL.md (832 lines)
    ├── README.md (347 lines)
    ├── references/
@@ -341,6 +367,10 @@ if [[ "$CLAUDE_INSTALLED" == "true" ]] && [[ "$PLATFORM" =~ "claude" ]]; then
     INSTALL_TARGETS+=("claude")
 fi
 
+if [[ "$CODEX_INSTALLED" == "true" ]] && [[ "$PLATFORM" =~ "codex" ]]; then
+    INSTALL_TARGETS+=("codex")
+fi
+
 # Ask user to confirm detected platforms
 echo "Detected platforms: ${INSTALL_TARGETS[*]}"
 echo "Install for these platforms? [Y/n]"
@@ -356,10 +386,17 @@ if [[ " ${INSTALL_TARGETS[*]} " =~ " copilot " ]]; then
     echo "✅ Installed for GitHub Copilot CLI"
 fi
 
-# Codex
+# Claude Code
 if [[ " ${INSTALL_TARGETS[*]} " =~ " claude " ]]; then
     ln -sf "$SKILLS_REPO/.claude/skills/$SKILL_NAME" \
            "$HOME/.claude/skills/$SKILL_NAME"
+    echo "✅ Installed for Claude Code"
+fi
+
+# Codex
+if [[ " ${INSTALL_TARGETS[*]} " =~ " codex " ]]; then
+    ln -sf "$SKILLS_REPO/.codex/skills/$SKILL_NAME" \
+           "$HOME/.codex/skills/$SKILL_NAME"
     echo "✅ Installed for Codex"
 fi
 ```
@@ -368,8 +405,9 @@ fi
 
 ```bash
 # Check symlinks
-ls -la ~/.copilot/skills/$SKILL_NAME
-ls -la ~/.claude/skills/$SKILL_NAME
+ls -la ~/.copilot/skills/$SKILL_NAME 2>/dev/null
+ls -la ~/.claude/skills/$SKILL_NAME 2>/dev/null
+ls -la ~/.codex/skills/$SKILL_NAME 2>/dev/null
 ```
 
 ### Phase 6: Completion
@@ -426,7 +464,7 @@ Update progress:
 
 If platforms cannot be detected:
 ```
-⚠️  Unable to detect GitHub Copilot CLI or Codex
+⚠️  Unable to detect GitHub Copilot CLI or Claude Code
     
 Would you like to:
 1. Install for repository only (works when in repo)

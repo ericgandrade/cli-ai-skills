@@ -103,22 +103,38 @@ git checkout -b fix/issue-description
 
 ### Step 3: Develop Your Skill
 
+**⚠️ Important:** Skills are maintained in `skills/` directory (single source).
+
+**DO NOT edit** `.github/skills/`, `.claude/skills/`, or `.codex/skills/` directly (auto-generated).
+
 **Follow the guide:** [Skills Development Guide](./resources/skills-development.md)
 
-**Required files for new skills:**
-```
-.github/skills/your-skill/
-├── SKILL.md      # Technical specification
-└── README.md     # User documentation
+**Workflow for creating/editing skills:**
 
-.claude/skills/your-skill/
-├── SKILL.md      # Adapted for Claude
-└── README.md     # Adapted for Claude
-```
+```bash
+# 1. Create new skill (or edit existing in skills/)
+./scripts/create-skill.sh your-skill
+# This creates: skills/your-skill/
 
-**Update index files:**
-- `.github/skills/README.md` - Add your skill to the list
-- `.claude/skills/README.md` - Add your skill to the list
+# 2. Edit the skill
+vim skills/your-skill/SKILL.md
+vim skills/your-skill/README.md
+
+# 3. Build (sync to platforms)
+./scripts/build-skills.sh
+
+# 4. Validate
+./scripts/validate-skill-yaml.sh skills/your-skill
+./scripts/validate-skill-content.sh skills/your-skill
+
+# 5. Update generated files (if metadata changed)
+cd cli-installer
+npm run generate-all
+
+# 6. Commit everything
+git add skills/ .github/ .claude/ .codex/ skills_index.json CATALOG.md
+git commit -m "feat: add your-skill v1.0.0"
+```
 
 ### Step 4: Test Your Skill
 

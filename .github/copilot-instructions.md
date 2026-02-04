@@ -1,23 +1,74 @@
 # Copilot Instructions for CLI AI Skills
 
-This repository contains reusable AI skills for **GitHub Copilot CLI** and **Claude Code**. Skills are Markdown-based workflow specifications (`SKILL.md`) that teach AI agents specific tasks.
+This repository contains reusable AI skills for **GitHub Copilot CLI**, **Claude Code**, and **OpenAI Codex**. Skills are Markdown-based workflow specifications (`SKILL.md`) that teach AI agents specific tasks.
+
+## ⚠️ Important: Single Source of Truth
+
+Skills are maintained in **`skills/`** directory (single source) and automatically synchronized to platform directories.
+
+**DO NOT EDIT:**
+- ❌ `.github/skills/` (auto-generated)
+- ❌ `.claude/skills/` (auto-generated)
+- ❌ `.codex/skills/` (auto-generated)
+
+**DO EDIT:**
+- ✅ `skills/` (source of truth)
+
+After editing, run:
+```bash
+./scripts/build-skills.sh
+# or
+cd cli-installer && npm run build
+```
 
 ## Build, Test, and Lint Commands
+
+### NPM Package Commands (cli-installer)
+
+```bash
+# Run tests
+cd cli-installer && npm test
+
+# Link package locally for testing
+cd cli-installer && npm link
+
+# Unlink local package
+cd cli-installer && npm unlink -g cli-ai-skills
+
+# Generate skills index and catalog
+cd cli-installer && npm run generate-all
+# Or individually:
+npm run generate-index    # Updates skills_index.json
+npm run generate-catalog  # Updates CATALOG.md
+
+# Version bump and publish workflow
+./scripts/bump-version.sh [patch|minor|major]  # Updates version, commits, tags
+./scripts/pre-publish-check.sh                 # Validates before publishing
+```
 
 ### Validation Scripts
 
 ```bash
 # Validate a single skill's YAML frontmatter (kebab-case naming, required fields)
-./scripts/validate-skill-yaml.sh .github/skills/<skill-name>
+./scripts/validate-skill-yaml.sh skills/<skill-name>
 
 # Validate a single skill's content quality (word count, writing style)
-./scripts/validate-skill-content.sh .github/skills/<skill-name>
+./scripts/validate-skill-content.sh skills/<skill-name>
 
-# Validate all skills in a directory
-for skill in .github/skills/*/; do
+# Validate all skills
+for skill in skills/*/; do
   ./scripts/validate-skill-yaml.sh "$skill"
   ./scripts/validate-skill-content.sh "$skill"
 done
+
+# Build skills (sync source to platforms)
+./scripts/build-skills.sh
+
+# Validate GitHub Actions workflows
+./scripts/validate-workflows.sh
+
+# Verify version consistency across package.json files
+./scripts/verify-version-sync.sh
 ```
 
 ### Installation & Setup
@@ -32,6 +83,41 @@ done
 # Create new skill scaffolding
 ./scripts/create-skill.sh <skill-name>
 ```
+
+### Skill Installation via NPM (End Users)
+
+The repository includes a CLI installer package (`cli-installer/`) that users can run to install skills:
+
+```bash
+# Zero-config installation (interactive)
+npx cli-ai-skills
+
+# Install specific bundle
+npx cli-ai-skills --bundle essential -y    # skill-creator, prompt-engineer
+npx cli-ai-skills --bundle content -y      # youtube-summarizer, audio-transcriber
+npx cli-ai-skills --bundle developer -y    # skill-creator only
+npx cli-ai-skills --bundle all -y          # All skills
+
+# Install all skills
+npx cli-ai-skills --all -y
+
+# Search for skills
+npx cli-ai-skills --search "prompt"
+
+# List installed skills
+npx cli-ai-skills list    # or: ls
+
+# Update skills
+npx cli-ai-skills update  # or: up
+
+# Uninstall skills
+npx cli-ai-skills uninstall <skill-name>  # or: rm
+
+# Check installation health
+npx cli-ai-skills doctor  # or: doc
+```
+
+Bundles are defined in `bundles.json` at repository root.
 
 ### Manual Testing
 
@@ -51,14 +137,15 @@ gh copilot -p "improve this prompt: create REST API"
 
 ## Architecture
 
-### Dual-Platform Design
+### Multi-Platform Design
 
-Skills maintain **functional parity** across two platforms:
+Skills maintain **functional parity** across three platforms:
 
 - **GitHub Copilot CLI** (`.github/skills/`) - Uses `view`, `edit`, `bash` tools
 - **Claude Code** (`.claude/skills/`) - Uses `Read`, `Edit`, `Bash` tools
+- **OpenAI Codex** (`.codex/skills/`) - Uses similar tool conventions
 
-Only tool names and prompt prefixes differ (`copilot>` vs `claude>`). Workflow logic is identical.
+Only tool names and prompt prefixes differ (`copilot>`, `claude>`, `codex>`). Workflow logic is identical across all platforms.
 
 ### Skill Structure
 
@@ -123,6 +210,42 @@ Skills that interact with project structure should include a discovery phase:
 - Offer fallbacks if none found
 - Extract values from YAML/JSON files dynamically
 
+### Bundles System
+
+The repository uses a **curated bundles system** defined in `bundles.json` at the root:
+
+**Bundle Structure:**
+```json
+{
+  "bundles": {
+    "bundle-name": {
+      "name": "Display Name",
+      "description": "User-facing description",
+      "skills": ["skill-1", "skill-2"],
+      "use_cases": ["Use case 1", "Use case 2"],
+      "target": "Target audience"
+    }
+  }
+}
+```
+
+**Available Bundles:**
+
+| Bundle | Skills Included | Target Audience |
+|--------|-----------------|-----------------|
+| **essential** | skill-creator, prompt-engineer | Beginners, skill developers |
+| **content** | youtube-summarizer, audio-transcriber | Content creators, researchers |
+| **developer** | skill-creator | Skill developers, power users |
+| **all** | All 4 skills | Power users, comprehensive setup |
+
+**When to update bundles.json:**
+- Adding a new skill → Add to appropriate bundle(s)
+- Removing a skill → Remove from all bundles
+- Creating skill category → Consider creating new bundle
+- Bundle changes require version bump in `cli-installer/package.json`
+
+**Bundle documentation location:** `docs/bundles/bundles.md`
+
 ## Key Conventions
 
 ### Naming & Writing Style
@@ -134,27 +257,30 @@ Skills that interact with project structure should include a discovery phase:
 
 ### Platform Synchronization
 
-When modifying skills, **update both platforms**:
+When modifying skills, **update all three platforms**:
 
 1. `.github/skills/<name>/SKILL.md` (Copilot)
 2. `.claude/skills/<name>/SKILL.md` (Claude)
+3. `.codex/skills/<name>/SKILL.md` (Codex)
 
-When adding new skills, also update both index files:
+When adding new skills, also update all index files:
 - `.github/skills/README.md`
 - `.claude/skills/README.md`
+- `.codex/skills/README.md`
 
 Tool name conversions:
 
-| Claude Code | GitHub Copilot |
-|-------------|----------------|
-| `Read`      | `view`         |
-| `Edit`      | `edit`         |
-| `Write`     | `edit`         |
-| `Bash`      | `bash`         |
+| Claude Code | Codex | GitHub Copilot |
+|-------------|-------|----------------|
+| `Read`      | `Read`| `view`         |
+| `Edit`      | `Edit`| `edit`         |
+| `Write`     | `Write`| `edit`        |
+| `Bash`      | `Bash`| `bash`         |
 
 Prompt prefix conversions:
 - Copilot examples: `copilot> [command]`
 - Claude examples: `claude> [command]`
+- Codex examples: `codex> [command]`
 
 ### Commit Conventions
 
@@ -164,6 +290,46 @@ feat(<skill-name>): <improvement>         # Enhancement
 fix(<skill-name>): <bug fix>             # Bug fix
 docs(<skill-name>): <update>             # Documentation
 style: <formatting change>                # Style/naming
+chore: <maintenance task>                 # Tooling, dependencies
+```
+
+### Version Bumping
+
+```bash
+# Use the automated script to bump version
+./scripts/bump-version.sh patch   # Bug fixes (1.5.0 → 1.5.1)
+./scripts/bump-version.sh minor   # New features/skills (1.5.0 → 1.6.0)
+./scripts/bump-version.sh major   # Breaking changes (1.5.0 → 2.0.0)
+
+# Script automatically:
+# - Updates cli-installer/package.json
+# - Updates cli-installer/package-lock.json
+# - Creates git commit with conventional message
+# - Creates git tag (v1.5.1)
+# - Pushes commit and tag to origin
+
+# Pre-publish validation
+./scripts/pre-publish-check.sh
+# Checks:
+# - Package version is not already published on npm
+# - package-lock.json exists
+# - All tests pass
+# - Working directory is clean
+```
+
+### NPM Publishing Workflow
+
+The repository uses GitHub Actions to automatically publish to npm when a version tag is pushed:
+
+1. Bump version with script: `./scripts/bump-version.sh [patch|minor|major]`
+2. GitHub Actions workflow `.github/workflows/publish-npm.yml` automatically triggers
+3. Package is published from `cli-installer/` subdirectory
+4. Publishing requires `NPM_TOKEN` secret to be configured
+
+**Manual publishing (if needed):**
+```bash
+cd cli-installer
+npm publish
 ```
 
 ### Validation Requirements
@@ -193,23 +359,64 @@ Before committing new/modified skills:
 - **resources/skills-development.md** - Comprehensive developer guide
 - **resources/templates/** - Skill creation templates
 
+### Generated Files
+
+The repository maintains auto-generated index files that should **not be edited manually**:
+
+**skills_index.json** (root directory)
+- Generated by: `npm run generate-index` or `npm run generate-all`
+- Contains: All skills metadata (name, version, description, category, tags, risk, platforms, triggers)
+- Used by: CLI installer for search, listing, and skill discovery
+- Regenerate after: Adding/removing skills, updating SKILL.md frontmatter
+
+**CATALOG.md** (root directory)
+- Generated by: `npm run generate-catalog` or `npm run generate-all`
+- Contains: Formatted skill catalog with full metadata
+- Used by: Documentation, GitHub README
+- Regenerate after: Any skill metadata changes
+
+**Important:** Always run `npm run generate-all` after modifying skills to keep these files in sync.
+
 ### File Organization
 
 ```
+skills/                    # ← SOURCE OF TRUTH
+  audio-transcriber/
+    SKILL.md
+    README.md
+  prompt-engineer/
+  skill-creator/
+  youtube-summarizer/
 .github/
-  skills/                  # Copilot skills
-    skill-name/
-      SKILL.md
-      README.md
+  skills/                  # ← AUTO-GENERATED (do not edit!)
+    README.md              # Warning about auto-generation
+    audio-transcriber/
+    ...
+  workflows/               # GitHub Actions CI/CD
+    publish-npm.yml        # Auto-publish to npm on version tags
+    validate.yml           # CI validation on push/PR
+  WORKFLOWS.md             # Workflow documentation
 .claude/
-  skills/                  # Claude skills (mirrors .github/skills/)
-    skill-name/
-      SKILL.md
-      README.md
+  skills/                  # ← AUTO-GENERATED (do not edit!)
+    README.md
+    ...
+.codex/
+  skills/                  # ← AUTO-GENERATED (do not edit!)
+    README.md
+    ...
+cli-installer/             # NPM package for skill installation
+  bin/                     # CLI executable
+  lib/                     # Installer logic
+  package.json             # Package manifest (version source of truth)
+  VERSIONING.md            # Version strategy guide
 resources/
   skills-development.md    # Developer guide
-  templates/               # Skill templates
-scripts/                   # Validation & automation
+  templates/               # Skill creation templates
+scripts/
+  build-skills.sh          # ← IMPORTANT: Sync source → platforms
+  bump-version.sh          # Automated version bumping
+  validate-*.sh            # Validation scripts
+  create-skill.sh          # Skill scaffolding
 examples/                  # Example skill usage
 ```
 
@@ -223,12 +430,34 @@ examples/                  # Example skill usage
 ./scripts/create-skill.sh my-skill-name
 ```
 
+This creates skill in `skills/my-skill-name/` then run `./scripts/build-skills.sh` to sync to platforms.
+
 This ensures:
-- Correct directory structure
+- Correct directory structure in source
 - YAML frontmatter template
-- Both platform versions created (`.github/skills/` and `.claude/skills/`)
+- Automatic sync to all three platform directories
 - Validation-ready skeleton
 - Proper kebab-case naming enforcement
+
+**Workflow for creating skills:**
+```bash
+# 1. Create skill
+./scripts/create-skill.sh my-skill
+
+# 2. Edit in source directory
+vim skills/my-skill/SKILL.md
+
+# 3. Build (sync to platforms)
+./scripts/build-skills.sh
+
+# 4. Validate
+./scripts/validate-skill-yaml.sh skills/my-skill
+./scripts/validate-skill-content.sh skills/my-skill
+
+# 5. Commit
+git add skills/ .github/ .claude/ .codex/
+git commit -m "feat: add my-skill v1.0.0"
+```
 
 **Never create skill directories manually** - the script handles all required boilerplate and ensures consistency.
 
@@ -245,9 +474,13 @@ Skills in this repository fall into categories:
 ### Existing Skills
 
 Current skills available in this repository:
-- **prompt-engineer** (v1.0.0) - Transform raw prompts using 11 established frameworks (RTF, RISEN, CoT, RODES, etc.)
-- **skill-creator** (v1.1.0) - Meta-skill for creating new skills with interactive brainstorming and validation
-- **youtube-summarizer** (v1.1.0) - Extract transcripts and generate comprehensive summaries from YouTube videos
+
+| Skill | Version | Category | Platforms |
+|-------|---------|----------|-----------|
+| **skill-creator** | v1.3.0 | Meta | All 3 platforms |
+| **prompt-engineer** | v1.1.0 | Automation | All 3 platforms |
+| **youtube-summarizer** | v1.2.0 | Content | All 3 platforms |
+| **audio-transcriber** | v1.2.0 | Content | All 3 platforms |
 
 All skills follow the zero-config philosophy and work universally across projects.
 

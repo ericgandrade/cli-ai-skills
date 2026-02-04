@@ -56,8 +56,8 @@ if __name__ == "__main__":
     
     # Check if user wants to list available transcripts
     if len(sys.argv) > 2 and sys.argv[2] == "--list":
-        list_available_transcripts(video_id)
-        sys.exit(0)
+        success = list_available_transcripts(video_id)
+        sys.exit(0 if success else 1)
     
     # Extract transcript
     language = sys.argv[2] if len(sys.argv) > 2 else 'en'

@@ -1,6 +1,6 @@
 # 🎯 Prompt Engineer
 
-**Version:** 1.0.1  
+**Version:** 1.1.0  
 **Status:** ✨ Zero-Config | 🌍 Universal
 
 Transform raw prompts into optimized, production-ready prompts using 11 established prompting frameworks.

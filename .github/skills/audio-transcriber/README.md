@@ -1,8 +1,8 @@
-# Audio Transcriber Skill v1.1.0
+# Audio Transcriber Skill v1.2.1
 
 Transform audio recordings into professional Markdown documentation with **intelligent atas/summaries using LLM integration** (Claude/Copilot CLI) and automatic prompt engineering.
 
-## 🆕 What's New in v1.1.0
+## 🆕 What's New in v1.2.1
 
 - **🧠 LLM Integration** - Claude CLI (primary) or GitHub Copilot CLI (fallback) for intelligent processing
 - **✨ Smart Prompts** - Automatic integration with prompt-engineer skill

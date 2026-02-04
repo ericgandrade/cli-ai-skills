@@ -4,7 +4,7 @@
 
 ## What It Does
 
-The skill-creator automates the entire workflow of creating new CLI skills for GitHub Copilot CLI and Codex. It guides you through brainstorming, applies standardized templates, validates content quality, and handles installation—all while following Anthropic's official best practices.
+The skill-creator automates the entire workflow of creating new CLI skills for GitHub Copilot CLI and Claude Code. It guides you through brainstorming, applies standardized templates, validates content quality, and handles installation—all while following Anthropic's official best practices.
 
 ## Key Features
 
@@ -44,7 +44,7 @@ Install via symlinks to make the skill available everywhere:
 # For GitHub Copilot CLI
 ln -sf "$(pwd)/.github/skills/skill-creator" ~/.copilot/skills/skill-creator
 
-# For Codex
+# For Claude Code
 ln -sf "$(pwd)/.claude/skills/skill-creator" ~/.claude/skills/skill-creator
 ```
 
@@ -67,7 +67,7 @@ Simply ask the CLI to create a new skill:
 # GitHub Copilot CLI
 gh copilot "create a new skill for debugging Python errors"
 
-# Codex
+# Claude Code
 claude "create a skill that helps with git workflows"
 ```
 
@@ -167,7 +167,7 @@ When you create a skill, this structure is generated:
 ## Configuration
 
 **No configuration needed!** This skill uses runtime discovery to:
-- Detect installed platforms (Copilot CLI, Codex)
+- Detect installed platforms (Copilot CLI, Claude Code)
 - Find repository root automatically
 - Extract author info from git config
 - Determine optimal file locations
@@ -264,7 +264,7 @@ For issues or questions:
 
 ---
 
-**Version:** 1.1.0  
-**Platform:** GitHub Copilot CLI, Codex  
+**Version:** 1.3.0  
+**Platform:** GitHub Copilot CLI, Claude Code  
 **Author:** Eric Andrade  
 **Last Updated:** 2026-02-01
