@@ -2,7 +2,8 @@
 # Validates GitHub Actions workflow YAML syntax
 # Usage: ./scripts/validate-workflows.sh
 
-set -e
+# Remove 'set -e' to prevent premature exit
+# set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
@@ -19,7 +20,7 @@ if [ ! -d "$WORKFLOWS_DIR" ]; then
 fi
 
 # Count workflows
-WORKFLOW_COUNT=$(find "$WORKFLOWS_DIR" -maxdepth 1 -name "*.yml" -o -name "*.yaml" | wc -l | tr -d ' ')
+WORKFLOW_COUNT=$(find "$WORKFLOWS_DIR" -maxdepth 1 \( -name "*.yml" -o -name "*.yaml" \) | wc -l | tr -d ' ')
 
 if [ "$WORKFLOW_COUNT" -eq 0 ]; then
   echo "⚠️  No workflow files found in $WORKFLOWS_DIR"
@@ -59,15 +60,15 @@ for workflow in "$WORKFLOWS_DIR"/*.yml "$WORKFLOWS_DIR"/*.yaml; do
     
     if [ "$HAS_NAME" = "yes" ] && [ "$HAS_ON" = "yes" ]; then
       echo "  ✅ Valid YAML with required fields"
-      ((VALIDATED++))
+      VALIDATED=$((VALIDATED + 1))
     else
       echo "  ❌ Missing required fields (name or on)"
-      ((ERRORS++))
+      ERRORS=$((ERRORS + 1))
     fi
   else
     echo "  ❌ Invalid YAML syntax:"
     python3 -c "import yaml; yaml.safe_load(open('$workflow'))" 2>&1 | sed 's/^/    /'
-    ((ERRORS++))
+    ERRORS=$((ERRORS + 1))
   fi
   
   echo ""
