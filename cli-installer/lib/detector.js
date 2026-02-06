@@ -1,14 +1,18 @@
 const { execSync } = require('child_process');
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
 
 /**
  * Detecta ferramentas AI CLI instaladas no sistema
- * @returns {Object} { copilot: {installed, version, path}, claude: {...}, ... }
+ * @returns {Object} { copilot: {installed, version, path}, claude: {...}, codex_cli: {...}, codex_app: {...}, ... }
  */
 function detectTools() {
   const tools = {
     copilot: detectCopilot(),
     claude: detectClaude(),
-    codex: detectCodex(),
+    codex_cli: detectCodexCli(),
+    codex_app: detectCodexApp(),
     opencode: detectOpenCode(),
     gemini: detectGemini()
   };
@@ -43,9 +47,9 @@ function detectClaude() {
 }
 
 /**
- * Detecta OpenAI Codex
+ * Detecta OpenAI Codex CLI
  */
-function detectCodex() {
+function detectCodexCli() {
   try {
     const version = execSync('codex --version', { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'ignore'] }).trim();
     const path = execSync('which codex', { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'ignore'] }).trim();
@@ -53,6 +57,62 @@ function detectCodex() {
   } catch (e) {
     return { installed: false, version: null, path: null };
   }
+}
+
+/**
+ * Detecta OpenAI Codex App (Desktop)
+ */
+function detectCodexApp() {
+  // Check macOS
+  if (os.platform() === 'darwin') {
+    const appPath = '/Applications/Codex.app';
+    if (fs.existsSync(appPath)) {
+      try {
+        // Try to get version from Info.plist
+        const plistPath = path.join(appPath, 'Contents', 'Info.plist');
+        const version = 'Codex Desktop'; // Could parse plist for exact version
+        return { installed: true, version, path: appPath };
+      } catch (e) {
+        return { installed: true, version: 'unknown', path: appPath };
+      }
+    }
+  }
+  
+  // Check Linux (if applicable)
+  if (os.platform() === 'linux') {
+    // Could check for ~/.local/share/applications or similar
+    const homeDir = os.homedir();
+    const possiblePaths = [
+      path.join(homeDir, '.local', 'share', 'codex'),
+      '/opt/Codex',
+      '/usr/local/bin/Codex'
+    ];
+    
+    for (const appPath of possiblePaths) {
+      if (fs.existsSync(appPath)) {
+        return { installed: true, version: 'Codex Desktop', path: appPath };
+      }
+    }
+  }
+  
+  // Check Windows
+  if (os.platform() === 'win32') {
+    const programFiles = process.env['ProgramFiles'] || 'C:\\Program Files';
+    const appPath = path.join(programFiles, 'Codex', 'Codex.exe');
+    if (fs.existsSync(appPath)) {
+      return { installed: true, version: 'Codex Desktop', path: appPath };
+    }
+  }
+  
+  return { installed: false, version: null, path: null };
+}
+
+/**
+ * @deprecated Use detectCodexCli() and detectCodexApp() instead
+ * Detecta OpenAI Codex (mantido para backward compatibility)
+ */
+function detectCodex() {
+  return detectCodexCli();
 }
 
 /**
@@ -123,5 +183,5 @@ Após instalar, execute novamente: npx cli-ai-skills
   `;
 }
 
-module.exports = { detectTools, getInstallInstructions };
+module.exports = { detectTools, getInstallInstructions, detectCodex, detectCodexCli, detectCodexApp };
 

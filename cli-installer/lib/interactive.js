@@ -50,47 +50,52 @@ async function confirmCancel() {
 
 /**
  * Pergunta ao usuário para quais plataformas instalar
- * @param {Object} detected - Ferramentas detectadas { copilot, claude, codex, opencode, gemini }
+ * @param {Object} detected - Ferramentas detectadas { copilot, claude, codex_cli, codex_app, opencode, gemini }
  * @returns {Promise<Array>} Plataformas escolhidas
  */
 async function promptPlatforms(detected) {
   const choices = [];
   
-  if (detected.copilot) {
+  if (detected.copilot && detected.copilot.installed) {
     choices.push({
-      name: '✅ GitHub Copilot CLI (.github/skills/)',
+      name: '✅ GitHub Copilot CLI (~/.github/skills/)',
       value: 'copilot',
       checked: true
     });
   }
   
-  if (detected.claude) {
+  if (detected.claude && detected.claude.installed) {
     choices.push({
-      name: '✅ Claude Code (.claude/skills/)',
+      name: '✅ Claude Code (~/.claude/skills/)',
       value: 'claude',
       checked: true
     });
   }
   
-  if (detected.codex) {
+  // Codex: Show as one option if EITHER CLI or App is installed
+  if ((detected.codex_cli && detected.codex_cli.installed) || (detected.codex_app && detected.codex_app.installed)) {
+    const codexLabel = [];
+    if (detected.codex_cli && detected.codex_cli.installed) codexLabel.push('CLI');
+    if (detected.codex_app && detected.codex_app.installed) codexLabel.push('App');
+    
     choices.push({
-      name: '✅ OpenAI Codex (.codex/skills/)',
+      name: `✅ OpenAI Codex ${codexLabel.join(' + ')} (~/.codex/vendor_imports/skills/skills/.curated/)`,
       value: 'codex',
       checked: true
     });
   }
   
-  if (detected.opencode) {
+  if (detected.opencode && detected.opencode.installed) {
     choices.push({
-      name: '✅ OpenCode (.opencode/skills/)',
+      name: '✅ OpenCode (~/.opencode/skills/)',
       value: 'opencode',
       checked: true
     });
   }
   
-  if (detected.gemini) {
+  if (detected.gemini && detected.gemini.installed) {
     choices.push({
-      name: '✅ Gemini CLI (.gemini/skills/)',
+      name: '✅ Gemini CLI (~/.gemini/skills/)',
       value: 'gemini',
       checked: true
     });

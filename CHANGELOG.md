@@ -6,6 +6,52 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.7.5] - 2026-02-06
+
+### Added
+
+- **Separate Codex CLI and Codex App Detection**
+  - Detector now differentiates between Codex CLI (`codex` command) and Codex App (desktop application)
+  - New detection functions: `detectCodexCli()` and `detectCodexApp()`
+  - Both shown separately in tools table with distinct status and versions
+  - Installer recognizes that both share the same skills directory (`~/.codex/vendor_imports/skills/skills/.curated/`)
+  
+### Changed
+
+- **Tools Table Display**
+  - Now shows 6 platforms instead of 5:
+    - GitHub Copilot CLI
+    - Claude Code
+    - **OpenAI Codex CLI** (new)
+    - **OpenAI Codex App** (new)
+    - OpenCode
+    - Gemini CLI
+  - Interactive prompt shows "Codex CLI + App" when both are installed
+  - Single installation serves both Codex CLI and Codex App
+
+### Technical Details
+
+**Why this change matters:**
+- Users can install Codex CLI via Homebrew: `brew install --cask codex`
+- Users can download Codex App separately from OpenAI website
+- Some users may have only CLI, only App, or both
+- Both share the **exact same** skills directory, so one installation works for both
+- Better clarity: users see exactly what they have installed
+
+**Detection logic:**
+```javascript
+// CLI Detection
+codex --version  // → "codex-cli 0.98.0"
+
+// App Detection  
+/Applications/Codex.app exists  // → "Codex Desktop"
+
+// Skills path (shared by both)
+~/.codex/vendor_imports/skills/skills/.curated/
+```
+
+---
+
 ## [1.7.4] - 2026-02-06
 
 ### Fixed

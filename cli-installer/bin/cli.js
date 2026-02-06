@@ -96,7 +96,7 @@ async function main() {
     displayToolsTable(detected);
     
     const hasAny = detected.copilot.installed || detected.claude.installed || 
-                   detected.codex.installed || detected.opencode.installed || 
+                   detected.codex_cli.installed || detected.codex_app.installed || detected.opencode.installed || 
                    detected.gemini.installed;
     
     if (!hasAny) {
@@ -112,7 +112,7 @@ async function main() {
       platforms = [];
       if (detected.copilot.installed) platforms.push('copilot');
       if (detected.claude.installed) platforms.push('claude');
-      if (detected.codex.installed) platforms.push('codex');
+      if (detected.codex_cli.installed || detected.codex_app.installed) platforms.push('codex');
       if (detected.opencode.installed) platforms.push('opencode');
       if (detected.gemini.installed) platforms.push('gemini');
     } else {
@@ -167,7 +167,7 @@ async function main() {
     displayToolsTable(detected);
     
     const hasAny = detected.copilot.installed || detected.claude.installed || 
-                   detected.codex.installed || detected.opencode.installed || 
+                   detected.codex_cli.installed || detected.codex_app.installed || detected.opencode.installed || 
                    detected.gemini.installed;
     
     if (!hasAny) {
@@ -227,7 +227,7 @@ async function main() {
       platforms = [];
       if (detected.copilot.installed) platforms.push('copilot');
       if (detected.claude.installed) platforms.push('claude');
-      if (detected.codex.installed) platforms.push('codex');
+      if (detected.codex_cli.installed || detected.codex_app.installed) platforms.push('codex');
       if (detected.opencode.installed) platforms.push('opencode');
       if (detected.gemini.installed) platforms.push('gemini');
     } else {
