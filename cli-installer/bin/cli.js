@@ -112,7 +112,7 @@ async function main() {
       platforms = [];
       if (detected.copilot.installed) platforms.push('copilot');
       if (detected.claude.installed) platforms.push('claude');
-      if (detected.codex_cli.installed || detected.codex_app.installed) platforms.push('codex');
+      if (detected.codex_cli.installed) platforms.push('codex_cli');
       if (detected.opencode.installed) platforms.push('opencode');
       if (detected.gemini.installed) platforms.push('gemini');
     } else {
@@ -140,7 +140,7 @@ async function main() {
       if (platforms.includes('claude')) {
         installClaudeSkills(repoPath, [skill], quiet);
       }
-      if (platforms.includes('codex')) {
+      if (platforms.includes('codex') || platforms.includes('codex_cli') || platforms.includes('codex_app')) {
         installCodexSkills(repoPath, [skill], quiet);
       }
       if (platforms.includes('opencode')) {
@@ -227,7 +227,8 @@ async function main() {
       platforms = [];
       if (detected.copilot.installed) platforms.push('copilot');
       if (detected.claude.installed) platforms.push('claude');
-      if (detected.codex_cli.installed || detected.codex_app.installed) platforms.push('codex');
+      if (detected.codex_cli.installed) platforms.push('codex_cli');
+      if (detected.codex_app.installed) platforms.push('codex_app');
       if (detected.opencode.installed) platforms.push('opencode');
       if (detected.gemini.installed) platforms.push('gemini');
     } else {
@@ -254,7 +255,7 @@ async function main() {
       installClaudeSkills(repoPath, null, quiet);
     }
     
-    if (platforms.includes('codex')) {
+    if (platforms.includes('codex') || platforms.includes('codex_cli') || platforms.includes('codex_app')) {
       installCodexSkills(repoPath, null, quiet);
     }
     

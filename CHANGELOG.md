@@ -6,6 +6,37 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.7.6] - 2026-02-06
+
+### Changed
+
+- **Codex CLI and App Always Shown Separately**
+  - Interactive prompt NOW ALWAYS shows "Codex CLI" and "Codex App" as **separate options**
+  - Users can independently select CLI, App, or both
+  - Previous behavior showed "Codex CLI + App" when both installed (now removed)
+  - Both still install to the same shared directory (`~/.codex/vendor_imports/skills/skills/.curated/`)
+  
+**Before (v1.7.5):**
+```
+? Install skills for which platforms?
+  ✅ OpenAI Codex CLI + App (...)  ← Combined when both installed
+```
+
+**After (v1.7.6):**
+```
+? Install skills for which platforms?
+  ✅ OpenAI Codex CLI (...)         ← Always separate
+  ✅ OpenAI Codex App (...)         ← Always separate
+```
+
+**Why this matters:**
+- Users have clearer control: can choose to install for CLI only, App only, or both
+- Better visibility: see exactly which components are detected
+- Avoids ambiguity: no combined "CLI + App" label
+- Installation still smart: if both selected, installs once to shared directory
+
+---
+
 ## [1.7.5] - 2026-02-06
 
 ### Added

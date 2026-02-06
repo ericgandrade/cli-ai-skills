@@ -50,6 +50,7 @@ async function confirmCancel() {
 
 /**
  * Pergunta ao usuário para quais plataformas instalar
+ * Codex CLI e Codex App são mostrados SEMPRE separadamente
  * @param {Object} detected - Ferramentas detectadas { copilot, claude, codex_cli, codex_app, opencode, gemini }
  * @returns {Promise<Array>} Plataformas escolhidas
  */
@@ -72,15 +73,20 @@ async function promptPlatforms(detected) {
     });
   }
   
-  // Codex: Show as one option if EITHER CLI or App is installed
-  if ((detected.codex_cli && detected.codex_cli.installed) || (detected.codex_app && detected.codex_app.installed)) {
-    const codexLabel = [];
-    if (detected.codex_cli && detected.codex_cli.installed) codexLabel.push('CLI');
-    if (detected.codex_app && detected.codex_app.installed) codexLabel.push('App');
-    
+  // Codex CLI - sempre separado
+  if (detected.codex_cli && detected.codex_cli.installed) {
     choices.push({
-      name: `✅ OpenAI Codex ${codexLabel.join(' + ')} (~/.codex/vendor_imports/skills/skills/.curated/)`,
-      value: 'codex',
+      name: '✅ OpenAI Codex CLI (~/.codex/vendor_imports/skills/skills/.curated/)',
+      value: 'codex_cli',
+      checked: true
+    });
+  }
+  
+  // Codex App - sempre separado
+  if (detected.codex_app && detected.codex_app.installed) {
+    choices.push({
+      name: '✅ OpenAI Codex App (~/.codex/vendor_imports/skills/skills/.curated/)',
+      value: 'codex_app',
       checked: true
     });
   }
