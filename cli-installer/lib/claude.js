@@ -1,10 +1,11 @@
 const fs = require('fs-extra');
 const path = require('path');
 const os = require('os');
+const { getSkillsSourcePath, getUserSkillsPath } = require('./utils/path-resolver');
 
 function installClaudeSkills(repoPath) {
-  const skillsSource = path.join(repoPath, '.claude', 'skills');
-  const skillsTarget = path.join(os.homedir(), '.claude', 'skills');
+  const skillsSource = getSkillsSourcePath(repoPath, 'claude');
+  const skillsTarget = getUserSkillsPath('claude');
   
   console.log('🔧 Installing Claude Code skills...');
   

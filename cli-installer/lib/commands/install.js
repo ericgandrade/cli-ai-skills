@@ -9,8 +9,11 @@ const InstallationPrompts = require('../ui/prompts');
 const ProgressGauge = require('../ui/progress-gauge');
 const path = require('path');
 
+// Read version dynamically from package.json
+const packageJson = require('../../package.json');
+
 async function installCommand(skillNames, options) {
-  console.log(chalk.cyan.bold('\n🤖 CLI AI Skills Installer v1.0.0\n'));
+  console.log(chalk.cyan.bold(`\n🤖 CLI AI Skills Installer v${packageJson.version}\n`));
 
   // Initialize progress gauge (5 main steps)
   const gauge = new ProgressGauge(5);

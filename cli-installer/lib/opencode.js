@@ -2,6 +2,7 @@ const fs = require('fs-extra');
 const path = require('path');
 const chalk = require('chalk');
 const os = require('os');
+const { getSkillsSourcePath, getUserSkillsPath } = require('./utils/path-resolver');
 
 /**
  * Install skills for OpenCode
@@ -10,13 +11,12 @@ const os = require('os');
  * @param {boolean} quiet - Suppress output
  */
 function install(repoPath, skills = null, quiet = false) {
-  const homeDir = os.homedir();
-  const targetDir = path.join(homeDir, '.opencode', 'skills');
-  
+  const targetDir = getUserSkillsPath('opencode');
+
   // Criar diretório se não existir
   fs.ensureDirSync(targetDir);
-  
-  const sourceDir = path.join(repoPath, '.opencode', 'skills');
+
+  const sourceDir = getSkillsSourcePath(repoPath, 'opencode');
   
   if (!fs.existsSync(sourceDir)) {
     if (!quiet) {

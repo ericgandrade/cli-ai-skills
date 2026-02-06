@@ -1,10 +1,11 @@
 const fs = require('fs-extra');
 const path = require('path');
 const os = require('os');
+const { getSkillsSourcePath, getUserSkillsPath } = require('./utils/path-resolver');
 
 function installCopilotSkills(repoPath) {
-  const skillsSource = path.join(repoPath, '.github', 'skills');
-  const skillsTarget = path.join(os.homedir(), '.github', 'skills');
+  const skillsSource = getSkillsSourcePath(repoPath, 'copilot');
+  const skillsTarget = getUserSkillsPath('copilot');
   
   console.log('🔧 Installing GitHub Copilot CLI skills...');
   

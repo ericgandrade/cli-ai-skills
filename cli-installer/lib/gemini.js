@@ -2,6 +2,7 @@ const fs = require('fs-extra');
 const path = require('path');
 const chalk = require('chalk');
 const os = require('os');
+const { getSkillsSourcePath, getUserSkillsPath } = require('./utils/path-resolver');
 
 /**
  * Install skills for Gemini CLI
@@ -10,13 +11,12 @@ const os = require('os');
  * @param {boolean} quiet - Suppress output
  */
 function install(repoPath, skills = null, quiet = false) {
-  const homeDir = os.homedir();
-  const targetDir = path.join(homeDir, '.gemini', 'skills');
-  
+  const targetDir = getUserSkillsPath('gemini');
+
   // Criar diretório se não existir
   fs.ensureDirSync(targetDir);
-  
-  const sourceDir = path.join(repoPath, '.gemini', 'skills');
+
+  const sourceDir = getSkillsSourcePath(repoPath, 'gemini');
   
   if (!fs.existsSync(sourceDir)) {
     if (!quiet) {

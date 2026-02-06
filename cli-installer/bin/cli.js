@@ -12,11 +12,15 @@ const { listBundles, validateBundle } = require('../lib/bundles');
 const { searchSkills } = require('../lib/search');
 const { displayToolsTable } = require('../lib/ui/table');
 const { checkInstalledVersion, isUpdateAvailable } = require('../lib/version-checker');
+const { getSkillVersion } = require('../lib/utils/skill-versions');
+const { getSkillsBasePath } = require('../lib/utils/path-resolver');
 const chalk = require('chalk');
 const inquirer = require('inquirer');
 const path = require('path');
 
-const VERSION = '1.6.0';
+// Read version dynamically from package.json
+const packageJson = require('../package.json');
+const VERSION = packageJson.version;
 
 // Command aliases
 const commandAliases = {
@@ -120,7 +124,7 @@ async function main() {
       process.exit(0);
     }
     
-    const repoPath = path.resolve(__dirname, '../..');
+    const repoPath = getSkillsBasePath(__dirname);
     const quiet = args.includes('-q') || args.includes('--quiet');
     
     if (!quiet) {
@@ -238,7 +242,7 @@ async function main() {
     
     console.log(chalk.cyan(`\n📦 Instalando skills para: ${platforms.join(', ')}\n`));
     
-    const repoPath = path.resolve(__dirname, '../..');
+    const repoPath = getSkillsBasePath(__dirname);
     const quiet = args.includes('-q') || args.includes('--quiet');
     
     // Install for selected platforms
@@ -272,10 +276,16 @@ async function main() {
   switch(command) {
     case 'list':
       console.log('📋 Installed Skills:\n');
-      console.log('  • skill-creator (v1.3.0)');
-      console.log('  • prompt-engineer (v1.1.0)');
-      console.log('  • youtube-summarizer (v1.2.0)');
-      console.log('  • audio-transcriber (v1.2.0)\n');
+
+      // Get repo path (works both in npm package and git repo)
+      const repoPath = getSkillsBasePath(__dirname);
+      const skills = ['skill-creator', 'prompt-engineer', 'youtube-summarizer', 'audio-transcriber'];
+
+      skills.forEach(skill => {
+        const version = getSkillVersion(skill, repoPath);
+        console.log(`  • ${skill} (v${version})`);
+      });
+      console.log();
       break;
       
     case 'update':

@@ -1,8 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const { getSkillsSourcePath, getUserSkillsPath } = require('./utils/path-resolver');
 
-const CODEX_SKILLS_DIR = path.join(os.homedir(), '.codex', 'skills');
+const CODEX_SKILLS_DIR = getUserSkillsPath('codex');
 
 /**
  * Instala skills para OpenAI Codex
@@ -10,8 +11,8 @@ const CODEX_SKILLS_DIR = path.join(os.homedir(), '.codex', 'skills');
  */
 function install(repoPath) {
   console.log('\n📦 Instalando skills para OpenAI Codex...');
-  
-  const skillsSource = path.join(repoPath, '.codex', 'skills');
+
+  const skillsSource = getSkillsSourcePath(repoPath, 'codex');
   
   if (!fs.existsSync(skillsSource)) {
     console.error('❌ Erro: .codex/skills/ não encontrado no repositório');

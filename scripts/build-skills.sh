@@ -10,6 +10,7 @@ NC='\033[0m' # No Color
 
 SOURCE_DIR="skills"
 PLATFORMS=(".github/skills" ".claude/skills" ".codex/skills" ".opencode/skills" ".gemini/skills")
+NPM_PLATFORMS=("cli-installer/skills/copilot" "cli-installer/skills/claude" "cli-installer/skills/codex" "cli-installer/skills/opencode" "cli-installer/skills/gemini")
 
 echo -e "${BLUE}🔄 Building skills for all platforms...${NC}"
 
@@ -41,6 +42,25 @@ for platform in "${PLATFORMS[@]}"; do
   echo -e "${GREEN}   ✓ Synced $SKILL_COUNT skills${NC}"
 done
 
+# Sync to npm package platforms
+echo -e "${BLUE}📦 Syncing to npm package...${NC}"
+for platform in "${NPM_PLATFORMS[@]}"; do
+  echo -e "${BLUE}   → Syncing to $platform${NC}"
+
+  # Create platform directory
+  mkdir -p "$platform"
+
+  # Copy all skills (rsync ensures exact copy)
+  rsync -av --delete \
+    --exclude '.git' \
+    --exclude 'node_modules' \
+    --exclude '.DS_Store' \
+    --exclude '*.swp' \
+    "$SOURCE_DIR/" "$platform/" > /dev/null 2>&1
+
+  echo -e "${GREEN}   ✓ Synced $SKILL_COUNT skills${NC}"
+done
+
 echo -e "${GREEN}✅ All skills built successfully!${NC}"
 
 # Verify sync
@@ -48,7 +68,17 @@ echo -e "${BLUE}🔍 Verifying sync...${NC}"
 for skill in "$SOURCE_DIR"/*/ ; do
   if [ -d "$skill" ]; then
     skill_name=$(basename "$skill")
+
+    # Verify platform directories
     for platform in "${PLATFORMS[@]}"; do
+      if [ ! -d "$platform/$skill_name" ]; then
+        echo -e "${RED}⚠️  Missing: $platform/$skill_name${NC}"
+        exit 1
+      fi
+    done
+
+    # Verify npm package directories
+    for platform in "${NPM_PLATFORMS[@]}"; do
       if [ ! -d "$platform/$skill_name" ]; then
         echo -e "${RED}⚠️  Missing: $platform/$skill_name${NC}"
         exit 1
