@@ -32,21 +32,14 @@ echo ""
 ERRORS=0
 VALIDATED=0
 
-# Check if GitHub CLI is available (best option)
-if command -v gh &> /dev/null; then
-  VALIDATOR="gh"
-  echo "✓ Using GitHub CLI (gh) for validation"
-  echo ""
-elif command -v yamllint &> /dev/null; then
-  VALIDATOR="yamllint"
-  echo "✓ Using yamllint for validation"
+# Use Python's yaml module for validation (most reliable cross-platform)
+if command -v python3 &> /dev/null; then
+  VALIDATOR="python"
+  echo "✓ Using Python YAML parser for validation"
   echo ""
 else
-  echo "⚠️  No validator found. Install one of:"
-  echo "   - GitHub CLI: brew install gh (recommended)"
-  echo "   - yamllint: brew install yamllint"
-  echo ""
-  echo "Skipping validation (files will be checked by GitHub on push)"
+  echo "⚠️  Python 3 not found. Skipping YAML validation."
+  echo "   Install Python 3 or yamllint for validation."
   exit 0
 fi
 
@@ -58,28 +51,23 @@ for workflow in "$WORKFLOWS_DIR"/*.yml "$WORKFLOWS_DIR"/*.yaml; do
   
   echo "Checking: $FILENAME"
   
-  if [ "$VALIDATOR" == "gh" ]; then
-    # Use GitHub CLI to validate
-    WORKFLOW_NAME="${FILENAME%.yml}"
-    WORKFLOW_NAME="${WORKFLOW_NAME%.yaml}"
+  # Validate YAML syntax with Python
+  if python3 -c "import yaml; yaml.safe_load(open('$workflow'))" 2>/dev/null; then
+    # Check for required GitHub Actions fields
+    HAS_NAME=$(grep -q "^name:" "$workflow" && echo "yes" || echo "no")
+    HAS_ON=$(grep -q "^on:" "$workflow" && echo "yes" || echo "no")
     
-    if gh workflow view "$WORKFLOW_NAME" &>/dev/null; then
-      echo "  ✅ Valid syntax"
+    if [ "$HAS_NAME" = "yes" ] && [ "$HAS_ON" = "yes" ]; then
+      echo "  ✅ Valid YAML with required fields"
       ((VALIDATED++))
     else
-      echo "  ❌ Invalid syntax or workflow not found"
+      echo "  ❌ Missing required fields (name or on)"
       ((ERRORS++))
     fi
-  elif [ "$VALIDATOR" == "yamllint" ]; then
-    # Use yamllint to validate
-    if yamllint -d relaxed "$workflow" &>/dev/null; then
-      echo "  ✅ Valid YAML syntax"
-      ((VALIDATED++))
-    else
-      echo "  ❌ Invalid YAML syntax:"
-      yamllint -d relaxed "$workflow" | sed 's/^/    /'
-      ((ERRORS++))
-    fi
+  else
+    echo "  ❌ Invalid YAML syntax:"
+    python3 -c "import yaml; yaml.safe_load(open('$workflow'))" 2>&1 | sed 's/^/    /'
+    ((ERRORS++))
   fi
   
   echo ""
