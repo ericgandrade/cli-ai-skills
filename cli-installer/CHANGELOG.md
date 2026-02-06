@@ -2,6 +2,33 @@
 
 All notable changes to cli-ai-skills will be documented in this file.
 
+## [1.7.1] - 2026-02-06
+
+### Added
+- 🚀 **Shell installer**: Universal one-liner install via curl/wget (`install.sh`)
+- 🗑️ **Shell uninstaller**: Clean removal script (`uninstall.sh`)
+- 📚 **Installation guide**: Comprehensive docs at `docs/INSTALLATION.md`
+- 🔧 **Install options**: `--yes`, `--verbose`, `--skip-node-check`, `--help`, `--version`
+- 🔧 **Uninstall options**: `--yes`, `--dry-run`, `--purge`
+- 🔍 **Node.js detection**: Auto-detect Node.js >= 16 and offer nvm install
+- 📊 **AI tools table**: Visual display of detected platforms with versions
+- 🎯 **OS detection**: Support macOS, Linux, WSL with automatic detection
+- 📖 **Troubleshooting**: Extensive troubleshooting guide in docs
+
+### Changed
+- 📝 **README.md**: Added prominent one-liner install section
+- 📝 **cli-installer/README.md**: Reference to shell installer
+- 🔄 **Installation methods**: Now 4 ways to install (shell, npx, npm, git clone)
+
+### Technical
+- Created `scripts/install.sh` (15KB, 500+ lines)
+- Created `scripts/uninstall.sh` (11KB, 400+ lines)
+- Created `docs/INSTALLATION.md` (9KB comprehensive guide)
+- Both scripts executable with proper shebang
+- Error handling with cleanup traps
+- Color output for better UX
+- Version comparison for Node.js check
+
 ## [1.7.0] - 2026-02-06
 
 ### Added

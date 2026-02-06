@@ -1,6 +1,6 @@
 {
   "name": "cli-ai-skills",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "Install AI skills for GitHub Copilot CLI, Claude Code, and OpenAI Codex",
   "main": "lib/index.js",
   "bin": {
