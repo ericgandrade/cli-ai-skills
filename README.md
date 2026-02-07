@@ -1,8 +1,8 @@
-# 🤖 CLI AI Skills v1.7.3
+# 🤖 CLI AI Skills v1.8.0
 
 Reusable AI skills for **GitHub Copilot CLI**, **Claude Code**, **OpenAI Codex**, **OpenCode**, and **Gemini CLI** — install once, use everywhere.
 
-![Version](https://img.shields.io/badge/version-1.7.3-blue.svg)
+![Version](https://img.shields.io/badge/version-1.8.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Skills](https://img.shields.io/badge/skills-6-brightgreen.svg)
 ![Platforms](https://img.shields.io/badge/platforms-5-orange.svg)
@@ -52,7 +52,7 @@ curl -fsSL https://raw.githubusercontent.com/ericandrade/cli-ai-skills/main/scri
 | Skill | Version | Purpose |
 |-------|---------|---------|
 | **agent-skill-discovery** | v1.0.0 | Scan and list all installed plugins, agents, skills, and MCP servers |
-| **agent-skill-orchestrator** | v1.0.0 | Intelligent task planning with resource matching and execution strategies |
+| **agent-skill-orchestrator** | v1.1.0 | Intelligent task planning with automatic prompt optimization and resource matching |
 
 ### 🛠️ Development & Automation
 | Skill | Version | Purpose |

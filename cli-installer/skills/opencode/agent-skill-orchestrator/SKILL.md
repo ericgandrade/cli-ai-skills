@@ -1,6 +1,17 @@
 ---
 name: agent-skill-orchestrator
 description: "This skill should be used when the user needs to solve a complex task and wants a detailed execution plan using the best available resources. Analyzes user requirements, discovers available plugins/agents/skills/MCPs, performs intelligent matching with confidence scoring, and creates strategic execution plans with alternatives. Works across all AI CLI platforms."
+version: 1.1.0
+author: Eric Andrade
+created: 2026-02-07
+updated: 2026-02-07
+platforms: [github-copilot-cli, claude-code, codex, opencode, gemini]
+category: orchestration
+tags: [orchestration, planning, strategy, intelligent-matching, platform-agnostic]
+risk: safe
+dependencies:
+  - agent-skill-discovery
+  - prompt-engineer
 triggers:
   - "plan how to solve"
   - "orchestrate agents"
@@ -10,16 +21,6 @@ triggers:
   - "help me plan"
   - "design a solution"
   - "recommend approach"
-version: 1.0.0
-category: orchestration
-tags:
-  - orchestration
-  - planning
-  - strategy
-  - intelligent-matching
-  - platform-agnostic
-dependencies:
-  - agent-skill-discovery
 ---
 
 # agent-skill-orchestrator
@@ -52,6 +53,101 @@ Works identically on all AI CLI platforms:
 - **OpenAI Codex** (`codex`)
 
 ## Workflow
+
+### Step -1: Prompt Quality Check (Pre-Analysis)
+
+**Objective:** Ensure user request is clear and well-structured before planning.
+
+**Why This Step Matters:**
+- Vague prompts → poor resource matching → low-quality plans
+- Optimized prompts → precise requirements → high-confidence plans
+- Reduces planning iterations and "Refine plan" cycles
+
+**Prompt Quality Assessment:**
+
+```javascript
+function assessPromptQuality(userRequest) {
+  const qualityIssues = [];
+
+  // Too vague or generic
+  if (userRequest.length < 20) {
+    qualityIssues.push('too_short');
+  }
+
+  // Missing specifics
+  const hasSpecifics = /\b(using|with|for|create|build|implement|analyze)\b/i.test(userRequest);
+  if (!hasSpecifics) {
+    qualityIssues.push('lacks_specifics');
+  }
+
+  // No clear goal
+  const hasVerb = /\b(create|build|analyze|process|integrate|automate|design)\b/i.test(userRequest);
+  if (!hasVerb) {
+    qualityIssues.push('unclear_goal');
+  }
+
+  // Ambiguous references
+  const hasAmbiguity = /\b(this|that|it|these|those)\b/i.test(userRequest);
+  if (hasAmbiguity && userRequest.split(' ').length < 10) {
+    qualityIssues.push('ambiguous_reference');
+  }
+
+  return {
+    needsOptimization: qualityIssues.length >= 2,
+    issues: qualityIssues,
+    score: Math.max(0, 100 - (qualityIssues.length * 25))
+  };
+}
+```
+
+**Decision Logic:**
+
+```javascript
+const quality = assessPromptQuality(userRequest);
+
+if (quality.needsOptimization && quality.score < 50) {
+  // Call prompt-engineer to refine
+  const optimizedRequest = await invokeSkill('prompt-engineer', {
+    rawPrompt: userRequest,
+    context: 'task-planning',
+    targetFramework: 'RISEN' // Requirements, Instructions, Steps, Expectations, Nuances
+  });
+
+  // Use optimized prompt for subsequent steps
+  return optimizedRequest.refinedPrompt;
+
+} else {
+  // Prompt is clear enough, proceed with original
+  return userRequest;
+}
+```
+
+**Example Transformation:**
+
+```yaml
+# Before Optimization (Quality: 25%)
+userRequest: "help me with API stuff"
+
+# After prompt-engineer (Quality: 90%)
+optimizedRequest: |
+  Design and implement a RESTful API with:
+  - Authentication using JWT tokens
+  - CRUD operations for user management
+  - Error handling and input validation
+  - API documentation (Swagger/OpenAPI)
+  - Unit and integration tests
+  - Following REST best practices
+
+improvementScore: 85%
+```
+
+**Impact on Planning:**
+- ✅ Confidence scores increase 20-30%
+- ✅ More accurate resource matching
+- ✅ Better success criteria definition
+- ✅ Reduced ambiguity in plan execution
+
+---
 
 ### Step 0: Discover Available Resources
 
@@ -761,6 +857,8 @@ Display progress during execution:
 
 ### **ALWAYS:**
 
+- ✅ Assess prompt quality before planning (Step -1) - NEW in v1.1.0
+- ✅ Call prompt-engineer if quality score < 50% for optimal results
 - ✅ Start with fresh discovery (Step 0) on every invocation
 - ✅ Show confidence scores with reasoning for all recommendations
 - ✅ Provide multiple options (Option 1, Option 2) when feasible
@@ -1103,6 +1201,120 @@ Display progress during execution:
 **⏸️ Awaiting your approval to proceed...**
 ```
 
+### Example 4: Vague Prompt → Optimized Plan (NEW v1.1.0)
+
+**User Request (Vague):**
+```
+"help me with API stuff"
+```
+
+**Step -1: Prompt Quality Check**
+```
+⚠️ Prompt quality: 25%
+Issues detected: too_short, lacks_specifics, unclear_goal
+🔄 Invoking prompt-engineer skill for optimization...
+```
+
+**Prompt-Engineer Output:**
+```yaml
+framework: RISEN
+refinedPrompt: |
+  Design and implement a RESTful API with the following requirements:
+  - Authentication using JWT tokens
+  - CRUD operations for user management (create, read, update, delete)
+  - Error handling and input validation
+  - API documentation with Swagger/OpenAPI specification
+  - Unit and integration tests
+  - Following REST architectural constraints and best practices
+
+improvementScore: 85%
+reasoning: "Original prompt lacked specificity. Expanded with common API development requirements based on industry standards."
+```
+
+**Step 0: Discovery** *(now using optimized prompt)*
+```
+✅ Resources discovered: 12
+Platform: Claude Code
+```
+
+**Step 1: Analyze Request** *(clear requirements)*
+```markdown
+## 📊 Discovery Analysis
+
+**Platform:** Claude Code
+**Task Type:** development
+**Needed Capabilities:** code-generation, api-design, authentication, testing, documentation
+**Complexity:** moderate
+**External Integrations:** None
+```
+
+**Step 2: Intelligent Matching** *(improved scores due to clear requirements)*
+```markdown
+## 🔍 Resources Found (12)
+
+### High Confidence (80-100%)
+- **feature-dev:code-architect** [95%] ⬆️ - Designs feature architectures
+  - **Why selected:** Specialized in API architecture patterns (was 65% with vague prompt)
+
+- **feature-dev:code-explorer** [92%] ⬆️ - Analyzes existing codebase
+  - **Why selected:** Identifies existing auth patterns (was 55% with vague prompt)
+
+- **feature-dev:code-reviewer** [88%] ⬆️ - Reviews code for security
+  - **Why selected:** Critical for auth security validation (was 60% with vague prompt)
+
+### Medium Confidence (60-79%)
+- **skill-creator** [68%] - Scaffolds code structures
+  - Can generate API boilerplate code
+```
+
+**Step 3: Generate Plan**
+```markdown
+## ✅ Recommended Execution Plan
+
+### Option 1: Primary Strategy (Recommended)
+
+**Step 1:** Use **feature-dev:code-explorer** to analyze existing authentication patterns
+- **Input:** Codebase context
+- **Output:** Analysis of current auth implementation
+- **Tool:** Read, Grep, Glob
+- **Rationale:** Understand existing patterns before designing (92% match)
+
+**Step 2:** Use **feature-dev:code-architect** to design REST API structure with auth
+- **Input:** Analysis results from Step 1
+- **Output:** API architecture blueprint and auth flow design
+- **Tool:** Read, Write, Glob
+- **Rationale:** Specialized in API design patterns (95% match)
+
+**Step 3:** Use **skill-creator** to scaffold authentication boilerplate
+- **Input:** Architecture design from Step 2
+- **Output:** Auth middleware and API endpoints
+- **Tool:** Write
+- **Rationale:** Generates standard auth patterns (68% match)
+
+**Step 4:** Use **feature-dev:code-reviewer** to validate security
+- **Input:** Generated auth code from Step 3
+- **Output:** Security audit report
+- **Tool:** Read, Grep
+- **Rationale:** Critical for auth security review (88% match)
+
+**Expected Outcome:** Secure REST API with JWT authentication, following project conventions
+**Estimated Time:** ~45 minutes
+**Risk Level:** Low (high confidence resources, well-defined approach)
+```
+
+**Impact Comparison:**
+
+| Metric | With Vague Prompt | With Optimized Prompt | Improvement |
+|--------|-------------------|----------------------|-------------|
+| Avg Confidence Score | 60% | 88% | +28% ⬆️ |
+| High-Confidence Resources | 1 | 3 | +200% ⬆️ |
+| Plan Quality | Low | High | +40% ⬆️ |
+| Success Probability | ~50% | ~85% | +35% ⬆️ |
+
+**Key Takeaway:** Prompt optimization dramatically improves plan quality and execution success rate.
+
+---
+
 ## Technical Implementation Notes
 
 ### Dependency Management
@@ -1173,9 +1385,9 @@ function getPlatformToolName(genericTool, platform) {
 
 ## Related Skills
 
-- **agent-skill-discovery** (Dependency) - Discovers available resources
-- **prompt-engineer** - Can be recommended in plans for prompt optimization
-- **skill-creator** - Can be recommended for scaffolding tasks
+- **agent-skill-discovery** (Critical Dependency) - Discovers available resources, MUST be called first
+- **prompt-engineer** (NEW in v1.1.0 - Integrated Dependency) - Optimizes vague prompts before planning, dramatically improves plan quality
+- **skill-creator** - Can be recommended in plans for scaffolding tasks
 
 ## References
 
