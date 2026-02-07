@@ -6,6 +6,57 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.7.3] - 2026-02-07
+
+### Added
+
+- ✨ **agent-skill-discovery** - Platform-agnostic resource discovery skill
+  - Scans and lists all installed plugins, agents, skills, and MCP servers
+  - Works identically on all 5 AI CLI platforms (Claude, Copilot, Gemini, OpenCode, Codex)
+  - Zero-config dynamic path discovery
+  - Optional filtering by type, category, or keyword
+  - Structured markdown output with resource counts
+
+- ✨ **agent-skill-orchestrator** - Intelligent task planning and orchestration skill
+  - Analyzes user requirements and creates strategic execution plans
+  - Performs intelligent resource matching with confidence scoring (0-100%)
+  - Generates multiple execution options with alternatives and fallbacks
+  - Always requests explicit user approval before execution
+  - Uses agent-skill-discovery as a required dependency
+
+- 🔌 **MCP Server Discovery** - Both new skills support MCP server detection
+  - Discovers configured MCP servers from `.mcp.json`
+  - Enumerates available tools per server
+  - Shows connection status and tool descriptions
+
+- 🧠 **Confidence Scoring Algorithm** - Weighted multi-factor matching
+  - Trigger phrase matching (30%)
+  - Semantic similarity (25%)
+  - Tool availability (20%)
+  - Category relevance (15%)
+  - MCP integration bonus (10%)
+
+- 📊 **Strategic Planning Features**
+  - Primary strategy (recommended approach)
+  - Alternative strategy (backup approach)
+  - Prerequisites detection and checklist
+  - Success criteria definition
+  - Risk assessment
+
+### Changed
+
+- 📝 Updated README.md with new skills section (Discovery & Orchestration)
+- 🔄 Organized Available Skills table by category
+- 📚 Added Quick Start Examples showcasing new workflow
+- 🏷️ Version bumped from v1.7.2 to v1.7.3
+- 📈 Skills count updated from 4 to 6
+
+### Fixed
+
+- 🐛 Version consistency across all files (cli.js, package.json, README)
+
+---
+
 ## [1.7.6] - 2026-02-06
 
 ### Changed

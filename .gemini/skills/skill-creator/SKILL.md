@@ -1,7 +1,7 @@
 ---
 name: skill-creator
 description: "This skill should be used when the user asks to create a new skill, build a skill, make a custom skill, develop a CLI skill, or wants to extend the CLI with new capabilities. Automates the entire skill creation workflow from brainstorming to installation."
-version: 1.3.0
+version: 1.3.1
 author: Eric Andrade
 created: 2025-02-01
 updated: 2026-02-04
@@ -40,22 +40,7 @@ This skill should be used when:
 Before starting skill creation, gather runtime information:
 
 ```bash
-# Detect available platforms
-COPILOT_INSTALLED=false
-CLAUDE_INSTALLED=false
-CODEX_INSTALLED=false
 
-if command -v gh &>/dev/null && gh copilot --version &>/dev/null 2>&1; then
-    COPILOT_INSTALLED=true
-fi
-
-if [[ -d "$HOME/.claude" ]]; then
-    CLAUDE_INSTALLED=true
-fi
-
-if [[ -d "$HOME/.codex" ]]; then
-    CODEX_INSTALLED=true
-fi
 
 # Determine working directory
 REPO_ROOT=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
@@ -328,89 +313,9 @@ scripts/validate-skill-content.sh ".github/skills/$SKILL_NAME"
 - Reformat description to third-person
 - Add missing required fields
 
-### Phase 5: Installation
 
-**Progress:** Display before starting this phase:
-```bash
-echo "[████████████████████] 100% - Step 5/5: Installation"
-```
 
-Update progress:
-```
-╔══════════════════════════════════════════════════════════════╗
-║ ✓ Phase 4: Validation                                        ║
-║ → Phase 5: Installation                  [90%]               ║
-╠══════════════════════════════════════════════════════════════╣
-║ Progress: ██████████████████████████░░░░░  90%              ║
-╚══════════════════════════════════════════════════════════════╝
-```
-
-**Ask the user:**
-"How would you like to install this skill?"
-
-- [ ] **Repository only** - Files created in `.github/skills/` (works when in repo)
-- [ ] **Global installation** - Create symlinks in `~/.copilot/skills/` (works everywhere)
-- [ ] **Both** - Repository + global symlinks (recommended, auto-updates with git pull)
-- [ ] **Skip installation** - Just create files
-
-**If global installation selected:**
-
-```bash
-# Detect which platforms to install for
-INSTALL_TARGETS=()
-
-if [[ "$COPILOT_INSTALLED" == "true" ]] && [[ "$PLATFORM" =~ "copilot" ]]; then
-    INSTALL_TARGETS+=("copilot")
-fi
-
-if [[ "$CLAUDE_INSTALLED" == "true" ]] && [[ "$PLATFORM" =~ "claude" ]]; then
-    INSTALL_TARGETS+=("claude")
-fi
-
-if [[ "$CODEX_INSTALLED" == "true" ]] && [[ "$PLATFORM" =~ "codex" ]]; then
-    INSTALL_TARGETS+=("codex")
-fi
-
-# Ask user to confirm detected platforms
-echo "Detected platforms: ${INSTALL_TARGETS[*]}"
-echo "Install for these platforms? [Y/n]"
-```
-
-**Installation process:**
-
-```bash
-# GitHub Copilot CLI
-if [[ " ${INSTALL_TARGETS[*]} " =~ " copilot " ]]; then
-    ln -sf "$SKILLS_REPO/.github/skills/$SKILL_NAME" \
-           "$HOME/.copilot/skills/$SKILL_NAME"
-    echo "✅ Installed for GitHub Copilot CLI"
-fi
-
-# Claude Code
-if [[ " ${INSTALL_TARGETS[*]} " =~ " claude " ]]; then
-    ln -sf "$SKILLS_REPO/.claude/skills/$SKILL_NAME" \
-           "$HOME/.claude/skills/$SKILL_NAME"
-    echo "✅ Installed for Claude Code"
-fi
-
-# Codex
-if [[ " ${INSTALL_TARGETS[*]} " =~ " codex " ]]; then
-    ln -sf "$SKILLS_REPO/.codex/skills/$SKILL_NAME" \
-           "$HOME/.codex/skills/$SKILL_NAME"
-    echo "✅ Installed for Codex"
-fi
-```
-
-**Verify installation:**
-
-```bash
-# Check symlinks
-ls -la ~/.copilot/skills/$SKILL_NAME 2>/dev/null
-ls -la ~/.claude/skills/$SKILL_NAME 2>/dev/null
-ls -la ~/.codex/skills/$SKILL_NAME 2>/dev/null
-```
-
-### Phase 6: Completion
+### Phase 5: Completion
 
 **Progress:** Display completion message:
 ```bash
@@ -434,7 +339,7 @@ Update progress:
 
 📦 Skill Name: your-skill-name
 📁 Location: .github/skills/your-skill-name/
-🔗 Installed: Global (Copilot + Claude)
+🔗 Status: Arquivos criados. Instalação via 'npx cli-ai-skills install --local' recomendada.
 
 📋 Files Created:
    ✅ SKILL.md (1,847 words)
@@ -443,12 +348,12 @@ Update progress:
    ✅ examples/ (empty, ready for code samples)
    ✅ scripts/ (empty, ready for utilities)
 
-🚀 Next Steps:
-   1. Test the skill: Try trigger phrases in CLI
-   2. Add examples: Create working code samples in examples/
-   3. Extend docs: Add detailed guides to references/
-   4. Commit changes: git add .github/skills/your-skill-name && git commit
-   5. Share: Push to repository for team use
+🚀 Próximos Passos:
+   1. **Instalar a skill:** `npx cli-ai-skills install --local` (no diretório onde a skill foi criada)
+   2. Testar a skill: Experimente as frases de gatilho no seu CLI
+   3. Adicionar exemplos: Crie exemplos de código em examples/
+   4. Fazer commit: `git add .github/skills/your-skill-name && git commit`
+   5. Compartilhar: Faça push para o repositório para uso da equipe
 
 💡 Pro Tips:
    - Keep SKILL.md under 2,000 words (currently: 1,847)
@@ -459,18 +364,6 @@ Update progress:
 ```
 
 ## Error Handling
-
-### Platform Detection Issues
-
-If platforms cannot be detected:
-```
-⚠️  Unable to detect GitHub Copilot CLI or Claude Code
-    
-Would you like to:
-1. Install for repository only (works when in repo)
-2. Specify platform manually
-3. Skip installation
-```
 
 ### Template Not Found
 
@@ -500,19 +393,6 @@ If content doesn't meet standards:
    Suggestion: Move detailed sections to references/
 
 Fix automatically? [Y/n]
-```
-
-### Installation Conflicts
-
-If symlink already exists:
-```
-⚠️  Skill already installed at ~/.copilot/skills/your-skill-name
-
-Options:
-1. Overwrite existing installation
-2. Rename new skill
-3. Skip installation
-4. Install to different location
 ```
 
 ## Bundled Resources

@@ -1,10 +1,10 @@
-# 🤖 CLI AI Skills v1.7.1
+# 🤖 CLI AI Skills v1.7.3
 
 Reusable AI skills for **GitHub Copilot CLI**, **Claude Code**, **OpenAI Codex**, **OpenCode**, and **Gemini CLI** — install once, use everywhere.
 
-![Version](https://img.shields.io/badge/version-1.7.1-blue.svg)
+![Version](https://img.shields.io/badge/version-1.7.3-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
-![Skills](https://img.shields.io/badge/skills-4-brightgreen.svg)
+![Skills](https://img.shields.io/badge/skills-6-brightgreen.svg)
 ![Platforms](https://img.shields.io/badge/platforms-5-orange.svg)
 
 ## 🚀 Quick Install
@@ -37,22 +37,34 @@ curl -fsSL https://raw.githubusercontent.com/ericandrade/cli-ai-skills/main/scri
 
 ## ✨ Features
 
-- **4 Universal Skills** - Work on all platforms
+- **6 Universal Skills** - Work on all platforms
 - **Zero-Config Install** - Run once, works everywhere
 - **Curated Bundles** - Install exactly what you need
 - **Smart Search** - Find skills by keyword
 - **5 Platform Support** - GitHub Copilot, Claude Code, Codex, OpenCode, Gemini
+- **Discovery & Orchestration** - Find and plan with available resources
 - **Command Shortcuts** - `i`, `ls`, `up`, `rm`, `doc`
 - **Short Flags** - `-a`, `-g`, `-l`, `-y`, `-q`
 
 ## 📦 Available Skills
 
-| Skill | Version | Category | Purpose |
-|-------|---------|----------|---------|
-| **skill-creator** | v1.3.0 | Meta | Automate skill creation |
-| **prompt-engineer** | v1.1.0 | Automation | Optimize prompts using 11 frameworks |
-| **youtube-summarizer** | v1.2.0 | Content | Summarize YouTube videos |
-| **audio-transcriber** | v1.2.0 | Content | Transcribe audio to Markdown |
+### 🔍 Discovery & Orchestration
+| Skill | Version | Purpose |
+|-------|---------|---------|
+| **agent-skill-discovery** | v1.0.0 | Scan and list all installed plugins, agents, skills, and MCP servers |
+| **agent-skill-orchestrator** | v1.0.0 | Intelligent task planning with resource matching and execution strategies |
+
+### 🛠️ Development & Automation
+| Skill | Version | Purpose |
+|-------|---------|---------|
+| **skill-creator** | v1.3.0 | Automate skill creation with guided workflow |
+| **prompt-engineer** | v1.1.0 | Optimize prompts using 11 frameworks (RTF, RISEN, Chain of Thought, etc.) |
+
+### 📝 Content Processing
+| Skill | Version | Purpose |
+|-------|---------|---------|
+| **youtube-summarizer** | v1.2.0 | Extract YouTube transcripts and generate comprehensive summaries |
+| **audio-transcriber** | v1.2.0 | Transform audio recordings into professional Markdown documentation |
 
 ## 🎯 Curated Bundles
 
@@ -77,6 +89,39 @@ See [Bundles Guide](docs/bundles/bundles.md) for details.
 ```bash
 npx cli-ai-skills --search "prompt"
 npx cli-ai-skills --search "video"
+```
+
+## 🚀 Quick Start Examples
+
+### Discovery & Planning Workflow
+
+```bash
+# 1. Discover what's available
+claude  # or: gh copilot, gemini, opencode, codex
+> "What do I have installed?"
+
+# Output: Lists all plugins, skills, MCPs
+
+# 2. Get intelligent execution plan
+> "Plan how to build a REST API with authentication"
+
+# Output: Detailed strategy using best available resources with confidence scores
+```
+
+### Other Use Cases
+
+```bash
+# Create a new skill
+gh copilot -p "create a skill for PDF processing"
+
+# Optimize a prompt
+claude -p "improve this prompt: create REST API"
+
+# Process content
+gh copilot -p "transcribe this audio file: meeting.mp3"
+
+# Orchestrate complex tasks
+gemini -p "design a solution for processing meeting notes and creating Jira tickets"
 ```
 
 ## 💻 Supported Platforms
