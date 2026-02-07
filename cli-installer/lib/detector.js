@@ -126,7 +126,7 @@ function detectOpenCode() {
   } catch (e) {
     // Método alternativo: verificar via npm global
     try {
-      execSync('npm list -g opencode', { stdio: 'ignore' });
+      execSync('npm list -g opencode --depth=0', { stdio: 'ignore' });
       return { installed: true, version: 'unknown', path: 'npm global' };
     } catch {
       return { installed: false, version: null, path: null };
@@ -145,7 +145,7 @@ function detectGemini() {
   } catch (e) {
     // Método alternativo: verificar via npm global
     try {
-      execSync('npm list -g gemini-cli', { stdio: 'ignore' });
+      execSync('npm list -g gemini-cli --depth=0', { stdio: 'ignore' });
       return { installed: true, version: 'unknown', path: 'npm global' };
     } catch {
       return { installed: false, version: null, path: null };
