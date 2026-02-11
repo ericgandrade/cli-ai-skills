@@ -154,6 +154,19 @@ function detectGemini() {
 }
 
 /**
+ * Detect Google Antigravity installation
+ */
+function detectAntigravity() {
+  try {
+    const version = execSync('antigravity --version', { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'ignore'] }).trim();
+    const pathExec = execSync('which antigravity', { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'ignore'] }).trim();
+    return { installed: true, version, path: pathExec };
+  } catch {
+    return { installed: false, version: null, path: null };
+  }
+}
+
+/**
  * Retorna mensagem de ajuda para ferramentas não instaladas
  */
 function getInstallInstructions() {
@@ -179,9 +192,12 @@ Instale ao menos uma das seguintes ferramentas:
 📦 Gemini CLI:
    npm install -g @google/gemini-cli
 
+📦 Google Antigravity:
+   https://antigravity.google/download
+
 Após instalar, execute novamente: npx cli-ai-skills
   `;
 }
 
-module.exports = { detectTools, getInstallInstructions, detectCodex, detectCodexCli, detectCodexApp };
+module.exports = { detectTools, getInstallInstructions, detectCodex, detectCodexCli, detectCodexApp, detectAntigravity };
 
