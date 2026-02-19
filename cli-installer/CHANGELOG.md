@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to cli-ai-skills will be documented in this file.
+All notable changes to claude-superskills will be documented in this file.
 
 ## [1.9.0] - 2026-02-07
 
@@ -45,7 +45,7 @@ All notable changes to cli-ai-skills will be documented in this file.
 - ✨ **ESC key cancellation**: Press ESC during installation to cancel with confirmation
 - ✨ **5-platform support**: Added OpenCode and Gemini CLI support (total: Copilot, Claude, Codex, OpenCode, Gemini)
 - ✨ **Visual tools table**: Display detected AI tools with versions in formatted table
-- ✨ **Version checking**: Auto-detect installed cli-ai-skills version and suggest updates
+- ✨ **Version checking**: Auto-detect installed claude-superskills version and suggest updates
 - ✨ **Reinstall option**: Offer reinstall when all skills are up-to-date
 - 📊 **Enhanced detection**: Tools now return detailed info (installed, version, path)
 - 🗑️ **Improved uninstall**: Support for all 5 platforms with better UX

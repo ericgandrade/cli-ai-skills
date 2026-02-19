@@ -19,20 +19,20 @@ Complete guide for installing **CLI AI Skills** on your system.
 **Recommended (one-liner):**
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/ericandrade/cli-ai-skills/main/scripts/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/ericgandrade/claude-superskills/main/scripts/install.sh | bash
 ```
 
 Or with wget:
 
 ```bash
-wget -qO- https://raw.githubusercontent.com/ericandrade/cli-ai-skills/main/scripts/install.sh | bash
+wget -qO- https://raw.githubusercontent.com/ericgandrade/claude-superskills/main/scripts/install.sh | bash
 ```
 
 This script will:
 - ✅ Detect your operating system (macOS/Linux/WSL)
 - ✅ Verify Node.js >= 16.0.0 is installed
 - ✅ Offer to install Node.js via nvm if missing
-- ✅ Install cli-ai-skills globally via npm
+- ✅ Install claude-superskills globally via npm
 - ✅ Detect installed AI CLI tools (Copilot, Claude, Codex, OpenCode, Gemini)
 - ✅ Show next steps
 
@@ -44,24 +44,24 @@ This script will:
 
 **Interactive install:**
 ```bash
-curl -fsSL https://raw.githubusercontent.com/ericandrade/cli-ai-skills/main/scripts/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/ericgandrade/claude-superskills/main/scripts/install.sh | bash
 ```
 
 **Non-interactive (CI/CD):**
 ```bash
-curl -fsSL https://raw.githubusercontent.com/ericandrade/cli-ai-skills/main/scripts/install.sh | bash -s -- --yes
+curl -fsSL https://raw.githubusercontent.com/ericgandrade/claude-superskills/main/scripts/install.sh | bash -s -- --yes
 ```
 
 **With options:**
 ```bash
 # Skip Node.js version check
-curl -fsSL https://raw.githubusercontent.com/ericandrade/cli-ai-skills/main/scripts/install.sh | bash -s -- --skip-node-check
+curl -fsSL https://raw.githubusercontent.com/ericgandrade/claude-superskills/main/scripts/install.sh | bash -s -- --skip-node-check
 
 # Verbose output
-curl -fsSL https://raw.githubusercontent.com/ericandrade/cli-ai-skills/main/scripts/install.sh | bash -s -- --verbose
+curl -fsSL https://raw.githubusercontent.com/ericgandrade/claude-superskills/main/scripts/install.sh | bash -s -- --verbose
 
 # Help
-curl -fsSL https://raw.githubusercontent.com/ericandrade/cli-ai-skills/main/scripts/install.sh | bash -s -- --help
+curl -fsSL https://raw.githubusercontent.com/ericgandrade/claude-superskills/main/scripts/install.sh | bash -s -- --help
 ```
 
 **Advantages:**
@@ -76,7 +76,7 @@ curl -fsSL https://raw.githubusercontent.com/ericandrade/cli-ai-skills/main/scri
 ### Method 2: NPX (Zero-Install)
 
 ```bash
-npx cli-ai-skills
+npx claude-superskills
 ```
 
 **Advantages:**
@@ -95,12 +95,12 @@ npx cli-ai-skills
 ### Method 3: NPM Global Install
 
 ```bash
-npm install -g cli-ai-skills
+npm install -g claude-superskills
 ```
 
 Then run:
 ```bash
-cli-ai-skills
+claude-superskills
 ```
 
 **Advantages:**
@@ -121,8 +121,8 @@ cli-ai-skills
 For contributors or local testing:
 
 ```bash
-git clone https://github.com/ericandrade/cli-ai-skills.git
-cd cli-ai-skills/cli-installer
+git clone https://github.com/ericgandrade/claude-superskills.git
+cd claude-superskills/cli-installer
 npm link
 ```
 
@@ -130,7 +130,7 @@ This creates a symlink to your local copy. Any changes you make will be reflecte
 
 **Unlink:**
 ```bash
-npm unlink -g cli-ai-skills
+npm unlink -g claude-superskills
 ```
 
 ---
@@ -203,7 +203,7 @@ Download from: https://nodejs.org/
 node --version  # Should be >= 16.0.0
 
 # Install via shell script (recommended)
-curl -fsSL https://raw.githubusercontent.com/ericandrade/cli-ai-skills/main/scripts/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/ericgandrade/claude-superskills/main/scripts/install.sh | bash
 ```
 
 ---
@@ -217,10 +217,10 @@ curl -fsSL https://raw.githubusercontent.com/ericandrade/cli-ai-skills/main/scri
 node --version
 
 # Install via shell script
-curl -fsSL https://raw.githubusercontent.com/ericandrade/cli-ai-skills/main/scripts/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/ericgandrade/claude-superskills/main/scripts/install.sh | bash
 
 # Or with wget
-wget -qO- https://raw.githubusercontent.com/ericandrade/cli-ai-skills/main/scripts/install.sh | bash
+wget -qO- https://raw.githubusercontent.com/ericgandrade/claude-superskills/main/scripts/install.sh | bash
 ```
 
 ---
@@ -234,7 +234,7 @@ wget -qO- https://raw.githubusercontent.com/ericandrade/cli-ai-skills/main/scrip
 3. Run installer:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/ericandrade/cli-ai-skills/main/scripts/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/ericgandrade/claude-superskills/main/scripts/install.sh | bash
 ```
 
 ---
@@ -247,10 +247,10 @@ The shell installer doesn't work on pure Windows. Use npm instead:
 
 ```bash
 # PowerShell or Git Bash
-npm install -g cli-ai-skills
+npm install -g claude-superskills
 
 # Or use npx
-npx cli-ai-skills
+npx claude-superskills
 ```
 
 ---
@@ -305,7 +305,7 @@ source ~/.bashrc
 
 ---
 
-### Issue: "cli-ai-skills: command not found" after install
+### Issue: "claude-superskills: command not found" after install
 
 **Solution:** Reload your shell or check PATH
 
@@ -314,7 +314,7 @@ source ~/.bashrc
 source ~/.bashrc  # or ~/.zshrc
 
 # Verify installation
-npm list -g cli-ai-skills
+npm list -g claude-superskills
 
 # Check PATH
 echo $PATH | grep npm
@@ -331,10 +331,10 @@ echo $PATH | grep npm
 curl --version
 
 # Try with bash explicitly
-bash <(curl -fsSL https://raw.githubusercontent.com/ericandrade/cli-ai-skills/main/scripts/install.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/ericgandrade/claude-superskills/main/scripts/install.sh)
 
 # Or download and run
-curl -fsSL https://raw.githubusercontent.com/ericandrade/cli-ai-skills/main/scripts/install.sh -o install.sh
+curl -fsSL https://raw.githubusercontent.com/ericgandrade/claude-superskills/main/scripts/install.sh -o install.sh
 chmod +x install.sh
 ./install.sh
 ```
@@ -353,7 +353,7 @@ This is **normal** if you haven't installed GitHub Copilot CLI, Claude Code, or 
    - **OpenCode:** https://opencode.ai
    - **Gemini CLI:** https://gemini.google.com/cli
 
-2. After installing, run `npx cli-ai-skills` again
+2. After installing, run `npx claude-superskills` again
 
 ---
 
@@ -384,10 +384,10 @@ ls -la ~/.codex/vendor_imports/skills/skills/.curated/
 **If skills are missing:**
 ```bash
 # Reinstall
-npx cli-ai-skills --all -y
+npx claude-superskills --all -y
 
 # Or use doctor command to diagnose
-npx cli-ai-skills doctor
+npx claude-superskills doctor
 ```
 
 **Restart Codex App:**
@@ -402,20 +402,20 @@ After installation, you may need to:
 mkdir -p ~/.codex/vendor_imports/skills/skills/.curated
 
 # Clone repository
-git clone https://github.com/ericandrade/cli-ai-skills.git
+git clone https://github.com/ericgandrade/claude-superskills.git
 
 # Create symlinks manually
 cd ~/.codex/vendor_imports/skills/skills/.curated
-ln -s /path/to/cli-ai-skills/.codex/skills/skill-creator skill-creator
-ln -s /path/to/cli-ai-skills/.codex/skills/prompt-engineer prompt-engineer
-ln -s /path/to/cli-ai-skills/.codex/skills/youtube-summarizer youtube-summarizer
-ln -s /path/to/cli-ai-skills/.codex/skills/audio-transcriber audio-transcriber
+ln -s /path/to/claude-superskills/.codex/skills/skill-creator skill-creator
+ln -s /path/to/claude-superskills/.codex/skills/prompt-engineer prompt-engineer
+ln -s /path/to/claude-superskills/.codex/skills/youtube-summarizer youtube-summarizer
+ln -s /path/to/claude-superskills/.codex/skills/audio-transcriber audio-transcriber
 ```
 
 ---
    - **Claude Code:** https://code.claude.ai/
    
-2. Run `cli-ai-skills` again - it will detect the tools
+2. Run `claude-superskills` again - it will detect the tools
 
 The installer works fine without AI tools, but you won't be able to install skills until you have one.
 
@@ -426,14 +426,14 @@ The installer works fine without AI tools, but you won't be able to install skil
 ### Quick Uninstall
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/ericandrade/cli-ai-skills/main/scripts/uninstall.sh | bash
+curl -fsSL https://raw.githubusercontent.com/ericgandrade/claude-superskills/main/scripts/uninstall.sh | bash
 ```
 
 ### Manual Uninstall
 
 **Remove npm package:**
 ```bash
-npm uninstall -g cli-ai-skills
+npm uninstall -g claude-superskills
 ```
 
 **Remove installed skills:**
@@ -476,20 +476,20 @@ bash uninstall.sh --yes --purge
 If you use npx, you always get the latest version:
 
 ```bash
-npx cli-ai-skills
+npx claude-superskills
 ```
 
 ### Upgrade Global Install
 
 ```bash
-npm update -g cli-ai-skills
+npm update -g claude-superskills
 ```
 
 Or reinstall:
 
 ```bash
-npm uninstall -g cli-ai-skills
-npm install -g cli-ai-skills
+npm uninstall -g claude-superskills
+npm install -g claude-superskills
 ```
 
 ### Upgrade via Shell Installer
@@ -497,29 +497,29 @@ npm install -g cli-ai-skills
 The shell installer always installs the latest version:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/ericandrade/cli-ai-skills/main/scripts/install.sh | bash -s -- --yes
+curl -fsSL https://raw.githubusercontent.com/ericgandrade/claude-superskills/main/scripts/install.sh | bash -s -- --yes
 ```
 
 ### Check Current Version
 
 ```bash
-cli-ai-skills --version
+claude-superskills --version
 ```
 
 Or:
 
 ```bash
-npm list -g cli-ai-skills
+npm list -g claude-superskills
 ```
 
 ---
 
 ## 📚 Additional Resources
 
-- **GitHub Repository:** https://github.com/ericandrade/cli-ai-skills
-- **NPM Package:** https://npmjs.com/package/cli-ai-skills
-- **Issues:** https://github.com/ericandrade/cli-ai-skills/issues
-- **Changelog:** https://github.com/ericandrade/cli-ai-skills/blob/main/cli-installer/CHANGELOG.md
+- **GitHub Repository:** https://github.com/ericgandrade/claude-superskills
+- **NPM Package:** https://npmjs.com/package/claude-superskills
+- **Issues:** https://github.com/ericgandrade/claude-superskills/issues
+- **Changelog:** https://github.com/ericgandrade/claude-superskills/blob/main/cli-installer/CHANGELOG.md
 
 ---
 
@@ -527,7 +527,7 @@ npm list -g cli-ai-skills
 
 If you encounter issues not covered here:
 
-1. Check existing issues: https://github.com/ericandrade/cli-ai-skills/issues
+1. Check existing issues: https://github.com/ericgandrade/claude-superskills/issues
 2. Create a new issue with:
    - Your OS and version
    - Node.js version (`node --version`)

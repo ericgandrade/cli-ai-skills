@@ -1328,7 +1328,7 @@ async function orchestrate(userRequest) {
   if (!resources || resources.totalCount === 0) {
     return {
       error: 'No resources found. Please install plugins/skills first.',
-      suggestion: 'Run: cli-ai-skills install --all'
+      suggestion: 'Run: claude-superskills install --all'
     };
   }
 

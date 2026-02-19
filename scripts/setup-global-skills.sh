@@ -6,7 +6,7 @@ if [ -z "$SKILLS_REPO" ]; then
     echo "Usage: ./setup-global-skills.sh <path-to-skills-repo>"
     echo ""
     echo "Example:"
-    echo "  ./setup-global-skills.sh ~/code/cli-ai-skills"
+    echo "  ./setup-global-skills.sh ~/code/claude-superskills"
     echo "  ./setup-global-skills.sh /Users/username/Projects/my-skills"
     echo ""
     exit 1

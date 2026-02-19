@@ -7,18 +7,18 @@ const path = require('path');
  * @returns {string} Base path for skills
  */
 function getSkillsBasePath(dirname) {
-  // For npm package: cli-ai-skills/bin/cli.js -> cli-ai-skills/
-  // For git repo: cli-ai-skills/cli-installer/bin/cli.js -> cli-ai-skills/
+  // For npm package: claude-superskills/bin/cli.js -> claude-superskills/
+  // For git repo: claude-superskills/cli-installer/bin/cli.js -> claude-superskills/
 
   const packageSkillsPath = path.resolve(dirname, '..');
   const repoSkillsPath = path.resolve(dirname, '../..');
 
   // Check if we're in an npm package (skills/ exists as sibling to bin/)
   if (fs.existsSync(path.join(packageSkillsPath, 'skills'))) {
-    // npm package structure: cli-ai-skills/skills/
+    // npm package structure: claude-superskills/skills/
     return packageSkillsPath;
   } else if (fs.existsSync(path.join(repoSkillsPath, 'skills'))) {
-    // git repo structure: cli-ai-skills/cli-installer/../skills/
+    // git repo structure: claude-superskills/cli-installer/../skills/
     return repoSkillsPath;
   } else {
     // Fallback to repo root

@@ -314,8 +314,8 @@ Install the skill globally to use it across all projects:
 
 ```bash
 # Clone the repository
-git clone https://github.com/ericgandrade/cli-ai-skills.git
-cd cli-ai-skills
+git clone https://github.com/ericgandrade/claude-superskills.git
+cd claude-superskills
 
 # Run the install script
 ./scripts/install-skills.sh $(pwd)
@@ -331,7 +331,7 @@ Add to a specific project:
 
 ```bash
 # Copy skill to your project
-cp -r cli-ai-skills/.github/skills/youtube-summarizer .github/skills/
+cp -r claude-superskills/.github/skills/youtube-summarizer .github/skills/
 ```
 
 ---

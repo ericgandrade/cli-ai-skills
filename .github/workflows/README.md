@@ -2,7 +2,7 @@
 
 ## 📦 Publish to npm
 
-Workflow automático que publica o pacote `cli-ai-skills` no npm quando você cria uma tag de versão.
+Workflow automático que publica o pacote `claude-superskills` no npm quando você cria uma tag de versão.
 
 ### Como Usar
 
@@ -11,12 +11,12 @@ Workflow automático que publica o pacote `cli-ai-skills` no npm quando você cr
 1. Crie um **Automation Token** no npm:
    - Acesse: https://www.npmjs.com/settings/~/tokens/create
    - Token Type: **Automation** (importante!)
-   - Token Name: `github-actions-cli-ai-skills`
+   - Token Name: `github-actions-claude-superskills`
    - Expiration: No expiration
    - Copie o token (começa com `npm_...`)
 
 2. Adicione como Secret no GitHub:
-   - Acesse: https://github.com/ericgandrade/cli-ai-skills/settings/secrets/actions
+   - Acesse: https://github.com/ericgandrade/claude-superskills/settings/secrets/actions
    - Click **"New repository secret"**
    - Name: `NPM_TOKEN`
    - Value: Cole o token npm
@@ -43,7 +43,7 @@ git push origin main --tags
 
 #### 3️⃣ Acompanhar Publicação
 
-- Acesse: https://github.com/ericgandrade/cli-ai-skills/actions
+- Acesse: https://github.com/ericgandrade/claude-superskills/actions
 - Veja o workflow "Publish to npm" rodando
 - ✅ Quando terminar, pacote está no npm!
 
@@ -93,7 +93,7 @@ git push origin main
 git push origin v1.0.1
 
 # Aguardar GitHub Actions publicar
-# Ver em: https://github.com/ericgandrade/cli-ai-skills/actions
+# Ver em: https://github.com/ericgandrade/claude-superskills/actions
 ```
 
 ### Links Úteis

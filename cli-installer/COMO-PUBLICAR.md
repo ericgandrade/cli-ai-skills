@@ -60,10 +60,10 @@ Logged in as <seu_username> on https://registry.npmjs.org/
 
 ### **PASSO 3: Verificar Nome Disponível**
 
-Antes de publicar, verifique se o nome `cli-ai-skills` está disponível:
+Antes de publicar, verifique se o nome `claude-superskills` está disponível:
 
 ```bash
-npm view cli-ai-skills
+npm view claude-superskills
 ```
 
 **Se aparecer erro** → ✅ Nome disponível! Pode publicar.
@@ -71,8 +71,8 @@ npm view cli-ai-skills
 **Se aparecer info do pacote** → ❌ Nome ocupado. Você precisa:
 
 1. Escolher outro nome. Opções:
-   - `@seu-username/cli-ai-skills` (scoped package)
-   - `cli-ai-skills-installer`
+   - `@seu-username/claude-superskills` (scoped package)
+   - `claude-superskills-installer`
    - `ai-skills-cli`
    - `copilot-skills-installer`
 
@@ -99,20 +99,20 @@ Você verá:
 
 ```
 npm notice 
-npm notice 📦  cli-ai-skills@1.0.0
+npm notice 📦  claude-superskills@1.0.0
 npm notice === Tarball Contents ===
 npm notice 5.8kB README.md
 npm notice 3.2kB bin/cli.js
 npm notice ... (lista de arquivos)
 npm notice === Tarball Details ===
-npm notice name: cli-ai-skills
+npm notice name: claude-superskills
 npm notice version: 1.0.0
-npm notice filename: cli-ai-skills-1.0.0.tgz
+npm notice filename: claude-superskills-1.0.0.tgz
 npm notice package size: 14.3 kB
 npm notice unpacked size: 62.7 kB
 npm notice total files: 14
 npm notice 
-+ cli-ai-skills@1.0.0
++ claude-superskills@1.0.0
 ```
 
 ✅ **Publicado com sucesso!**
@@ -122,19 +122,19 @@ npm notice
 ### **PASSO 5: Verificar Publicação**
 
 1. **No navegador:**
-   - Acesse: https://www.npmjs.com/package/cli-ai-skills
+   - Acesse: https://www.npmjs.com/package/claude-superskills
    - Você verá seu pacote publicado!
 
 2. **No terminal:**
    ```bash
-   npm view cli-ai-skills
+   npm view claude-superskills
    ```
 
 3. **Testar instalação:**
    ```bash
    # Em outro diretório
    cd ~
-   npx cli-ai-skills --version
+   npx claude-superskills --version
    ```
 
    Deve mostrar: `1.0.0` ✅
@@ -148,19 +148,19 @@ npm notice
 npm login
 
 # 2. Verificar se nome está disponível
-npm view cli-ai-skills
+npm view claude-superskills
 
 # 3. Ir para pasta do projeto
-cd /Users/avanade/Library/CloudStorage/OneDrive-Avanade/14_Code_Projects/cli-ai-skills/cli-installer
+cd /Users/avanade/Library/CloudStorage/OneDrive-Avanade/14_Code_Projects/claude-superskills/cli-installer
 
 # 4. Publicar
 npm publish
 
 # 5. Verificar publicação
-npm view cli-ai-skills
+npm view claude-superskills
 
 # 6. Testar globalmente
-npx cli-ai-skills --version
+npx claude-superskills --version
 ```
 
 ---
@@ -173,12 +173,12 @@ npx cli-ai-skills --version
 
 **Solução:**
 1. Escolha outro nome OU
-2. Use scoped package: `@seu-username/cli-ai-skills`
+2. Use scoped package: `@seu-username/claude-superskills`
 
 Edite `package.json`:
 ```json
 {
-  "name": "@seu-username/cli-ai-skills"
+  "name": "@seu-username/claude-superskills"
 }
 ```
 
@@ -207,7 +207,7 @@ npm login
 **Solução:** Escolha um nome mais único:
 - `copilot-claude-skills-cli`
 - `ai-skills-manager`
-- `@seu-username/cli-ai-skills`
+- `@seu-username/claude-superskills`
 
 ---
 
@@ -249,12 +249,12 @@ npm publish
 **ATENÇÃO:** Só funciona nas primeiras 72 horas!
 
 ```bash
-npm unpublish cli-ai-skills@1.0.0
+npm unpublish claude-superskills@1.0.0
 ```
 
 Depois de 72h, só pode deprecar:
 ```bash
-npm deprecate cli-ai-skills@1.0.0 "Use versão 1.1.0 em diante"
+npm deprecate claude-superskills@1.0.0 "Use versão 1.1.0 em diante"
 ```
 
 ---
@@ -264,11 +264,11 @@ npm deprecate cli-ai-skills@1.0.0 "Use versão 1.1.0 em diante"
 Depois de publicado:
 
 1. **Downloads:**
-   - https://www.npmjs.com/package/cli-ai-skills
+   - https://www.npmjs.com/package/claude-superskills
 
 2. **Via terminal:**
    ```bash
-   npm view cli-ai-skills
+   npm view claude-superskills
    ```
 
 ---
@@ -282,19 +282,19 @@ Atualize o README do repositório principal:
 
 \`\`\`bash
 # Via npx (sem instalação)
-npx cli-ai-skills install prompt-engineer
+npx claude-superskills install prompt-engineer
 
 # Ou instalar globalmente
-npm install -g cli-ai-skills
-cli-ai-skills install --all
+npm install -g claude-superskills
+claude-superskills install --all
 \`\`\`
 ```
 
 Adicione badge no README:
 
 ```markdown
-[![npm version](https://img.shields.io/npm/v/cli-ai-skills.svg)](https://www.npmjs.com/package/cli-ai-skills)
-[![npm downloads](https://img.shields.io/npm/dm/cli-ai-skills.svg)](https://www.npmjs.com/package/cli-ai-skills)
+[![npm version](https://img.shields.io/npm/v/claude-superskills.svg)](https://www.npmjs.com/package/claude-superskills)
+[![npm downloads](https://img.shields.io/npm/dm/claude-superskills.svg)](https://www.npmjs.com/package/claude-superskills)
 ```
 
 ---
@@ -305,7 +305,7 @@ Seu pacote está publicado e disponível mundialmente! 🌍
 
 Qualquer pessoa pode usar:
 ```bash
-npx cli-ai-skills install prompt-engineer
+npx claude-superskills install prompt-engineer
 ```
 
 Parabéns! 🎊

@@ -1,4 +1,4 @@
-# cli-ai-skills v1.7.2
+# claude-superskills v1.7.2
 
 🚀 **NPX Installer for AI Skills**
 
@@ -12,19 +12,19 @@ Install reusable skills for GitHub Copilot CLI, Claude Code, OpenAI Codex, OpenC
 
 **Shell installer (recommended):**
 ```bash
-curl -fsSL https://raw.githubusercontent.com/ericandrade/cli-ai-skills/main/scripts/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/ericgandrade/claude-superskills/main/scripts/install.sh | bash
 ```
 
 **Or use NPX:**
 ```bash
 # Zero-config installation (interactive)
-npx cli-ai-skills
+npx claude-superskills
 
 # Auto-install all platforms (skip prompts)
-npx cli-ai-skills -y -q
+npx claude-superskills -y -q
 
 # Install specific bundle
-npx cli-ai-skills --bundle essential -y
+npx claude-superskills --bundle essential -y
 ```
 
 See [Installation Guide](../docs/INSTALLATION.md) for all methods.
@@ -48,9 +48,9 @@ See [Installation Guide](../docs/INSTALLATION.md) for all methods.
 
 Examples:
 ```bash
-npx cli-ai-skills i -y       # Install with confirmation skip
-npx cli-ai-skills ls -q      # List quietly
-npx cli-ai-skills up         # Check for updates
+npx claude-superskills i -y       # Install with confirmation skip
+npx claude-superskills ls -q      # List quietly
+npx claude-superskills up         # Check for updates
 ```
 
 ## 🚩 Short Flags
@@ -65,7 +65,7 @@ npx cli-ai-skills up         # Check for updates
 
 Combine flags:
 ```bash
-npx cli-ai-skills i -a -y -q    # Install all, skip prompts, quiet
+npx claude-superskills i -a -y -q    # Install all, skip prompts, quiet
 ```
 
 ## 📦 Curated Bundles
@@ -74,21 +74,21 @@ Instead of installing everything, choose a bundle:
 
 ```bash
 # Essential (skill-creator, prompt-engineer)
-npx cli-ai-skills --bundle essential -y
+npx claude-superskills --bundle essential -y
 
 # Content (youtube-summarizer, audio-transcriber)
-npx cli-ai-skills --bundle content -y
+npx claude-superskills --bundle content -y
 
 # Developer (skill-creator)
-npx cli-ai-skills --bundle developer -y
+npx claude-superskills --bundle developer -y
 
 # All (complete toolkit)
-npx cli-ai-skills --bundle all -y
+npx claude-superskills --bundle all -y
 ```
 
 See all bundles:
 ```bash
-npx cli-ai-skills --list-bundles
+npx claude-superskills --list-bundles
 ```
 
 ## 🔍 Search Skills
@@ -96,9 +96,9 @@ npx cli-ai-skills --list-bundles
 Find skills by keyword:
 
 ```bash
-npx cli-ai-skills --search "prompt"
-npx cli-ai-skills --search "video"
-npx cli-ai-skills --search "transcription"
+npx claude-superskills --search "prompt"
+npx claude-superskills --search "video"
+npx claude-superskills --search "transcription"
 ```
 
 ## 💻 Supported Platforms
@@ -122,20 +122,20 @@ All 4 skills are universal and work on all platforms:
 
 ```bash
 # One-time use (always latest)
-npx cli-ai-skills
+npx claude-superskills
 
 # Or install globally
-npm install -g cli-ai-skills
-cli-ai-skills
+npm install -g claude-superskills
+claude-superskills
 ```
 
 ### Method 2: From Source
 
 ```bash
-git clone https://github.com/ericgandrade/cli-ai-skills.git
-cd cli-ai-skills/cli-installer
+git clone https://github.com/ericgandrade/claude-superskills.git
+cd claude-superskills/cli-installer
 npm link
-cli-ai-skills
+claude-superskills
 ```
 
 ## 📖 Command Reference
@@ -144,57 +144,57 @@ cli-ai-skills
 Install AI skills to selected platforms.
 
 ```bash
-npx cli-ai-skills install                  # Interactive
-npx cli-ai-skills i -a -y                  # All platforms, auto-confirm
-npx cli-ai-skills install skill-creator    # Specific skill
+npx claude-superskills install                  # Interactive
+npx claude-superskills i -a -y                  # All platforms, auto-confirm
+npx claude-superskills install skill-creator    # Specific skill
 ```
 
 ### list / ls
 List installed skills.
 
 ```bash
-npx cli-ai-skills list
-npx cli-ai-skills ls -q
+npx claude-superskills list
+npx claude-superskills ls -q
 ```
 
 ### update / up
 Check and update skills.
 
 ```bash
-npx cli-ai-skills update
-npx cli-ai-skills up
+npx claude-superskills update
+npx claude-superskills up
 ```
 
 ### doctor / doc
 Diagnose installation issues.
 
 ```bash
-npx cli-ai-skills doctor
-npx cli-ai-skills doc
+npx claude-superskills doctor
+npx claude-superskills doc
 ```
 
 ### --bundle
 Install curated skill collections.
 
 ```bash
-npx cli-ai-skills --bundle essential
-npx cli-ai-skills --bundle content -y
-npx cli-ai-skills --bundle all
+npx claude-superskills --bundle essential
+npx claude-superskills --bundle content -y
+npx claude-superskills --bundle all
 ```
 
 ### --search
 Find skills by keyword.
 
 ```bash
-npx cli-ai-skills --search "optimization"
-npx cli-ai-skills --search "content"
+npx claude-superskills --search "optimization"
+npx claude-superskills --search "content"
 ```
 
 ### --list-bundles
 Show all available bundles.
 
 ```bash
-npx cli-ai-skills --list-bundles
+npx claude-superskills --list-bundles
 ```
 
 ## 🆕 New in v1.5.0
@@ -224,7 +224,7 @@ npx cli-ai-skills --list-bundles
 node --version
 
 # Try with full npx path
-npx cli-ai-skills
+npx claude-superskills
 ```
 
 ### "No platforms detected"
@@ -258,10 +258,10 @@ Each skill includes:
 
 ## 🔗 Links
 
-- **[Main Repository](https://github.com/ericgandrade/cli-ai-skills)**
-- **[Skills Catalog](https://github.com/ericgandrade/cli-ai-skills#-available-skills)**
-- **[Documentation](https://github.com/ericgandrade/cli-ai-skills#-documentation)**
-- **[Contributing](https://github.com/ericgandrade/cli-ai-skills/blob/main/CONTRIBUTING.md)**
+- **[Main Repository](https://github.com/ericgandrade/claude-superskills)**
+- **[Skills Catalog](https://github.com/ericgandrade/claude-superskills#-available-skills)**
+- **[Documentation](https://github.com/ericgandrade/claude-superskills#-documentation)**
+- **[Contributing](https://github.com/ericgandrade/claude-superskills/blob/main/CONTRIBUTING.md)**
 
 ## 📄 License
 
@@ -269,4 +269,4 @@ MIT - Free to use, modify, and distribute.
 
 ---
 
-**Ready to get started? Run `npx cli-ai-skills` now!** 🚀
+**Ready to get started? Run `npx claude-superskills` now!** 🚀

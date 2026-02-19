@@ -72,9 +72,9 @@ async function listCommand(options) {
     }
 
     console.log(chalk.dim(`💡 Commands:`));
-    console.log(chalk.dim(`  npx cli-ai-skills install <skill>    Install a skill`));
-    console.log(chalk.dim(`  npx cli-ai-skills update [skill]     Update skill(s)`));
-    console.log(chalk.dim(`  npx cli-ai-skills uninstall <skill>  Remove a skill\n`));
+    console.log(chalk.dim(`  npx claude-superskills install <skill>    Install a skill`));
+    console.log(chalk.dim(`  npx claude-superskills update [skill]     Update skill(s)`));
+    console.log(chalk.dim(`  npx claude-superskills uninstall <skill>  Remove a skill\n`));
 
   } catch (error) {
     console.error(chalk.red(`\n❌ Error: ${error.message}`));

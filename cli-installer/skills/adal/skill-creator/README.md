@@ -28,12 +28,12 @@ Use this skill when you want to:
 
 ### Prerequisites
 
-This skill is part of the `cli-ai-skills` repository. To use it:
+This skill is part of the `claude-superskills` repository. To use it:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/cli-ai-skills.git
-cd cli-ai-skills
+git clone https://github.com/yourusername/claude-superskills.git
+cd claude-superskills
 ```
 
 ### Install Globally (Recommended)
@@ -55,7 +55,7 @@ ln -sf "$(pwd)/.claude/skills/skill-creator" ~/.claude/skills/skill-creator
 
 ### Repository-Only Installation
 
-If you prefer to use the skill only within this repository, no installation is needed. The skill will be available when working in the `cli-ai-skills` directory.
+If you prefer to use the skill only within this repository, no installation is needed. The skill will be available when working in the `claude-superskills` directory.
 
 ## Usage
 
@@ -195,11 +195,11 @@ This skill leverages several established methodologies:
 
 ### "Template not found" Error
 
-Ensure you're in the `cli-ai-skills` repository or have cloned it:
+Ensure you're in the `claude-superskills` repository or have cloned it:
 
 ```bash
-git clone https://github.com/yourusername/cli-ai-skills.git
-cd cli-ai-skills
+git clone https://github.com/yourusername/claude-superskills.git
+cd claude-superskills
 ```
 
 ### "Platform not detected" Warning

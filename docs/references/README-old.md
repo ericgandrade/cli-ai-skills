@@ -258,8 +258,8 @@ Upcoming features in development:
 
 - ✅ **npx installer** — ~~Install skills directly via `npx`, without manual clone or symlink~~ **RELEASED v1.0.0** 🎉
 - ✅ **Codex CLI/App support** — ~~Native skill support for OpenAI Codex integration~~ **RELEASED v1.4.0** 🎉
-- 🤖 **Gemini skill** — Native skill for Google Gemini integration ([#2](https://github.com/ericgandrade/cli-ai-skills/issues/2))
-- 💻 **OpenCode skill** — Native skill for OpenCode integration ([#3](https://github.com/ericgandrade/cli-ai-skills/issues/3))
+- 🤖 **Gemini skill** — Native skill for Google Gemini integration ([#2](https://github.com/ericgandrade/claude-superskills/issues/2))
+- 💻 **OpenCode skill** — Native skill for OpenCode integration ([#3](https://github.com/ericgandrade/claude-superskills/issues/3))
 
 **Want to contribute?** See [CONTRIBUTING.md](./CONTRIBUTING.md)
 
@@ -413,21 +413,21 @@ Would you like to install youtube-transcript-api now? [Y/n]
 
 ### ⚡ Quick Install via npx (Easiest - Recommended)
 
-[![npm version](https://img.shields.io/npm/v/cli-ai-skills.svg)](https://www.npmjs.com/package/cli-ai-skills)
-[![npm downloads](https://img.shields.io/npm/dm/cli-ai-skills.svg)](https://www.npmjs.com/package/cli-ai-skills)
+[![npm version](https://img.shields.io/npm/v/claude-superskills.svg)](https://www.npmjs.com/package/claude-superskills)
+[![npm downloads](https://img.shields.io/npm/dm/claude-superskills.svg)](https://www.npmjs.com/package/claude-superskills)
 
 **NEW in v1.4.0:** Smart installer with automatic platform detection and interactive selection!
 
 ```bash
 # Smart installer - detects installed AI CLI tools and prompts which to use
-npx cli-ai-skills
+npx claude-superskills
 
 # Or use legacy commands:
-npx cli-ai-skills install         # Interactive mode
-npx cli-ai-skills install --all   # Install for all detected platforms
-npx cli-ai-skills list            # List available skills
-npx cli-ai-skills update          # Update installed skills
-npx cli-ai-skills doctor          # Diagnose installation issues
+npx claude-superskills install         # Interactive mode
+npx claude-superskills install --all   # Install for all detected platforms
+npx claude-superskills list            # List available skills
+npx claude-superskills update          # Update installed skills
+npx claude-superskills doctor          # Diagnose installation issues
 ```
 
 **How it works:**
@@ -457,13 +457,13 @@ For development or if you want auto-updates via `git pull`:
 
 1. **Clone this repository:**
    ```bash
-   git clone https://github.com/ericgandrade/cli-ai-skills.git
-   cd cli-ai-skills
+   git clone https://github.com/ericgandrade/claude-superskills.git
+   cd claude-superskills
    ```
 
 2. **Run the install script:**
    ```bash
-   ./scripts/install-skills.sh ~/path/to/cli-ai-skills
+   ./scripts/install-skills.sh ~/path/to/claude-superskills
    
    # Or use current directory
    ./scripts/install-skills.sh $(pwd)
@@ -500,10 +500,10 @@ Skills auto-discover from `~/.copilot/skills/`:
 mkdir -p ~/.copilot/skills
 
 # Copy or symlink skills
-cp -r cli-ai-skills/.github/skills/* ~/.copilot/skills/
+cp -r claude-superskills/.github/skills/* ~/.copilot/skills/
 
 # Or create symlink (recommended)
-ln -s /full/path/to/cli-ai-skills/.github/skills/prompt-engineer ~/.copilot/skills/prompt-engineer
+ln -s /full/path/to/claude-superskills/.github/skills/prompt-engineer ~/.copilot/skills/prompt-engineer
 ```
 
 #### Claude Code
@@ -515,10 +515,10 @@ Skills auto-discover from `~/.claude/skills/`:
 mkdir -p ~/.claude/skills
 
 # Copy or symlink skills
-cp -r cli-ai-skills/.claude/skills/* ~/.claude/skills/
+cp -r claude-superskills/.claude/skills/* ~/.claude/skills/
 
 # Or create symlink (recommended)
-ln -s /full/path/to/cli-ai-skills/.claude/skills/prompt-engineer ~/.claude/skills/prompt-engineer
+ln -s /full/path/to/claude-superskills/.claude/skills/prompt-engineer ~/.claude/skills/prompt-engineer
 ```
 
 ---
@@ -655,7 +655,7 @@ project-C/.github/skills/  ← skill duplicated
 
 ### Global Skills Approach
 ```
-~/.copilot/config.json  →  points to  →  cli-ai-skills/
+~/.copilot/config.json  →  points to  →  claude-superskills/
 All projects share the same skill library
 ```
 

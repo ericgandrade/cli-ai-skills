@@ -7,7 +7,7 @@ const { getSkillsSourcePath, getUserSkillsPath } = require('./utils/path-resolve
 /**
  * Instala skills para OpenAI Codex
  * Solução robusta com multi-path fallback e logging detalhado
- * @param {string} repoPath - Caminho para o repositório cli-ai-skills
+ * @param {string} repoPath - Caminho para o repositório claude-superskills
  * @param {Array<string>|null} skills - Skills to install (null = all)
  * @param {boolean} quiet - Suppress output
  */

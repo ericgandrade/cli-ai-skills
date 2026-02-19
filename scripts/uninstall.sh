@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 #
 # CLI AI Skills Uninstaller
-# https://github.com/ericandrade/cli-ai-skills
+# https://github.com/ericgandrade/claude-superskills
 #
 # Usage:
 #   bash uninstall.sh
-#   curl -fsSL https://raw.githubusercontent.com/ericandrade/cli-ai-skills/main/scripts/uninstall.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/ericgandrade/claude-superskills/main/scripts/uninstall.sh | bash
 #
 # Options:
 #   --yes, -y              Skip all confirmations
@@ -19,7 +19,7 @@ set -euo pipefail
 UNINSTALLER_VERSION="1.0.0"
 
 # Configuration
-PACKAGE_NAME="cli-ai-skills"
+PACKAGE_NAME="claude-superskills"
 
 # Flags
 SKIP_CONFIRMATION=false
@@ -77,7 +77,7 @@ ${BOLD}CLI AI Skills Uninstaller${NC} v${UNINSTALLER_VERSION}
 
 ${BOLD}USAGE:${NC}
     bash uninstall.sh [OPTIONS]
-    curl -fsSL https://raw.githubusercontent.com/ericandrade/cli-ai-skills/main/scripts/uninstall.sh | bash
+    curl -fsSL https://raw.githubusercontent.com/ericgandrade/claude-superskills/main/scripts/uninstall.sh | bash
 
 ${BOLD}OPTIONS:${NC}
     -y, --yes              Skip all confirmations
@@ -99,7 +99,7 @@ ${BOLD}EXAMPLES:${NC}
     bash uninstall.sh --yes --purge
 
 ${BOLD}WHAT GETS REMOVED:${NC}
-    • npm global package (cli-ai-skills)
+    • npm global package (claude-superskills)
     • Installed skills in ~/.copilot/skills/
     • Installed skills in ~/.claude/skills/
     • Installed skills in ~/.codex/skills/
@@ -353,9 +353,9 @@ show_completion() {
         print_success "CLI AI Skills has been uninstalled"
         echo ""
         print_info "To reinstall, run:"
-        echo "  ${CYAN}npx cli-ai-skills${NC}"
+        echo "  ${CYAN}npx claude-superskills${NC}"
         echo "  or"
-        echo "  ${CYAN}curl -fsSL https://raw.githubusercontent.com/ericandrade/cli-ai-skills/main/scripts/install.sh | bash${NC}"
+        echo "  ${CYAN}curl -fsSL https://raw.githubusercontent.com/ericgandrade/claude-superskills/main/scripts/install.sh | bash${NC}"
     fi
     
     echo ""

@@ -16,7 +16,7 @@ This document provides guidelines, best practices, and troubleshooting for GitHu
 
 ### 1. `publish-npm.yml`
 
-**Purpose:** Automatically publish the `cli-ai-skills` package to npm when version is bumped.
+**Purpose:** Automatically publish the `claude-superskills` package to npm when version is bumped.
 
 **Triggers:**
 - Manual dispatch (workflow_dispatch)
@@ -447,7 +447,7 @@ gh run view <run-id> --log
 gh run cancel <run-id>
 
 # Unpublish from npm (within 72 hours)
-npm unpublish cli-ai-skills@<version>
+npm unpublish claude-superskills@<version>
 
 # Revert commit
 git revert <commit-sha>

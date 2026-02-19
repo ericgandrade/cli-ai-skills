@@ -5,7 +5,7 @@ const semver = require('semver');
 const yaml = require('js-yaml');
 
 /**
- * Verifica se cli-ai-skills já está instalado em alguma plataforma
+ * Verifica se claude-superskills já está instalado em alguma plataforma
  * @returns {Object} { installed: boolean, platforms: [], versions: {}, latestVersion: string }
  */
 function checkInstalledVersion() {
@@ -86,7 +86,7 @@ function isUpdateAvailable(installInfo) {
 }
 
 /**
- * Verifica se uma plataforma específica tem cli-ai-skills instalado
+ * Verifica se uma plataforma específica tem claude-superskills instalado
  * @param {string} platform - Nome da plataforma (copilot, claude, etc)
  * @returns {Object} { installed: boolean, version: string }
  */

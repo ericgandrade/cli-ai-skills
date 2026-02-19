@@ -1,6 +1,6 @@
 # Versioning Guide
 
-This document defines the versioning strategy for the **cli-ai-skills** project and all individual skills.
+This document defines the versioning strategy for the **claude-superskills** project and all individual skills.
 
 ---
 
@@ -156,9 +156,9 @@ Use this checklist for every release to ensure consistency:
 
 ### Post-Release
 
-- [ ] Verify NPM package published: `npm view cli-ai-skills`
+- [ ] Verify NPM package published: `npm view claude-superskills`
 - [ ] Verify git tag on GitHub: Check releases page
-- [ ] Test installation: `npx cli-ai-skills@latest install <skill>`
+- [ ] Test installation: `npx claude-superskills@latest install <skill>`
 - [ ] Update GitHub release notes (optional but recommended)
 
 ---
@@ -180,7 +180,7 @@ done
 git tag -l | sort -V
 
 # Check NPM published versions
-npm view cli-ai-skills versions
+npm view claude-superskills versions
 
 # Verify dual-platform sync
 diff .github/skills/README.md .claude/skills/README.md
@@ -218,7 +218,7 @@ diff .github/skills/README.md .claude/skills/README.md
 3. ❌ **Publishing to NPM without git tag**
 4. ❌ **Creating tags for skills** (only tag installer releases)
 5. ❌ **Skipping CHANGELOG.md updates**
-6. ❌ **Not testing `npx cli-ai-skills@latest` after publishing**
+6. ❌ **Not testing `npx claude-superskills@latest` after publishing**
 
 ---
 
@@ -252,7 +252,7 @@ Example (v1.4.0):
   - skill-creator: 1.1.0 → 1.1.1
   - youtube-summarizer: 1.1.0 → 1.1.1
   - audio-transcriber: 1.1.0 → 1.1.1
-  - cli-ai-skills (NPM): 1.3.1 → 1.4.0
+  - claude-superskills (NPM): 1.3.1 → 1.4.0
 
 ## Tri-Platform Synchronization Matrix
 

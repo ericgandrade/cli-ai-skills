@@ -10,7 +10,7 @@
    ```
 
 2. **Verify package.json**
-   - Unique package name on npm: `cli-ai-skills`
+   - Unique package name on npm: `claude-superskills`
    - Valid SemVer version
    - Git repository configured
    - Appropriate keywords
@@ -24,13 +24,13 @@
 npm link
 
 # Test commands
-cli-ai-skills --version
-cli-ai-skills doctor
-cli-ai-skills list
-cli-ai-skills install --help
+claude-superskills --version
+claude-superskills doctor
+claude-superskills list
+claude-superskills install --help
 
 # Uninstall link
-npm unlink -g cli-ai-skills
+npm unlink -g claude-superskills
 ```
 
 #### 2. Dry Run
@@ -76,13 +76,13 @@ npm publish
 
 ```bash
 # Search on npm registry
-npm search cli-ai-skills
+npm search claude-superskills
 
 # View package information
-npm view cli-ai-skills
+npm view claude-superskills
 
 # Install globally from npm
-npm install -g cli-ai-skills
+npm install -g claude-superskills
 ```
 
 ### Post-Publication Tests
@@ -90,27 +90,27 @@ npm install -g cli-ai-skills
 ```bash
 # In different directory
 cd ~
-npm install -g cli-ai-skills
+npm install -g claude-superskills
 
 # Test installation
-cli-ai-skills --version
-cli-ai-skills doctor
-cli-ai-skills list
+claude-superskills --version
+claude-superskills doctor
+claude-superskills list
 
 # Test skills installation
-cli-ai-skills install prompt-engineer --yes
+claude-superskills install prompt-engineer --yes
 
 # Check installed skills
-cli-ai-skills list
+claude-superskills list
 
 # Update
-cli-ai-skills update --yes
+claude-superskills update --yes
 
 # Uninstall skill
-cli-ai-skills uninstall prompt-engineer
+claude-superskills uninstall prompt-engineer
 
 # Uninstall CLI
-npm uninstall -g cli-ai-skills
+npm uninstall -g claude-superskills
 ```
 
 ---
@@ -137,11 +137,11 @@ npm uninstall -g cli-ai-skills
 
 - [ ] `npm login` executed
 - [ ] `npm publish` without errors
-- [ ] Package appears at https://www.npmjs.com/package/cli-ai-skills
+- [ ] Package appears at https://www.npmjs.com/package/claude-superskills
 
 ### After Publication
 
-- [ ] Install globally: `npm install -g cli-ai-skills`
+- [ ] Install globally: `npm install -g claude-superskills`
 - [ ] Test main commands
 - [ ] Install test skill
 - [ ] Update main repository documentation
@@ -170,14 +170,14 @@ npm audit fix
 
 ```bash
 # Deprecate specific version
-npm deprecate cli-ai-skills@1.0.0 "Version discontinued, use 1.1.0+"
+npm deprecate claude-superskills@1.0.0 "Version discontinued, use 1.1.0+"
 ```
 
 ### Remove Version (use with caution!)
 
 ```bash
 # Remove published version (only first 72h)
-npm unpublish cli-ai-skills@1.0.0
+npm unpublish claude-superskills@1.0.0
 ```
 
 ---

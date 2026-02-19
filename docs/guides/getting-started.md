@@ -9,7 +9,7 @@ Welcome to CLI AI Skills! This guide will help you get up and running in minutes
 The simplest way to get started is to run the installer with no arguments:
 
 ```bash
-npx cli-ai-skills
+npx claude-superskills
 ```
 
 This will automatically:
@@ -25,25 +25,25 @@ This will automatically:
 See what's installed:
 
 ```bash
-npx cli-ai-skills ls
+npx claude-superskills ls
 ```
 
 Or the long form:
 
 ```bash
-npx cli-ai-skills list
+npx claude-superskills list
 ```
 
 ### 3. Get Help
 
 ```bash
-npx cli-ai-skills help
+npx claude-superskills help
 ```
 
 Or check a specific command:
 
 ```bash
-npx cli-ai-skills install --help
+npx claude-superskills install --help
 ```
 
 ---
@@ -85,28 +85,28 @@ Instead of installing everything, you can install just what you need:
 ### Essential Bundle
 Perfect for getting started:
 ```bash
-npx cli-ai-skills --bundle essential -y
+npx claude-superskills --bundle essential -y
 ```
 Includes: **skill-creator**, **prompt-engineer**
 
 ### Content Bundle
 For video and audio processing:
 ```bash
-npx cli-ai-skills --bundle content -y
+npx claude-superskills --bundle content -y
 ```
 Includes: **youtube-summarizer**, **audio-transcriber**
 
 ### Developer Bundle
 For creating custom skills:
 ```bash
-npx cli-ai-skills --bundle developer -y
+npx claude-superskills --bundle developer -y
 ```
 Includes: **skill-creator**
 
 ### All Skills
 Complete collection:
 ```bash
-npx cli-ai-skills --bundle all -y
+npx claude-superskills --bundle all -y
 ```
 Includes: all 4 skills
 
@@ -119,9 +119,9 @@ Includes: all 4 skills
 Can't remember a skill name? Search for it:
 
 ```bash
-npx cli-ai-skills --search "prompt"
-npx cli-ai-skills --search "video"
-npx cli-ai-skills --search "transcription"
+npx claude-superskills --search "prompt"
+npx claude-superskills --search "video"
+npx claude-superskills --search "transcription"
 ```
 
 Search works across skill names, descriptions, tags, and categories.
@@ -142,9 +142,9 @@ Use short commands for faster typing:
 
 Examples:
 ```bash
-npx cli-ai-skills i -a -y    # Install all with flags
-npx cli-ai-skills ls          # Quick list
-npx cli-ai-skills up          # Update skills
+npx claude-superskills i -a -y    # Install all with flags
+npx claude-superskills ls          # Quick list
+npx claude-superskills up          # Update skills
 ```
 
 ---
@@ -163,9 +163,9 @@ Combine with short flags for maximum efficiency:
 
 Examples:
 ```bash
-npx cli-ai-skills install -a -y -q    # Install everything silently
-npx cli-ai-skills list -q             # List without extra formatting
-npx cli-ai-skills update -g -y        # Global update with confirmation skip
+npx claude-superskills install -a -y -q    # Install everything silently
+npx claude-superskills list -q             # List without extra formatting
+npx claude-superskills update -g -y        # Global update with confirmation skip
 ```
 
 ---
@@ -201,23 +201,23 @@ Now that you're installed, explore:
 node --version
 
 # Install globally instead of npx
-npm install -g cli-ai-skills
-npx cli-ai-skills
+npm install -g claude-superskills
+npx claude-superskills
 ```
 
 ### "No platforms detected"
 ```bash
 # Check if your platform is installed
-npx cli-ai-skills doctor
+npx claude-superskills doctor
 ```
 
 ### "Permission denied"
 ```bash
 # Try with sudo (not recommended)
-sudo npx cli-ai-skills -g
+sudo npx claude-superskills -g
 
 # Or use local install
-npx cli-ai-skills
+npx claude-superskills
 ```
 
 ### Need more help?

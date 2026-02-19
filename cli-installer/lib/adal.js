@@ -6,7 +6,7 @@ const { getSkillsSourcePath, getUserSkillsPath } = require('./utils/path-resolve
 
 /**
  * Install skills for AdaL CLI
- * @param {string} repoPath - Path to the cli-ai-skills repository
+ * @param {string} repoPath - Path to the claude-superskills repository
  * @param {Array<string>|null} skills - Skills to install (null = all)
  * @param {boolean} quiet - Suppress output
  */

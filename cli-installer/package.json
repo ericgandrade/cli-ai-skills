@@ -1,17 +1,17 @@
 {
-  "name": "cli-ai-skills",
-  "version": "1.10.2",
+  "name": "claude-superskills",
+  "version": "1.10.3",
   "description": "Install AI skills for GitHub Copilot CLI, Claude Code, OpenAI Codex, OpenCode, Gemini CLI, Antigravity, Cursor IDE, and AdaL CLI",
   "main": "lib/index.js",
   "bin": {
-    "cli-ai-skills": "bin/cli.js"
+    "claude-superskills": "bin/cli.js"
   },
   "scripts": {
-    "test": "echo '✅ cli-ai-skills - test passed'",
+    "test": "echo '✅ claude-superskills - test passed'",
     "build": "cd .. && ./scripts/build-skills.sh",
     "prebuild": "cd .. && ./scripts/build-skills.sh",
     "link": "npm link",
-    "unlink": "npm unlink -g cli-ai-skills",
+    "unlink": "npm unlink -g claude-superskills",
     "generate-index": "cd .. && python3 scripts/generate-skills-index.py",
     "generate-catalog": "cd .. && python3 scripts/generate-catalog.py",
     "generate-all": "npm run build && npm run generate-index && npm run generate-catalog",
@@ -54,10 +54,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ericgandrade/cli-ai-skills.git"
+    "url": "git+https://github.com/ericgandrade/claude-superskills.git"
   },
   "bugs": {
-    "url": "https://github.com/ericgandrade/cli-ai-skills/issues"
+    "url": "https://github.com/ericgandrade/claude-superskills/issues"
   },
-  "homepage": "https://github.com/ericgandrade/cli-ai-skills#readme"
+  "homepage": "https://github.com/ericgandrade/claude-superskills#readme"
 }

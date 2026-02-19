@@ -14,7 +14,7 @@ cd cli-installer && npm test
 cd cli-installer && npm link
 
 # Unlink local package
-cd cli-installer && npm unlink -g cli-ai-skills
+cd cli-installer && npm unlink -g claude-superskills
 
 # Generate skills index and catalog
 cd cli-installer && npm run generate-all

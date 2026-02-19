@@ -32,7 +32,7 @@ You can enhance existing skills by:
 
 ### 3. **Report Issues**
 
-Found a problem? [Open an issue](https://github.com/eric.andrade/cli-ai-skills/issues) with:
+Found a problem? [Open an issue](https://github.com/eric.andrade/claude-superskills/issues) with:
 - **Skill name and version**
 - **Platform** (GitHub Copilot CLI or Claude Code)
 - **Input** (what you typed)
@@ -89,8 +89,8 @@ Before pushing changes:
 
 ```bash
 # Fork the repository on GitHub
-git clone https://github.com/YOUR_USERNAME/cli-ai-skills.git
-cd cli-ai-skills
+git clone https://github.com/YOUR_USERNAME/claude-superskills.git
+cd claude-superskills
 ```
 
 ### Step 2: Create a Branch
@@ -287,7 +287,7 @@ Must include:
 
 Have an idea for a new skill or enhancement?
 
-[Open an issue](https://github.com/eric.andrade/cli-ai-skills/issues) with:
+[Open an issue](https://github.com/eric.andrade/claude-superskills/issues) with:
 - **Skill name** (if new skill)
 - **Problem statement** - What pain point does this solve?
 - **Proposed solution** - How would the skill work?

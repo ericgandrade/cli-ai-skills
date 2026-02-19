@@ -32,16 +32,16 @@ Use this skill when you want to:
 ### Via NPM (Recommended)
 
 ```bash
-npm install -g cli-ai-skills
-cli-ai-skills install agent-skill-discovery
+npm install -g claude-superskills
+claude-superskills install agent-skill-discovery
 ```
 
 ### Manual Installation
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/cli-ai-skills.git
-cd cli-ai-skills
+git clone https://github.com/yourusername/claude-superskills.git
+cd claude-superskills
 
 # Run build script to sync to all platforms
 ./scripts/build-skills.sh
@@ -198,7 +198,7 @@ gemini  # or: opencode, codex
 **Solutions:**
 ```bash
 # Install some skills first
-cli-ai-skills install --all
+claude-superskills install --all
 
 # Verify platform directory exists
 ls -la ~/.claude  # or ~/.github, ~/.gemini, etc.
@@ -234,7 +234,7 @@ jq . ~/.claude/.mcp.json
 **Solution:**
 ```bash
 # Reinstall skill
-cli-ai-skills install agent-skill-discovery --force
+claude-superskills install agent-skill-discovery --force
 
 # Check installation
 ls ~/.claude/skills/agent-skill-discovery
@@ -258,7 +258,7 @@ ls ~/.github/skills/agent-skill-discovery
 
 Found a bug or want to improve discovery?
 
-1. Open an issue: [GitHub Issues](https://github.com/yourusername/cli-ai-skills/issues)
+1. Open an issue: [GitHub Issues](https://github.com/yourusername/claude-superskills/issues)
 2. Submit a PR: [Contributing Guide](../../docs/CONTRIBUTING.md)
 3. Check validation: `./scripts/validate-skill-yaml.sh skills/agent-skill-discovery`
 
@@ -284,5 +284,5 @@ MIT License - See [LICENSE](../../LICENSE) for details.
 
 - **Documentation:** [Full skill specification](SKILL.md)
 - **Examples:** [references/examples.md](references/examples.md)
-- **Issues:** [GitHub Issues](https://github.com/yourusername/cli-ai-skills/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/yourusername/cli-ai-skills/discussions)
+- **Issues:** [GitHub Issues](https://github.com/yourusername/claude-superskills/issues)
+- **Discussions:** [GitHub Discussions](https://github.com/yourusername/claude-superskills/discussions)

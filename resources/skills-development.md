@@ -351,7 +351,7 @@ Next steps:
 Configure global skills from a repository:
 
 ```bash
-./scripts/setup-global-skills.sh ~/code/cli-ai-skills
+./scripts/setup-global-skills.sh ~/code/claude-superskills
 ```
 
 **What it does:**
@@ -363,15 +363,15 @@ Configure global skills from a repository:
 **Sample output:**
 ```
 🔧 Setting up global skills from:
-   /Users/you/code/cli-ai-skills
+   /Users/you/code/claude-superskills
 
 ✅ Configuring GitHub Copilot...
    Config written to: ~/.copilot/config.json
-   Skills path: /Users/you/code/cli-ai-skills/.github/skills
+   Skills path: /Users/you/code/claude-superskills/.github/skills
 
 ✅ Configuring Claude Code...
    Config written to: ~/.claude/config.json
-   Skills path: /Users/you/code/cli-ai-skills/.claude/skills
+   Skills path: /Users/you/code/claude-superskills/.claude/skills
 
 ✅ Global skills configured successfully!
 
@@ -1151,7 +1151,7 @@ Study existing skills in this repository:
 
 ### Community
 
-- **GitHub Repository:** https://github.com/ericgandrade/cli-ai-skills
+- **GitHub Repository:** https://github.com/ericgandrade/claude-superskills
 - **Issues:** Report bugs or request features
 - **Discussions:** Share skills and get feedback
 

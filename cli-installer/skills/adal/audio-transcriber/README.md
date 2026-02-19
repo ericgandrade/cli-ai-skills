@@ -32,7 +32,7 @@ See **[CHANGELOG.md](./CHANGELOG.md)** for complete v1.1.0 details.
 ### Quick Install (NPX)
 
 ```bash
-npx cli-ai-skills@latest install audio-transcriber
+npx claude-superskills@latest install audio-transcriber
 ```
 
 This automatically:
@@ -82,7 +82,7 @@ gh extension install github/gh-copilot
 
 **Global installation (auto-updates with git pull):**
 ```bash
-cd /path/to/cli-ai-skills
+cd /path/to/claude-superskills
 ./scripts/install-skills.sh $(pwd)
 ```
 
@@ -325,13 +325,13 @@ A: Yes! Edit the Markdown template in SKILL.md Step 3.
 
 ## 📄 License
 
-This skill is part of the cli-ai-skills repository.  
+This skill is part of the claude-superskills repository.  
 MIT License - See repository LICENSE file.
 
 ## 🤝 Contributing
 
 Found a bug or have a feature request?  
-Open an issue in the [cli-ai-skills repository](https://github.com/yourusername/cli-ai-skills).
+Open an issue in the [claude-superskills repository](https://github.com/yourusername/claude-superskills).
 
 ---
 

@@ -35,7 +35,7 @@
 
 **Test performed:**
 ```bash
-✅ cli-ai-skills install --all --yes
+✅ claude-superskills install --all --yes
    [████████████████████] 100% - Installation complete
    ✨ All 3 skills ready to use!
 ```
@@ -57,7 +57,7 @@
 
 **Test performed:**
 ```bash
-✅ cli-ai-skills list
+✅ claude-superskills list
    📦 Found 3 skills:
    ✅ prompt-engineer v1.0.0 (installed)
    ✅ skill-creator v1.1.0 (installed)
@@ -83,7 +83,7 @@
 
 **Test performed:**
 ```bash
-✅ cli-ai-skills update --yes
+✅ claude-superskills update --yes
    [████████████████████] 100% - All skills are up to date
    ✨ All skills are already at the latest version!
 ```
@@ -104,7 +104,7 @@
 
 **Test performed:**
 ```bash
-✅ cli-ai-skills uninstall prompt-engineer
+✅ claude-superskills uninstall prompt-engineer
    Found "prompt-engineer" installed on:
    • copilot (v1.0.0)
    • claude (v1.0.0)
@@ -127,7 +127,7 @@
 
 **Test performed:**
 ```bash
-✅ cli-ai-skills doctor
+✅ claude-superskills doctor
    ✅ Node.js: v24.12.0
    ✅ Operating System: macOS
    ✅ GitHub Copilot CLI: Installed
@@ -278,13 +278,13 @@ TOTAL: 14 files, 62.7 KB
 
 ```bash
 ✅ npm link                          # Global link created
-✅ cli-ai-skills --version           # 1.0.0
-✅ cli-ai-skills --help              # Help working
-✅ cli-ai-skills doctor              # 5/5 checks passed
-✅ cli-ai-skills list                # 3 skills listed
-✅ cli-ai-skills install --all --yes # Installation working
-✅ cli-ai-skills update --yes        # All up to date
-✅ cli-ai-skills uninstall <skill>   # Prompts working
+✅ claude-superskills --version           # 1.0.0
+✅ claude-superskills --help              # Help working
+✅ claude-superskills doctor              # 5/5 checks passed
+✅ claude-superskills list                # 3 skills listed
+✅ claude-superskills install --all --yes # Installation working
+✅ claude-superskills update --yes        # All up to date
+✅ claude-superskills uninstall <skill>   # Prompts working
 ```
 
 ### 2. Publication Tests ✅
@@ -371,14 +371,14 @@ npm publish
 
 ### 3. Verify
 ```bash
-npm view cli-ai-skills
+npm view claude-superskills
 ```
 
 ### 4. Test global installation
 ```bash
-npm install -g cli-ai-skills
-cli-ai-skills --version
-cli-ai-skills install prompt-engineer
+npm install -g claude-superskills
+claude-superskills --version
+claude-superskills install prompt-engineer
 ```
 
 ---
@@ -390,7 +390,7 @@ cli-ai-skills install prompt-engineer
 - [ ] Custom repository support
 - [ ] Automatic rollback
 - [ ] Verbose logging (--verbose)
-- [ ] Global configuration (~/.cli-ai-skills/config.json)
+- [ ] Global configuration (~/.claude-superskills/config.json)
 - [ ] Private skills support
 - [ ] Skill templates
 

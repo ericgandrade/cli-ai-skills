@@ -46,9 +46,9 @@ Before starting skill creation, gather runtime information:
 REPO_ROOT=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
 SKILLS_REPO="$REPO_ROOT"
 
-# Check if in cli-ai-skills repository
+# Check if in claude-superskills repository
 if [[ ! -d "$SKILLS_REPO/.github/skills" ]]; then
-    echo "⚠️  Not in cli-ai-skills repository. Creating standalone skill."
+    echo "⚠️  Not in claude-superskills repository. Creating standalone skill."
     STANDALONE=true
 fi
 
@@ -339,7 +339,7 @@ Update progress:
 
 📦 Skill Name: your-skill-name
 📁 Location: .github/skills/your-skill-name/
-🔗 Status: Arquivos criados. Instalação via 'npx cli-ai-skills install --local' recomendada.
+🔗 Status: Arquivos criados. Instalação via 'npx claude-superskills install --local' recomendada.
 
 📋 Files Created:
    ✅ SKILL.md (1,847 words)
@@ -349,7 +349,7 @@ Update progress:
    ✅ scripts/ (empty, ready for utilities)
 
 🚀 Próximos Passos:
-   1. **Instalar a skill:** `npx cli-ai-skills install --local` (no diretório onde a skill foi criada)
+   1. **Instalar a skill:** `npx claude-superskills install --local` (no diretório onde a skill foi criada)
    2. Testar a skill: Experimente as frases de gatilho no seu CLI
    3. Adicionar exemplos: Crie exemplos de código em examples/
    4. Fazer commit: `git add .github/skills/your-skill-name && git commit`
@@ -371,10 +371,10 @@ If templates are missing:
 ```
 ❌ Error: Template not found at resources/templates/
 
-This skill requires the cli-ai-skills repository structure.
+This skill requires the claude-superskills repository structure.
 
 Options:
-1. Clone cli-ai-skills: git clone <repo-url>
+1. Clone claude-superskills: git clone <repo-url>
 2. Create minimal skill structure manually
 3. Exit and set up templates first
 ```
@@ -468,6 +468,6 @@ Executable utilities for skill maintenance:
 ## References
 
 - **Anthropic Official Skill Development Guide:** https://github.com/anthropics/claude-plugins-official/blob/main/plugins/plugin-dev/skills/skill-development/SKILL.md
-- **Repository:** https://github.com/yourusername/cli-ai-skills
+- **Repository:** https://github.com/yourusername/claude-superskills
 - **Writing Style Guide:** `resources/templates/writing-style-guide.md`
 - **Progress Tracker Template:** `resources/templates/progress-tracker.md`

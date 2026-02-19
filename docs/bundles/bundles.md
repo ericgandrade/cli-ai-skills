@@ -20,7 +20,7 @@ Bundles are **curated collections** of skills grouped by use case. Instead of in
 
 **Installation:**
 ```bash
-npx cli-ai-skills --bundle essential -y
+npx claude-superskills --bundle essential -y
 ```
 
 **Use Cases:**
@@ -49,7 +49,7 @@ npx cli-ai-skills --bundle essential -y
 
 **Installation:**
 ```bash
-npx cli-ai-skills --bundle content -y
+npx claude-superskills --bundle content -y
 ```
 
 **Use Cases:**
@@ -79,7 +79,7 @@ npx cli-ai-skills --bundle content -y
 
 **Installation:**
 ```bash
-npx cli-ai-skills --bundle developer -y
+npx claude-superskills --bundle developer -y
 ```
 
 **Use Cases:**
@@ -111,7 +111,7 @@ npx cli-ai-skills --bundle developer -y
 
 **Installation:**
 ```bash
-npx cli-ai-skills --bundle all -y
+npx claude-superskills --bundle all -y
 ```
 
 **Use Cases:**
@@ -193,10 +193,10 @@ You can always change bundles:
 
 ```bash
 # Install additional skills from another bundle
-npx cli-ai-skills install youtube-summarizer -y
+npx claude-superskills install youtube-summarizer -y
 
 # Or install another bundle
-npx cli-ai-skills --bundle content -y
+npx claude-superskills --bundle content -y
 ```
 
 Bundles can be mixed and matched - there's no lock-in.
@@ -209,13 +209,13 @@ If you prefer to install individual skills:
 
 ```bash
 # Install single skill
-npx cli-ai-skills install skill-creator
+npx claude-superskills install skill-creator
 
 # Install multiple skills
-npx cli-ai-skills install skill-creator prompt-engineer youtube-summarizer
+npx claude-superskills install skill-creator prompt-engineer youtube-summarizer
 
 # Install with flags
-npx cli-ai-skills i skill-creator -a -y -q
+npx claude-superskills i skill-creator -a -y -q
 ```
 
 ---
@@ -225,7 +225,7 @@ npx cli-ai-skills i skill-creator -a -y -q
 See all bundles anytime:
 
 ```bash
-npx cli-ai-skills --list-bundles
+npx claude-superskills --list-bundles
 ```
 
 ---

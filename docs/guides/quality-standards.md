@@ -174,7 +174,7 @@ Use this skill when:
 
 ````markdown
 ```bash
-npx cli-ai-skills --search "video"
+npx claude-superskills --search "video"
 ```
 ````
 

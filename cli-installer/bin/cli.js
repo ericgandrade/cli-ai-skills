@@ -50,7 +50,7 @@ async function main() {
   setupEscapeHandler();
   setupCleanupHandler();
   
-  console.log(chalk.cyan.bold(`\n🚀 cli-ai-skills v${VERSION} - Multi-Platform Installer\n`));
+  console.log(chalk.cyan.bold(`\n🚀 claude-superskills v${VERSION} - Multi-Platform Installer\n`));
   
   // Handle help
   if (args.includes('--help') || args.includes('-h')) {
@@ -196,7 +196,7 @@ async function main() {
     const installInfo = checkInstalledVersion();
     
     if (installInfo.installed) {
-      console.log(chalk.cyan(`\nℹ️  cli-ai-skills já instalado nas seguintes plataformas:\n`));
+      console.log(chalk.cyan(`\nℹ️  claude-superskills já instalado nas seguintes plataformas:\n`));
       
       for (const platform of installInfo.platforms) {
         const version = installInfo.versions[platform];
@@ -333,7 +333,7 @@ async function main() {
       
     case 'uninstall':
     case 'doctor':
-      console.log('Use: npx cli-ai-skills --help for options\n');
+      console.log('Use: npx claude-superskills --help for options\n');
       break;
       
     default:
@@ -346,7 +346,7 @@ function showHelp() {
   console.log(`
 CLI AI Skills v${VERSION}
 
-Usage: npx cli-ai-skills [COMMAND] [OPTIONS]
+Usage: npx claude-superskills [COMMAND] [OPTIONS]
 
 Commands:
   install, i      Install skills (default)
@@ -368,12 +368,12 @@ Options:
   --version, -v   Show version
 
 Examples:
-  npx cli-ai-skills                           # Interactive installation
-  npx cli-ai-skills -y -q                    # Install all, skip prompts
-  npx cli-ai-skills --bundle essential -y    # Install essential bundle
-  npx cli-ai-skills --search "prompt"        # Search for skills
-  npx cli-ai-skills --list-bundles           # Show available bundles
-  npx cli-ai-skills ls -q                    # List skills, quiet mode
+  npx claude-superskills                           # Interactive installation
+  npx claude-superskills -y -q                    # Install all, skip prompts
+  npx claude-superskills --bundle essential -y    # Install essential bundle
+  npx claude-superskills --search "prompt"        # Search for skills
+  npx claude-superskills --list-bundles           # Show available bundles
+  npx claude-superskills ls -q                    # List skills, quiet mode
 `);
 }
 

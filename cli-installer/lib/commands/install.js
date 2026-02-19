@@ -50,7 +50,7 @@ async function installCommand(skillNames, options) {
       console.log(chalk.yellow('Please install at least one:'));
       console.log(chalk.dim('  • GitHub Copilot CLI: https://docs.github.com/copilot/cli'));
       console.log(chalk.dim('  • Claude Code: https://claude.ai/code'));
-      console.log(chalk.dim('\n💡 Run \'npx cli-ai-skills doctor\' for detailed diagnostics'));
+      console.log(chalk.dim('\n💡 Run \'npx claude-superskills doctor\' for detailed diagnostics'));
       process.exit(1);
     }
 

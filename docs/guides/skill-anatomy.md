@@ -157,7 +157,7 @@ Step-by-step explanation:
 
 ### Example 1: Create a Code Review Skill
 ```bash
-npx cli-ai-skills skill-creator
+npx claude-superskills skill-creator
 # Follow prompts to create "code-reviewer"
 ```
 
@@ -339,8 +339,8 @@ Human-readable catalog of all skills (auto-generated from skills_index.json)
 
 ### 3. CLI Search
 ```bash
-npx cli-ai-skills --search "video"
-npx cli-ai-skills --search "automation"
+npx claude-superskills --search "video"
+npx claude-superskills --search "automation"
 ```
 
 ---

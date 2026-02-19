@@ -193,7 +193,7 @@ codex --version  // → "codex-cli 0.98.0"
 
 - **NPX CLI Shortcuts:** Commands `i` (install), `ls` (list), `up` (update), `rm` (uninstall), `doc` (doctor)
 - **NPX CLI Short Flags:** `-a` (--all), `-g` (--global), `-l` (--local), `-y` (--yes), `-q` (--quiet)
-- **Zero-Config Installation:** Run `npx cli-ai-skills` with no arguments to install all skills automatically
+- **Zero-Config Installation:** Run `npx claude-superskills` with no arguments to install all skills automatically
 - **Bundle Support:** `--bundle <name>` for installing curated skill collections
 - **Search Functionality:** `--search <keyword>` to find skills by name, description, tags, or category
 - **List Bundles Command:** `--list-bundles` to show all available bundle options
@@ -234,16 +234,16 @@ codex --version  // → "codex-cli 0.98.0"
 
 ```bash
 # Update the CLI installer
-npm install -g cli-ai-skills@latest
+npm install -g claude-superskills@latest
 
 # Or use npx (always uses latest)
-npx cli-ai-skills@latest --version
+npx claude-superskills@latest --version
 
 # Try new features
-npx cli-ai-skills --list-bundles
-npx cli-ai-skills --bundle essential -y
-npx cli-ai-skills --search "prompt"
-npx cli-ai-skills ls -q
+npx claude-superskills --list-bundles
+npx claude-superskills --bundle essential -y
+npx claude-superskills --search "prompt"
+npx claude-superskills ls -q
 ```
 
 ---
@@ -308,4 +308,4 @@ npx cli-ai-skills ls -q
 
 **Contributing:** [CONTRIBUTING.md](./CONTRIBUTING.md) | [Quality Standards](./docs/guides/quality-standards.md)
 
-**Links:** [GitHub](https://github.com/ericgandrade/cli-ai-skills) | [NPM](https://www.npmjs.com/package/cli-ai-skills)
+**Links:** [GitHub](https://github.com/ericgandrade/claude-superskills) | [NPM](https://www.npmjs.com/package/claude-superskills)

@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is a reusable AI skills library for **5 AI CLI platforms**: GitHub Copilot CLI, Claude Code, OpenAI Codex, OpenCode, and Gemini CLI. Skills are Markdown-based workflow specifications (`SKILL.md`) that teach AI agents how to perform specific tasks. The project includes:
 
 1. **Universal Skills Library** - Skills that work across all platforms
-2. **NPM Installer Package** - `cli-ai-skills` package for zero-config installation
+2. **NPM Installer Package** - `claude-superskills` package for zero-config installation
 3. **Zero-Config Philosophy** - Skills auto-discover project structure at runtime
 
 ## Repository Architecture
@@ -15,7 +15,7 @@ This is a reusable AI skills library for **5 AI CLI platforms**: GitHub Copilot 
 This is a **monorepo** with two main components:
 
 ```
-cli-ai-skills/
+claude-superskills/
 ├── skills/                    # Master skills source (single source of truth)
 │   ├── skill-creator/
 │   ├── prompt-engineer/
@@ -116,8 +116,8 @@ npm install
 npm link
 
 # Run CLI after linking
-cli-ai-skills --help
-cli-ai-skills --list-bundles
+claude-superskills --help
+claude-superskills --list-bundles
 
 # Run tests
 npm test
@@ -135,7 +135,7 @@ npm run generate-catalog
 npm run generate-index
 
 # Unlink after testing
-npm unlink -g cli-ai-skills
+npm unlink -g claude-superskills
 ```
 
 ### Publishing Workflow
@@ -162,7 +162,7 @@ cd cli-installer && npm publish
 ```bash
 cd cli-installer
 npm link
-cli-ai-skills install --all --yes
+claude-superskills install --all --yes
 
 # Test in a new terminal session
 gh copilot -p "improve this prompt: create REST API"  # GitHub Copilot
@@ -173,7 +173,7 @@ claude -p "improve this prompt: create REST API"      # Claude Code
 **Test NPX without installation:**
 ```bash
 # Test the installer (uses local version)
-npx cli-ai-skills --help
+npx claude-superskills --help
 
 # Test skill triggers (after installation)
 gh copilot -p "improve this prompt: create REST API"
@@ -271,7 +271,7 @@ git commit -m "feat: update skill-name"
 
 ### NPM Package Structure
 
-The `cli-installer/skills/` directory is bundled into the npm package. The build script syncs `skills/` → `cli-installer/skills/` so users get the latest skills when they run `npm install -g cli-ai-skills`.
+The `cli-installer/skills/` directory is bundled into the npm package. The build script syncs `skills/` → `cli-installer/skills/` so users get the latest skills when they run `npm install -g claude-superskills`.
 
 ## Commit Convention
 
@@ -328,7 +328,7 @@ Keyword-based skill search that matches:
 - Category
 - Tags
 
-Example: `cli-ai-skills --search "prompt"` finds `prompt-engineer`
+Example: `claude-superskills --search "prompt"` finds `prompt-engineer`
 
 ## Platform Synchronization
 

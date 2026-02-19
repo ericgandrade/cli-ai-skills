@@ -33,7 +33,7 @@ cd cli-installer && npm test
 cd cli-installer && npm link
 
 # Unlink local package
-cd cli-installer && npm unlink -g cli-ai-skills
+cd cli-installer && npm unlink -g claude-superskills
 
 # Generate skills index and catalog
 cd cli-installer && npm run generate-all
@@ -90,31 +90,31 @@ The repository includes a CLI installer package (`cli-installer/`) that users ca
 
 ```bash
 # Zero-config installation (interactive)
-npx cli-ai-skills
+npx claude-superskills
 
 # Install specific bundle
-npx cli-ai-skills --bundle essential -y    # skill-creator, prompt-engineer
-npx cli-ai-skills --bundle content -y      # youtube-summarizer, audio-transcriber
-npx cli-ai-skills --bundle developer -y    # skill-creator only
-npx cli-ai-skills --bundle all -y          # All skills
+npx claude-superskills --bundle essential -y    # skill-creator, prompt-engineer
+npx claude-superskills --bundle content -y      # youtube-summarizer, audio-transcriber
+npx claude-superskills --bundle developer -y    # skill-creator only
+npx claude-superskills --bundle all -y          # All skills
 
 # Install all skills
-npx cli-ai-skills --all -y
+npx claude-superskills --all -y
 
 # Search for skills
-npx cli-ai-skills --search "prompt"
+npx claude-superskills --search "prompt"
 
 # List installed skills
-npx cli-ai-skills list    # or: ls
+npx claude-superskills list    # or: ls
 
 # Update skills
-npx cli-ai-skills update  # or: up
+npx claude-superskills update  # or: up
 
 # Uninstall skills
-npx cli-ai-skills uninstall <skill-name>  # or: rm
+npx claude-superskills uninstall <skill-name>  # or: rm
 
 # Check installation health
-npx cli-ai-skills doctor  # or: doc
+npx claude-superskills doctor  # or: doc
 ```
 
 Bundles are defined in `bundles.json` at repository root.

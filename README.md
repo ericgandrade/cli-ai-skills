@@ -1,8 +1,8 @@
-# 🤖 CLI AI Skills v1.10.1
+# 🤖 Claude Superskills v1.10.3
 
 Reusable AI skills for **GitHub Copilot CLI**, **Claude Code**, **OpenAI Codex**, **OpenCode**, **Gemini CLI**, **Antigravity**, **Cursor IDE**, and **AdaL CLI** — install once, use everywhere.
 
-![Version](https://img.shields.io/badge/version-1.10.1-blue.svg)
+![Version](https://img.shields.io/badge/version-1.10.3-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Skills](https://img.shields.io/badge/skills-6-brightgreen.svg)
 ![Platforms](https://img.shields.io/badge/platforms-8-orange.svg)
@@ -11,28 +11,28 @@ Reusable AI skills for **GitHub Copilot CLI**, **Claude Code**, **OpenAI Codex**
 
 **One-liner (recommended):**
 ```bash
-curl -fsSL https://raw.githubusercontent.com/ericandrade/cli-ai-skills/main/scripts/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/ericgandrade/claude-superskills/main/scripts/install.sh | bash
 ```
 
 **Or use NPX (zero-install):**
 ```bash
-npx cli-ai-skills
+npx claude-superskills
 ```
 
 **Other methods:**
 ```bash
 # npm global
-npm install -g cli-ai-skills
+npm install -g claude-superskills
 
 # With bundles
-npx cli-ai-skills --bundle essential -y
+npx claude-superskills --bundle essential -y
 ```
 
 See [Installation Guide](docs/INSTALLATION.md) for all methods and troubleshooting.
 
 **Uninstall:**
 ```bash
-curl -fsSL https://raw.githubusercontent.com/ericandrade/cli-ai-skills/main/scripts/uninstall.sh | bash
+curl -fsSL https://raw.githubusercontent.com/ericgandrade/claude-superskills/main/scripts/uninstall.sh | bash
 ```
 
 ## ✨ Features
@@ -70,16 +70,16 @@ curl -fsSL https://raw.githubusercontent.com/ericandrade/cli-ai-skills/main/scri
 
 ```bash
 # Essential Skills (recommended for beginners)
-npx cli-ai-skills --bundle essential -y
+npx claude-superskills --bundle essential -y
 
 # Content Creation (video & audio)
-npx cli-ai-skills --bundle content -y
+npx claude-superskills --bundle content -y
 
 # Skill Developer (for creating custom skills)
-npx cli-ai-skills --bundle developer -y
+npx claude-superskills --bundle developer -y
 
 # All Skills (complete collection)
-npx cli-ai-skills --bundle all -y
+npx claude-superskills --bundle all -y
 ```
 
 See [Bundles Guide](docs/bundles/bundles.md) for details.
@@ -87,8 +87,8 @@ See [Bundles Guide](docs/bundles/bundles.md) for details.
 ## 🔍 Search Skills
 
 ```bash
-npx cli-ai-skills --search "prompt"
-npx cli-ai-skills --search "video"
+npx claude-superskills --search "prompt"
+npx claude-superskills --search "video"
 ```
 
 ## 🚀 Quick Start Examples
@@ -173,9 +173,9 @@ These skills follow the universal `SKILL.md` format and work with any AI coding 
 | `doctor` | `doc` | Check installation |
 
 ```bash
-npx cli-ai-skills i -a -y -q    # Install all, skip prompts, quiet mode
-npx cli-ai-skills ls -q         # List with minimal output
-npx cli-ai-skills --list-bundles # Show available bundles
+npx claude-superskills i -a -y -q    # Install all, skip prompts, quiet mode
+npx claude-superskills ls -q         # List with minimal output
+npx claude-superskills --list-bundles # Show available bundles
 ```
 
 ## 📋 System Requirements
@@ -188,7 +188,7 @@ npx cli-ai-skills --list-bundles # Show available bundles
 
 We welcome contributions! Check [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
-- Create new skills using the [skill-creator](https://github.com/ericgandrade/cli-ai-skills) skill
+- Create new skills using the [skill-creator](https://github.com/ericgandrade/claude-superskills) skill
 - Follow [Quality Standards](docs/guides/quality-standards.md)
 - Report issues and suggestions
 
@@ -201,14 +201,14 @@ MIT - See [LICENSE](./LICENSE) for details.
 - 📚 [Full Catalog](CATALOG.md) - All skills with metadata
 - 🛠️ [Skills Development Guide](docs/references/skills-development.md) - Create custom skills
 - 📝 [Changelog](CHANGELOG.md) - Release history
-- 🐛 [Issues](https://github.com/ericgandrade/cli-ai-skills/issues) - Report problems
-- 💬 [Discussions](https://github.com/ericgandrade/cli-ai-skills/discussions) - Share ideas
+- 🐛 [Issues](https://github.com/ericgandrade/claude-superskills/issues) - Report problems
+- 💬 [Discussions](https://github.com/ericgandrade/claude-superskills/discussions) - Share ideas
 
 ---
 
 **Built with ❤️ by [Eric Andrade](https://github.com/ericgandrade)**
 
-*Version 1.10.1 | February 2026*
+*Version 1.10.3 | February 2026*
 
 ## 🎁 Get Started
 
@@ -229,4 +229,4 @@ See [detailed comparison](docs/bundles/bundles.md#-bundle-comparison).
 
 ---
 
-**Getting Started? Check [Quick Start](docs/guides/getting-started.md) or run `npx cli-ai-skills` now!**
+**Getting Started? Check [Quick Start](docs/guides/getting-started.md) or run `npx claude-superskills` now!**

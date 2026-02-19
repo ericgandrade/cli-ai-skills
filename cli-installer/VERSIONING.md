@@ -1,11 +1,11 @@
-# 📚 Guia de Versionamento - cli-ai-skills
+# 📚 Guia de Versionamento - claude-superskills
 
 ## 🎯 Conceitos Fundamentais
 
 ### Latest (npm tag)
 - **O que é:** Tag padrão do npm que aponta para a versão estável mais recente
 - **Quando muda:** Toda vez que você publica uma nova versão via `npm publish`
-- **Como usuários acessam:** `npm install cli-ai-skills` ou `npx cli-ai-skills`
+- **Como usuários acessam:** `npm install claude-superskills` ou `npx claude-superskills`
 
 ### Main (Git branch)
 - **O que é:** Branch principal do código-fonte no GitHub
@@ -56,7 +56,7 @@ git commit --amend --no-edit
 git push origin main --tags
 
 # 6. Aguardar publicação (~2 min)
-# Verificar: https://github.com/ericgandrade/cli-ai-skills/actions
+# Verificar: https://github.com/ericgandrade/claude-superskills/actions
 ```
 
 ### 2. Nova Feature (MINOR: 1.0.0 → 1.1.0)
@@ -163,10 +163,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Version checking automático
 - GitHub Actions CI/CD
 
-[Unreleased]: https://github.com/ericgandrade/cli-ai-skills/compare/v1.1.0...HEAD
-[1.1.0]: https://github.com/ericgandrade/cli-ai-skills/compare/v1.0.1...v1.1.0
-[1.0.1]: https://github.com/ericgandrade/cli-ai-skills/compare/v1.0.0...v1.0.1
-[1.0.0]: https://github.com/ericgandrade/cli-ai-skills/releases/tag/v1.0.0
+[Unreleased]: https://github.com/ericgandrade/claude-superskills/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/ericgandrade/claude-superskills/compare/v1.0.1...v1.1.0
+[1.0.1]: https://github.com/ericgandrade/claude-superskills/compare/v1.0.0...v1.0.1
+[1.0.0]: https://github.com/ericgandrade/claude-superskills/releases/tag/v1.0.0
 ```
 
 ## 🚀 Comandos Úteis
@@ -176,13 +176,13 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 cat cli-installer/package.json | grep version
 
 # Ver todas as versões publicadas no npm
-npm view cli-ai-skills versions
+npm view claude-superskills versions
 
 # Ver informações da versão latest
-npm view cli-ai-skills
+npm view claude-superskills
 
 # Testar versão específica
-npx cli-ai-skills@1.0.1 --version
+npx claude-superskills@1.0.1 --version
 
 # Ver tags git locais
 git tag
@@ -214,7 +214,7 @@ git push origin main --tags
 
 ### Erro: "npm publish falhou no GitHub Actions"
 
-1. Verificar logs: https://github.com/ericgandrade/cli-ai-skills/actions
+1. Verificar logs: https://github.com/ericgandrade/claude-superskills/actions
 2. Comum: Token npm expirado (expira a cada 90 dias)
 3. Solução: Criar novo token e atualizar GitHub Secret NPM_TOKEN
 
@@ -247,15 +247,15 @@ Passos para renovar:
 ## 📊 Estado Atual
 
 ```
-Git main branch: cli-ai-skills (código-fonte)
+Git main branch: claude-superskills (código-fonte)
 ├─ package.json: v1.0.0
 ├─ Tag git: v1.0.0
 └─ GitHub Actions: Acionado por tag v*
 
-npm registry: cli-ai-skills
+npm registry: claude-superskills
 ├─ Versão publicada: 1.0.0
 ├─ Tag: latest
-└─ Disponível: npx cli-ai-skills
+└─ Disponível: npx claude-superskills
 ```
 
 ## 🔗 Links Úteis

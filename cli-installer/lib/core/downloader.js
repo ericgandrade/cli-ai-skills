@@ -8,9 +8,9 @@ const yaml = require('js-yaml');
 class SkillDownloader {
   constructor() {
     this.repoOwner = 'ericgandrade';
-    this.repoName = 'cli-ai-skills';
+    this.repoName = 'claude-superskills';
     this.branch = 'main';
-    this.cacheDir = path.join(os.homedir(), '.cli-ai-skills', 'cache');
+    this.cacheDir = path.join(os.homedir(), '.claude-superskills', 'cache');
   }
 
   /**
@@ -25,7 +25,7 @@ class SkillDownloader {
       const response = await axios.get(url, {
         headers: {
           'Accept': 'application/vnd.github.v3+json',
-          'User-Agent': 'cli-ai-skills-installer'
+          'User-Agent': 'claude-superskills-installer'
         }
       });
 
@@ -95,7 +95,7 @@ class SkillDownloader {
       const response = await axios.get(url, {
         headers: {
           'Accept': 'application/vnd.github.v3+json',
-          'User-Agent': 'cli-ai-skills-installer'
+          'User-Agent': 'claude-superskills-installer'
         }
       });
 
@@ -124,7 +124,7 @@ class SkillDownloader {
         const response = await axios.get(item.download_url, {
           responseType: 'arraybuffer',
           headers: {
-            'User-Agent': 'cli-ai-skills-installer'
+            'User-Agent': 'claude-superskills-installer'
           }
         });
         await fs.writeFile(itemPath, response.data);
@@ -134,7 +134,7 @@ class SkillDownloader {
         const subDirResponse = await axios.get(item.url, {
           headers: {
             'Accept': 'application/vnd.github.v3+json',
-            'User-Agent': 'cli-ai-skills-installer'
+            'User-Agent': 'claude-superskills-installer'
           }
         });
         await this.downloadDirectory(subDirResponse.data, itemPath);

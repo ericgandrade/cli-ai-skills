@@ -610,7 +610,7 @@ This skill is designed to work **globally** across all your projects.
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/eric.andrade/cli-ai-skills.git
+   git clone https://github.com/eric.andrade/claude-superskills.git
    ```
 
 2. Configure Copilot to load skills globally:
@@ -619,7 +619,7 @@ This skill is designed to work **globally** across all your projects.
    {
      "skills": {
        "directories": [
-         "/path/to/cli-ai-skills/.github/skills"
+         "/path/to/claude-superskills/.github/skills"
        ]
      }
    }
@@ -628,7 +628,7 @@ This skill is designed to work **globally** across all your projects.
 ### Option 2: Copy to Global Skills Directory
 
 ```bash
-cp -r /path/to/cli-ai-skills/.github/skills/prompt-engineer ~/.copilot/global-skills/
+cp -r /path/to/claude-superskills/.github/skills/prompt-engineer ~/.copilot/global-skills/
 ```
 
 Then configure:

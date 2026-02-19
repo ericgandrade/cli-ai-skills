@@ -33,8 +33,8 @@ Use this skill when you:
 ### Via NPM (Recommended)
 
 ```bash
-npm install -g cli-ai-skills
-cli-ai-skills install agent-skill-orchestrator agent-skill-discovery
+npm install -g claude-superskills
+claude-superskills install agent-skill-orchestrator agent-skill-discovery
 ```
 
 **Note:** `agent-skill-discovery` is a required dependency.
@@ -42,8 +42,8 @@ cli-ai-skills install agent-skill-orchestrator agent-skill-discovery
 ### Manual Installation
 
 ```bash
-git clone https://github.com/yourusername/cli-ai-skills.git
-cd cli-ai-skills
+git clone https://github.com/yourusername/claude-superskills.git
+cd claude-superskills
 ./scripts/build-skills.sh
 ```
 
@@ -205,7 +205,7 @@ Bonus for MCPs when external integration needed
 
 ### Recommended
 - Various plugins/skills/MCPs depending on your tasks
-- Install bundles: `cli-ai-skills install --all`
+- Install bundles: `claude-superskills install --all`
 
 ## Use Cases
 
@@ -257,7 +257,7 @@ Choose your preferred option to proceed or cancel safely.
 **Solution:**
 ```bash
 # Install resources
-cli-ai-skills install --all
+claude-superskills install --all
 
 # Verify installation
 claude
@@ -279,7 +279,7 @@ claude
 
 **Solution:**
 ```bash
-cli-ai-skills install agent-skill-discovery
+claude-superskills install agent-skill-discovery
 ```
 
 ### "Plan looks wrong"
@@ -381,5 +381,5 @@ MIT License - See [LICENSE](../../LICENSE)
 
 - **Full Specification:** [SKILL.md](SKILL.md)
 - **Scoring Details:** [references/scoring-algorithm.md](references/scoring-algorithm.md)
-- **Issues:** [GitHub Issues](https://github.com/yourusername/cli-ai-skills/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/yourusername/cli-ai-skills/discussions)
+- **Issues:** [GitHub Issues](https://github.com/yourusername/claude-superskills/issues)
+- **Discussions:** [GitHub Discussions](https://github.com/yourusername/claude-superskills/discussions)

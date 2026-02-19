@@ -242,7 +242,7 @@ Instale ao menos uma das seguintes ferramentas:
 📦 Google Antigravity:
    https://antigravity.google/download
 
-Após instalar, execute novamente: npx cli-ai-skills
+Após instalar, execute novamente: npx claude-superskills
   `;
 }
 
