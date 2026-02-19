@@ -129,9 +129,9 @@ gemini -p "design a solution for processing meeting notes and creating Jira tick
 - **GitHub Copilot CLI** - Terminal AI assistant (`~/.github/skills/`)
 - **Claude Code** - Anthropic's Claude in development (`~/.claude/skills/`)
 - **OpenAI Codex** - GPT-powered coding assistant (`~/.codex/vendor_imports/skills/skills/.curated/`)
-- **OpenCode** - Open source AI coding assistant (`~/.opencode/skills/`)
+- **OpenCode** - Open source AI coding assistant (`~/.agent/skills/`)
 - **Gemini CLI** - Google's Gemini in terminal (`~/.gemini/skills/`)
-- **Antigravity** - AI coding assistant (`~/.antigravity/skills/`)
+- **Antigravity** - AI coding assistant (`~/.agent/skills/`)
 - **Cursor IDE** - AI-powered code editor (`~/.cursor/skills/`)
 - **AdaL CLI** - AI development assistant (`~/.adal/skills/`)
 
