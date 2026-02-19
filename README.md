@@ -1,11 +1,11 @@
 # 🤖 CLI AI Skills v1.9.0
 
-Reusable AI skills for **GitHub Copilot CLI**, **Claude Code**, **OpenAI Codex**, **OpenCode**, and **Gemini CLI** — install once, use everywhere.
+Reusable AI skills for **GitHub Copilot CLI**, **Claude Code**, **OpenAI Codex**, **OpenCode**, **Gemini CLI**, **Antigravity**, **Cursor IDE**, and **AdaL CLI** — install once, use everywhere.
 
 ![Version](https://img.shields.io/badge/version-1.9.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Skills](https://img.shields.io/badge/skills-6-brightgreen.svg)
-![Platforms](https://img.shields.io/badge/platforms-5-orange.svg)
+![Platforms](https://img.shields.io/badge/platforms-8-orange.svg)
 
 ## 🚀 Quick Install
 
@@ -41,7 +41,7 @@ curl -fsSL https://raw.githubusercontent.com/ericandrade/cli-ai-skills/main/scri
 - **Zero-Config Install** - Run once, works everywhere
 - **Curated Bundles** - Install exactly what you need
 - **Smart Search** - Find skills by keyword
-- **5 Platform Support** - GitHub Copilot, Claude Code, Codex, OpenCode, Gemini
+- **8 Platform Support** - GitHub Copilot, Claude Code, Codex, OpenCode, Gemini, Antigravity, Cursor, AdaL
 - **Discovery & Orchestration** - Find and plan with available resources
 - **Command Shortcuts** - `i`, `ls`, `up`, `rm`, `doc`
 - **Short Flags** - `-a`, `-g`, `-l`, `-y`, `-q`
@@ -131,6 +131,9 @@ gemini -p "design a solution for processing meeting notes and creating Jira tick
 - **OpenAI Codex** - GPT-powered coding assistant (`~/.codex/vendor_imports/skills/skills/.curated/`)
 - **OpenCode** - Open source AI coding assistant (`~/.opencode/skills/`)
 - **Gemini CLI** - Google's Gemini in terminal (`~/.gemini/skills/`)
+- **Antigravity** - AI coding assistant (`~/.antigravity/skills/`)
+- **Cursor IDE** - AI-powered code editor (`~/.cursor/skills/`)
+- **AdaL CLI** - AI development assistant (`~/.adal/skills/`)
 
 **Note on Codex:** The installer automatically handles Codex's unique directory structure. Skills are installed to `~/.codex/vendor_imports/skills/skills/.curated/` and should appear in the Codex App after restart.
 
