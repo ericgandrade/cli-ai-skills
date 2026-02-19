@@ -19,11 +19,14 @@ function checkInstalledVersion() {
   const homeDir = os.homedir();
   
   const skillDirs = {
-    copilot: path.join(homeDir, '.copilot', 'skills'),
+    copilot: path.join(homeDir, '.github', 'skills'),
     claude: path.join(homeDir, '.claude', 'skills'),
     codex: path.join(homeDir, '.codex', 'skills'),
-    opencode: path.join(homeDir, '.opencode', 'skills'),
-    gemini: path.join(homeDir, '.gemini', 'skills')
+    opencode: path.join(homeDir, '.agents', 'skills'),
+    gemini: path.join(homeDir, '.gemini', 'skills'),
+    antigravity: path.join(homeDir, '.agent', 'skills'),
+    cursor: path.join(homeDir, '.cursor', 'skills'),
+    adal: path.join(homeDir, '.adal', 'skills')
   };
   
   for (const [platform, skillDir] of Object.entries(skillDirs)) {
@@ -90,11 +93,14 @@ function isUpdateAvailable(installInfo) {
 function checkPlatformInstallation(platform) {
   const homeDir = os.homedir();
   const platformMap = {
-    copilot: '.copilot',
+    copilot: '.github',
     claude: '.claude',
     codex: '.codex',
-    opencode: '.opencode',
-    gemini: '.gemini'
+    opencode: '.agents',
+    gemini: '.gemini',
+    antigravity: '.agent',
+    cursor: '.cursor',
+    adal: '.adal'
   };
   
   const dirName = platformMap[platform];

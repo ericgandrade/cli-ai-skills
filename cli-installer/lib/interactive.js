@@ -93,7 +93,7 @@ async function promptPlatforms(detected) {
   
   if (detected.opencode && detected.opencode.installed) {
     choices.push({
-      name: '✅ OpenCode (~/.opencode/skills/)',
+      name: '✅ OpenCode (~/.agents/skills/)',
       value: 'opencode',
       checked: true
     });
@@ -109,8 +109,24 @@ async function promptPlatforms(detected) {
 
   if (detected.antigravity && detected.antigravity.installed) {
     choices.push({
-      name: '✅ Google Antigravity (~/.gemini/antigravity/skills/)',
+      name: '✅ Google Antigravity (~/.agent/skills/)',
       value: 'antigravity',
+      checked: true
+    });
+  }
+
+  if (detected.cursor && detected.cursor.installed) {
+    choices.push({
+      name: '✅ Cursor IDE (~/.cursor/skills/)',
+      value: 'cursor',
+      checked: true
+    });
+  }
+
+  if (detected.adal && detected.adal.installed) {
+    choices.push({
+      name: '✅ AdaL CLI (~/.adal/skills/)',
+      value: 'adal',
       checked: true
     });
   }

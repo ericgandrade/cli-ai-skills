@@ -9,6 +9,8 @@ const { install: installCodexSkills } = require('../lib/codex');
 const { install: installOpenCodeSkills } = require('../lib/opencode');
 const { install: installGeminiSkills } = require('../lib/gemini');
 const { install: installAntigravitySkills } = require('../lib/antigravity');
+const { install: installCursorSkills } = require('../lib/cursor');
+const { install: installAdalSkills } = require('../lib/adal');
 const { listBundles, validateBundle } = require('../lib/bundles');
 const { searchSkills } = require('../lib/search');
 const { displayToolsTable } = require('../lib/ui/table');
@@ -98,7 +100,8 @@ async function main() {
 
     const hasAny = detected.copilot.installed || detected.claude.installed ||
                    detected.codex_cli.installed || detected.codex_app.installed || detected.opencode.installed ||
-                   detected.gemini.installed || detected.antigravity.installed;
+                   detected.gemini.installed || detected.antigravity.installed ||
+                   detected.cursor.installed || detected.adal.installed;
 
     if (!hasAny) {
       console.log(getInstallInstructions());
@@ -117,6 +120,8 @@ async function main() {
       if (detected.opencode.installed) platforms.push('opencode');
       if (detected.gemini.installed) platforms.push('gemini');
       if (detected.antigravity.installed) platforms.push('antigravity');
+      if (detected.cursor.installed) platforms.push('cursor');
+      if (detected.adal.installed) platforms.push('adal');
     } else {
       platforms = await promptPlatforms(detected);
     }
@@ -154,6 +159,12 @@ async function main() {
       if (platforms.includes('antigravity')) {
         installAntigravitySkills(repoPath, [skill], quiet);
       }
+      if (platforms.includes('cursor')) {
+        installCursorSkills(repoPath, [skill], quiet);
+      }
+      if (platforms.includes('adal')) {
+        installAdalSkills(repoPath, [skill], quiet);
+      }
     });
     
     if (!quiet) {
@@ -173,7 +184,8 @@ async function main() {
 
     const hasAny = detected.copilot.installed || detected.claude.installed ||
                    detected.codex_cli.installed || detected.codex_app.installed || detected.opencode.installed ||
-                   detected.gemini.installed || detected.antigravity.installed;
+                   detected.gemini.installed || detected.antigravity.installed ||
+                   detected.cursor.installed || detected.adal.installed;
 
     if (!hasAny) {
       console.log(getInstallInstructions());
@@ -236,6 +248,9 @@ async function main() {
       if (detected.codex_app.installed) platforms.push('codex_app');
       if (detected.opencode.installed) platforms.push('opencode');
       if (detected.gemini.installed) platforms.push('gemini');
+      if (detected.antigravity.installed) platforms.push('antigravity');
+      if (detected.cursor.installed) platforms.push('cursor');
+      if (detected.adal.installed) platforms.push('adal');
     } else {
       // Interactive selection
       platforms = await promptPlatforms(detected);
@@ -279,6 +294,14 @@ async function main() {
 
     if (platforms.includes('antigravity')) {
       installAntigravitySkills(repoPath, null, quiet);
+    }
+
+    if (platforms.includes('cursor')) {
+      installCursorSkills(repoPath, null, quiet);
+    }
+
+    if (platforms.includes('adal')) {
+      installAdalSkills(repoPath, null, quiet);
     }
 
     if (!quiet) {

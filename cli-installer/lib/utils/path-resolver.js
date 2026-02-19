@@ -41,7 +41,9 @@ function getSkillsSourcePath(basePath, platform) {
     'codex': '.codex',
     'opencode': '.opencode',
     'gemini': '.gemini',
-    'antigravity': '.antigravity'
+    'antigravity': '.antigravity',
+    'cursor': '.cursor',
+    'adal': '.adal'
   };
 
   // For npm package: basePath/skills/{platform}/
@@ -93,9 +95,11 @@ function getUserSkillsPath(platform) {
   const platformDirs = {
     'copilot': path.join(home, '.github', 'skills'),
     'claude': path.join(home, '.claude', 'skills'),
-    'opencode': path.join(home, '.opencode', 'skills'),
+    'opencode': path.join(home, '.agents', 'skills'),
     'gemini': path.join(home, '.gemini', 'skills'),
-    'antigravity': path.join(home, '.gemini', 'antigravity', 'skills')  // Official Antigravity path
+    'antigravity': path.join(home, '.agent', 'skills'),
+    'cursor': path.join(home, '.cursor', 'skills'),
+    'adal': path.join(home, '.adal', 'skills')
   };
 
   return platformDirs[platform] || path.join(home, `.${platform}`, 'skills');

@@ -15,7 +15,9 @@ function detectTools() {
     codex_app: detectCodexApp(),
     opencode: detectOpenCode(),
     gemini: detectGemini(),
-    antigravity: detectAntigravity()
+    antigravity: detectAntigravity(),
+    cursor: detectCursor(),
+    adal: detectAdal()
   };
 
   return tools;
@@ -168,6 +170,50 @@ function detectAntigravity() {
 }
 
 /**
+ * Detect Cursor IDE
+ */
+function detectCursor() {
+  // Check macOS Application
+  if (os.platform() === 'darwin') {
+    const appPath = '/Applications/Cursor.app';
+    if (fs.existsSync(appPath)) {
+      return { installed: true, version: 'Cursor IDE', path: appPath };
+    }
+  }
+
+  // Check for 'cursor' command
+  try {
+    const pathExec = execSync('which cursor', { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'ignore'] }).trim();
+    return { installed: true, version: 'Cursor CLI', path: pathExec };
+  } catch {
+    // Check for ~/.cursor directory
+    const homeDir = os.homedir();
+    if (fs.existsSync(path.join(homeDir, '.cursor'))) {
+        return { installed: true, version: 'Unknown', path: path.join(homeDir, '.cursor') };
+    }
+    return { installed: false, version: null, path: null };
+  }
+}
+
+/**
+ * Detect AdaL CLI
+ */
+function detectAdal() {
+  try {
+    const version = execSync('adal --version', { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'ignore'] }).trim();
+    const pathExec = execSync('which adal', { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'ignore'] }).trim();
+    return { installed: true, version, path: pathExec };
+  } catch {
+    // Check for ~/.adal directory
+    const homeDir = os.homedir();
+    if (fs.existsSync(path.join(homeDir, '.adal'))) {
+        return { installed: true, version: 'Unknown', path: path.join(homeDir, '.adal') };
+    }
+    return { installed: false, version: null, path: null };
+  }
+}
+
+/**
  * Retorna mensagem de ajuda para ferramentas não instaladas
  */
 function getInstallInstructions() {
@@ -200,5 +246,5 @@ Após instalar, execute novamente: npx cli-ai-skills
   `;
 }
 
-module.exports = { detectTools, getInstallInstructions, detectCodex, detectCodexCli, detectCodexApp, detectAntigravity };
+module.exports = { detectTools, getInstallInstructions, detectCodex, detectCodexCli, detectCodexApp, detectAntigravity, detectCursor, detectAdal };
 
