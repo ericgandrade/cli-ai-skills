@@ -39,9 +39,9 @@ function getSkillsSourcePath(basePath, platform) {
     'copilot': '.github',
     'claude': '.claude',
     'codex': '.codex',
-    'opencode': '.opencode',
+    'opencode': '.agent',
     'gemini': '.gemini',
-    'antigravity': '.antigravity',
+    'antigravity': '.agent',
     'cursor': '.cursor',
     'adal': '.adal'
   };
@@ -95,7 +95,7 @@ function getUserSkillsPath(platform) {
   const platformDirs = {
     'copilot': path.join(home, '.github', 'skills'),
     'claude': path.join(home, '.claude', 'skills'),
-    'opencode': path.join(home, '.agents', 'skills'),
+    'opencode': path.join(home, '.agent', 'skills'),
     'gemini': path.join(home, '.gemini', 'skills'),
     'antigravity': path.join(home, '.agent', 'skills'),
     'cursor': path.join(home, '.cursor', 'skills'),

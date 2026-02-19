@@ -20,7 +20,7 @@ function install(repoPath, skills = null, quiet = false) {
   
   if (!fs.existsSync(sourceDir)) {
     if (!quiet) {
-      console.log(chalk.red('❌ Diretório .opencode/skills não encontrado no repositório'));
+      console.log(chalk.red('❌ Diretório .agent/skills não encontrado no repositório'));
     }
     return;
   }

@@ -1,8 +1,8 @@
-# 🤖 CLI AI Skills v1.9.0
+# 🤖 CLI AI Skills v1.10.1
 
 Reusable AI skills for **GitHub Copilot CLI**, **Claude Code**, **OpenAI Codex**, **OpenCode**, **Gemini CLI**, **Antigravity**, **Cursor IDE**, and **AdaL CLI** — install once, use everywhere.
 
-![Version](https://img.shields.io/badge/version-1.9.0-blue.svg)
+![Version](https://img.shields.io/badge/version-1.10.1-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Skills](https://img.shields.io/badge/skills-6-brightgreen.svg)
 ![Platforms](https://img.shields.io/badge/platforms-8-orange.svg)
@@ -137,6 +137,23 @@ gemini -p "design a solution for processing meeting notes and creating Jira tick
 
 **Note on Codex:** The installer automatically handles Codex's unique directory structure. Skills are installed to `~/.codex/vendor_imports/skills/skills/.curated/` and should appear in the Codex App after restart.
 
+## ⌨️ Compatibility & Invocation
+
+These skills follow the universal `SKILL.md` format and work with any AI coding assistant that supports agentic skills.
+
+| Tool | Type | Invocation Example | Path |
+|------|------|--------------------|------|
+| **Claude Code** | CLI | `/skill-name help me...` | `.claude/skills/` |
+| **Gemini CLI** | CLI | `Use skill-name to...` | `.gemini/skills/` |
+| **Codex CLI** | CLI | `Use skill-name to...` | `.codex/skills/` |
+| **Antigravity** | IDE | *(Agent Mode)* `Use skill...` | `.agent/skills/` |
+| **Cursor** | IDE | `@skill-name` in Chat | `.cursor/skills/` |
+| **Copilot** | Ext | *(Paste skill content manually)* | N/A |
+| **OpenCode** | CLI | `opencode run @skill-name` | `.agent/skills/` |
+| **AdaL CLI** | CLI | *(Auto)* Skills load on-demand | `.adal/skills/` |
+
+> **Tip — Universal Path:** Clone to `.agent/skills/`. Most modern tools (Antigravity, recent CLIs) look here by default.
+
 ## 📚 Documentation
 
 - **[Getting Started](docs/guides/getting-started.md)** - First-time user guide
@@ -191,7 +208,7 @@ MIT - See [LICENSE](./LICENSE) for details.
 
 **Built with ❤️ by [Eric Andrade](https://github.com/ericgandrade)**
 
-*Version 1.9.0 | February 2026*
+*Version 1.10.1 | February 2026*
 
 ## 🎁 Get Started
 
