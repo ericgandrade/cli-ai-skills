@@ -9,8 +9,8 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 SOURCE_DIR="skills"
-PLATFORMS=(".github/skills" ".claude/skills" ".codex/skills" ".opencode/skills" ".gemini/skills" ".antigravity/skills")
-NPM_PLATFORMS=("cli-installer/skills/copilot" "cli-installer/skills/claude" "cli-installer/skills/codex" "cli-installer/skills/opencode" "cli-installer/skills/gemini" "cli-installer/skills/antigravity")
+PLATFORMS=(".github/skills" ".claude/skills" ".codex/skills" ".agent/skills" ".gemini/skills" ".cursor/skills" ".adal/skills")
+NPM_PLATFORMS=("cli-installer/skills/copilot" "cli-installer/skills/claude" "cli-installer/skills/codex" "cli-installer/skills/agent" "cli-installer/skills/gemini" "cli-installer/skills/cursor" "cli-installer/skills/adal")
 
 echo -e "${BLUE}🔄 Building skills for all platforms...${NC}"
 
