@@ -2,160 +2,162 @@ const axios = require('axios');
 const fs = require('fs-extra');
 const path = require('path');
 const os = require('os');
-const ora = require('ora');
 const yaml = require('js-yaml');
 
-class SkillDownloader {
-  constructor() {
-    this.repoOwner = 'ericgandrade';
-    this.repoName = 'claude-superskills';
-    this.branch = 'main';
-    this.cacheDir = path.join(os.homedir(), '.claude-superskills', 'cache');
-  }
+const REPO_OWNER = 'ericgandrade';
+const REPO_NAME = 'claude-superskills';
+const CACHE_BASE = path.join(os.homedir(), '.claude-superskills', 'cache');
 
-  /**
-   * List available skills from GitHub
-   * @returns {Array} List of skill objects
-   */
-  async listAvailableSkills() {
-    const spinner = ora('Fetching available skills...').start();
-    
-    try {
-      const url = `https://api.github.com/repos/${this.repoOwner}/${this.repoName}/contents/.github/skills`;
-      const response = await axios.get(url, {
-        headers: {
-          'Accept': 'application/vnd.github.v3+json',
-          'User-Agent': 'claude-superskills-installer'
-        }
-      });
+/**
+ * Ensure skills for a given version are cached locally.
+ * Downloads from GitHub if not already cached.
+ * @param {string} version - e.g. "1.10.3"
+ * @returns {string} path to cached skills dir
+ */
+async function ensureSkillsCached(version) {
+  const versionCacheDir = path.join(CACHE_BASE, version, 'skills');
 
-      const skills = [];
-      
-      for (const item of response.data) {
-        if (item.type === 'dir') {
-          // Get SKILL.md to extract metadata
-          const skillMeta = await this.getSkillMetadata(item.name, '.github');
-          skills.push({
-            name: item.name,
-            version: skillMeta.version,
-            description: skillMeta.description
-          });
-        }
-      }
-
-      spinner.succeed(`Found ${skills.length} skills`);
-      return skills;
-    } catch (error) {
-      spinner.fail('Failed to fetch skills');
-      throw new Error(`GitHub API error: ${error.message}`);
+  if (fs.existsSync(versionCacheDir)) {
+    const entries = fs.readdirSync(versionCacheDir).filter(f =>
+      fs.statSync(path.join(versionCacheDir, f)).isDirectory()
+    );
+    if (entries.length > 0) {
+      return versionCacheDir;
     }
   }
 
-  /**
-   * Get skill metadata from SKILL.md
-   * @param {string} skillName - Name of the skill
-   * @param {string} basePath - '.github' or '.claude'
-   * @returns {Object} Skill metadata
-   */
-  async getSkillMetadata(skillName, basePath = '.github') {
-    try {
-      const url = `https://raw.githubusercontent.com/${this.repoOwner}/${this.repoName}/${this.branch}/${basePath}/skills/${skillName}/SKILL.md`;
-      const response = await axios.get(url);
-      
-      // Extract YAML frontmatter
-      const frontmatterMatch = response.data.match(/^---\n([\s\S]*?)\n---/);
-      if (frontmatterMatch) {
-        return yaml.load(frontmatterMatch[1]);
-      }
-      
-      return { version: 'unknown', description: 'No description' };
-    } catch (error) {
-      return { version: 'unknown', description: 'No description' };
-    }
+  await fs.ensureDir(versionCacheDir);
+
+  // Try downloading the release tarball first (most reliable)
+  try {
+    await downloadViaReleaseZip(version, versionCacheDir);
+    return versionCacheDir;
+  } catch (_err) {
+    // Fall back to GitHub API tree walk
   }
 
-  /**
-   * Download a skill directory from GitHub
-   * @param {string} skillName - Name of the skill
-   * @param {string} platform - 'copilot' or 'claude'
-   * @returns {string} Path to downloaded skill
-   */
-  async downloadSkill(skillName, platform = 'copilot') {
-    const spinner = ora(`Downloading ${skillName}...`).start();
-    
-    const basePath = platform === 'copilot' ? '.github/skills' : '.claude/skills';
-    const skillPath = path.join(this.cacheDir, platform, skillName);
-    
-    try {
-      // Ensure cache directory exists
-      await fs.ensureDir(skillPath);
+  await downloadViaApiTree(version, versionCacheDir);
+  return versionCacheDir;
+}
 
-      // Get directory contents from GitHub API
-      const url = `https://api.github.com/repos/${this.repoOwner}/${this.repoName}/contents/${basePath}/${skillName}`;
-      const response = await axios.get(url, {
-        headers: {
-          'Accept': 'application/vnd.github.v3+json',
-          'User-Agent': 'claude-superskills-installer'
-        }
-      });
+/**
+ * Download skills using the GitHub release zipball for a tag.
+ */
+async function downloadViaReleaseZip(version, targetDir) {
+  const AdmZip = requireAdmZip();
+  const url = `https://github.com/${REPO_OWNER}/${REPO_NAME}/archive/refs/tags/v${version}.zip`;
 
-      // Download each file
-      await this.downloadDirectory(response.data, skillPath);
-      
-      spinner.succeed(`Downloaded ${skillName}`);
-      return skillPath;
-    } catch (error) {
-      spinner.fail(`Failed to download ${skillName}`);
-      throw new Error(`Download error: ${error.message}`);
-    }
-  }
+  const response = await axios.get(url, {
+    responseType: 'arraybuffer',
+    headers: { 'User-Agent': 'claude-superskills-installer' },
+    maxRedirects: 5
+  });
 
-  /**
-   * Recursively download directory contents
-   * @param {Array} contents - GitHub API contents response
-   * @param {string} targetPath - Target directory path
-   */
-  async downloadDirectory(contents, targetPath) {
-    for (const item of contents) {
-      const itemPath = path.join(targetPath, item.name);
+  const zip = new AdmZip(Buffer.from(response.data));
+  const entries = zip.getEntries();
+  const prefix = `${REPO_NAME}-${version}/skills/`;
 
-      if (item.type === 'file') {
-        // Download file
-        const response = await axios.get(item.download_url, {
-          responseType: 'arraybuffer',
-          headers: {
-            'User-Agent': 'claude-superskills-installer'
-          }
-        });
-        await fs.writeFile(itemPath, response.data);
-      } else if (item.type === 'dir') {
-        // Recursively download subdirectory
-        await fs.ensureDir(itemPath);
-        const subDirResponse = await axios.get(item.url, {
-          headers: {
-            'Accept': 'application/vnd.github.v3+json',
-            'User-Agent': 'claude-superskills-installer'
-          }
-        });
-        await this.downloadDirectory(subDirResponse.data, itemPath);
-      }
-    }
-  }
+  for (const entry of entries) {
+    if (!entry.entryName.startsWith(prefix) || entry.isDirectory) continue;
 
-  /**
-   * Clear download cache
-   */
-  async clearCache() {
-    await fs.remove(this.cacheDir);
-  }
+    const relativePath = entry.entryName.slice(prefix.length);
+    if (!relativePath) continue;
 
-  /**
-   * Get cache directory path
-   * @returns {string} Cache directory path
-   */
-  getCacheDir() {
-    return this.cacheDir;
+    const destPath = path.join(targetDir, relativePath);
+    await fs.ensureDir(path.dirname(destPath));
+    fs.writeFileSync(destPath, entry.getData());
   }
 }
 
-module.exports = SkillDownloader;
+/**
+ * Try to require adm-zip, return null if not available.
+ */
+function requireAdmZip() {
+  try {
+    return require('adm-zip');
+  } catch (_e) {
+    throw new Error('adm-zip not available');
+  }
+}
+
+/**
+ * Download skills by walking the GitHub API tree (no adm-zip needed).
+ */
+async function downloadViaApiTree(version, targetDir) {
+  const ref = `v${version}`;
+  const apiBase = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}`;
+  const headers = {
+    'Accept': 'application/vnd.github.v3+json',
+    'User-Agent': 'claude-superskills-installer'
+  };
+
+  // Get tree recursively
+  const treeRes = await axios.get(
+    `${apiBase}/git/trees/${ref}?recursive=1`,
+    { headers }
+  );
+
+  const tree = treeRes.data.tree;
+
+  for (const item of tree) {
+    if (!item.path.startsWith('skills/')) continue;
+    if (item.type !== 'blob') continue;
+
+    const relativePath = item.path.slice('skills/'.length);
+    const destPath = path.join(targetDir, relativePath);
+    await fs.ensureDir(path.dirname(destPath));
+
+    const blobRes = await axios.get(item.url, { headers });
+    const content = Buffer.from(blobRes.data.content, blobRes.data.encoding);
+    await fs.writeFile(destPath, content);
+  }
+}
+
+/**
+ * List skills available in the cache for a version.
+ * @param {string} version
+ * @returns {string[]} skill names
+ */
+function listCachedSkills(version) {
+  const versionCacheDir = path.join(CACHE_BASE, version, 'skills');
+  if (!fs.existsSync(versionCacheDir)) return [];
+  return fs.readdirSync(versionCacheDir).filter(f =>
+    fs.statSync(path.join(versionCacheDir, f)).isDirectory()
+  );
+}
+
+/**
+ * Get skill metadata from cached SKILL.md
+ */
+function getSkillMetadata(skillName, version) {
+  const skillMdPath = path.join(CACHE_BASE, version, 'skills', skillName, 'SKILL.md');
+  if (!fs.existsSync(skillMdPath)) return { version: 'unknown', description: '' };
+  try {
+    const content = fs.readFileSync(skillMdPath, 'utf8');
+    const match = content.match(/^---\n([\s\S]*?)\n---/);
+    if (match) return yaml.load(match[1]);
+  } catch (_e) {}
+  return { version: 'unknown', description: '' };
+}
+
+/**
+ * Get the cache base directory path.
+ */
+function getCacheDir() {
+  return CACHE_BASE;
+}
+
+/**
+ * Clear the entire cache.
+ */
+async function clearCache() {
+  await fs.remove(CACHE_BASE);
+}
+
+module.exports = {
+  ensureSkillsCached,
+  listCachedSkills,
+  getSkillMetadata,
+  getCacheDir,
+  clearCache
+};

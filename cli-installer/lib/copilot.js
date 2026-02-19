@@ -1,31 +1,48 @@
 const fs = require('fs-extra');
 const path = require('path');
-const os = require('os');
-const { getSkillsSourcePath, getUserSkillsPath } = require('./utils/path-resolver');
+const chalk = require('chalk');
+const { getUserSkillsPath } = require('./utils/path-resolver');
 
-function installCopilotSkills(repoPath) {
-  const skillsSource = getSkillsSourcePath(repoPath, 'copilot');
-  const skillsTarget = getUserSkillsPath('copilot');
-  
-  console.log('🔧 Installing GitHub Copilot CLI skills...');
-  
-  fs.ensureDirSync(skillsTarget);
-  
-  const skills = fs.readdirSync(skillsSource).filter(f => 
-    fs.statSync(path.join(skillsSource, f)).isDirectory()
+/**
+ * Install skills for GitHub Copilot CLI.
+ * @param {string} cacheDir - Path to cached skills dir (~/.claude-superskills/cache/{v}/skills/)
+ * @param {string[]|null} skills - Specific skills to install, or null for all
+ * @param {boolean} quiet - Suppress output
+ */
+async function installCopilotSkills(cacheDir, skills = null, quiet = false) {
+  const targetDir = getUserSkillsPath('copilot');
+  await fs.ensureDir(targetDir);
+
+  const availableSkills = (await fs.readdir(cacheDir)).filter(f =>
+    fs.statSync(path.join(cacheDir, f)).isDirectory()
   );
-  
-  skills.forEach(skill => {
-    const source = path.join(skillsSource, skill);
-    const target = path.join(skillsTarget, skill);
-    
-    if (fs.existsSync(target)) {
-      fs.removeSync(target);
+
+  const skillsToInstall = skills || availableSkills;
+  let installed = 0;
+  let failed = 0;
+
+  for (const skill of skillsToInstall) {
+    const src = path.join(cacheDir, skill);
+    const dest = path.join(targetDir, skill);
+
+    if (!fs.existsSync(src)) {
+      if (!quiet) console.log(chalk.yellow(`  ⚠️  Skill not found: ${skill}`));
+      failed++;
+      continue;
     }
-    
-    fs.symlinkSync(source, target, 'dir');
-    console.log(`  ✅ ${skill}`);
-  });
+
+    try {
+      if (fs.existsSync(dest)) await fs.remove(dest);
+      await fs.copy(src, dest);
+      if (!quiet) console.log(chalk.green(`  ✓ Copilot: ${skill}`));
+      installed++;
+    } catch (err) {
+      if (!quiet) console.log(chalk.red(`  ✗ Error installing ${skill}: ${err.message}`));
+      failed++;
+    }
+  }
+
+  return { installed, failed };
 }
 
 module.exports = { installCopilotSkills };

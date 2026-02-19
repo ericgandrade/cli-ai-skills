@@ -1,72 +1,47 @@
 const fs = require('fs-extra');
 const path = require('path');
 const chalk = require('chalk');
-const os = require('os');
-const { getSkillsSourcePath, getUserSkillsPath } = require('./utils/path-resolver');
+const { getUserSkillsPath } = require('./utils/path-resolver');
 
 /**
- * Install skills for AdaL CLI
- * @param {string} repoPath - Path to the claude-superskills repository
- * @param {Array<string>|null} skills - Skills to install (null = all)
+ * Install skills for AdaL CLI.
+ * @param {string} cacheDir - Path to cached skills dir (~/.claude-superskills/cache/{v}/skills/)
+ * @param {string[]|null} skills - Specific skills to install, or null for all
  * @param {boolean} quiet - Suppress output
  */
-function install(repoPath, skills = null, quiet = false) {
+async function install(cacheDir, skills = null, quiet = false) {
   const targetDir = getUserSkillsPath('adal');
+  await fs.ensureDir(targetDir);
 
-  // Criar diretório se não existir
-  fs.ensureDirSync(targetDir);
+  const availableSkills = (await fs.readdir(cacheDir)).filter(f =>
+    fs.statSync(path.join(cacheDir, f)).isDirectory()
+  );
 
-  const sourceDir = getSkillsSourcePath(repoPath, 'adal');
-  
-  if (!fs.existsSync(sourceDir)) {
-    if (!quiet) {
-      console.log(chalk.red('❌ Diretório .adal/skills não encontrado no repositório'));
-    }
-    return;
-  }
-  
-  // Listar skills disponíveis
-  const availableSkills = fs.readdirSync(sourceDir).filter(f => {
-    const fullPath = path.join(sourceDir, f);
-    return fs.statSync(fullPath).isDirectory() && f !== 'node_modules';
-  });
-  
   const skillsToInstall = skills || availableSkills;
-  
   let installed = 0;
   let failed = 0;
-  
-  skillsToInstall.forEach(skill => {
-    const sourcePath = path.join(sourceDir, skill);
-    const targetPath = path.join(targetDir, skill);
-    
-    if (!fs.existsSync(sourcePath)) {
-      if (!quiet) {
-        console.log(chalk.yellow(`⚠️  Skill não encontrada: ${skill}`));
-      }
+
+  for (const skill of skillsToInstall) {
+    const src = path.join(cacheDir, skill);
+    const dest = path.join(targetDir, skill);
+
+    if (!fs.existsSync(src)) {
+      if (!quiet) console.log(chalk.yellow(`  ⚠️  Skill not found: ${skill}`));
       failed++;
-      return;
+      continue;
     }
-    
-    // Criar symlink
+
     try {
-      if (fs.existsSync(targetPath)) {
-        fs.removeSync(targetPath);
-      }
-      fs.symlinkSync(sourcePath, targetPath);
-      
-      if (!quiet) {
-        console.log(chalk.green(`  ✓ AdaL: ${skill}`));
-      }
+      if (fs.existsSync(dest)) await fs.remove(dest);
+      await fs.copy(src, dest);
+      if (!quiet) console.log(chalk.green(`  ✓ AdaL: ${skill}`));
       installed++;
     } catch (err) {
-      if (!quiet) {
-        console.log(chalk.red(`  ✗ Erro ao instalar ${skill}: ${err.message}`));
-      }
+      if (!quiet) console.log(chalk.red(`  ✗ Error installing ${skill}: ${err.message}`));
       failed++;
     }
-  });
-  
+  }
+
   return { installed, failed };
 }
 

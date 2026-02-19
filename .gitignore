@@ -18,3 +18,17 @@ antigravity-awesome-skills/
 .codex/version.json
 .codex/.personality_migration
 .codex/skills/.system/
+
+# Platform skill directories (auto-generated, downloaded at install time)
+.github/skills/
+.claude/skills/
+.codex/skills/
+.agent/skills/
+.gemini/skills/
+.cursor/skills/
+.adal/skills/
+.antigravity/skills/
+.opencode/skills/
+
+# NPM bundled skills (no longer shipped with the package)
+cli-installer/skills/

@@ -15,11 +15,10 @@ const { listBundles, validateBundle } = require('../lib/bundles');
 const { searchSkills } = require('../lib/search');
 const { displayToolsTable } = require('../lib/ui/table');
 const { checkInstalledVersion, isUpdateAvailable } = require('../lib/version-checker');
-const { getSkillVersion } = require('../lib/utils/skill-versions');
-const { getSkillsBasePath } = require('../lib/utils/path-resolver');
+const { ensureSkillsCached } = require('../lib/core/downloader');
 const chalk = require('chalk');
 const inquirer = require('inquirer');
-const path = require('path');
+const ora = require('ora');
 
 // Read version dynamically from package.json
 const packageJson = require('../package.json');
@@ -43,33 +42,50 @@ const shortFlags = {
   '-q': '--quiet'
 };
 
+/**
+ * Download/verify skills cache and return the cache directory path.
+ * @param {boolean} quiet
+ * @returns {string} cacheDir path
+ */
+async function warmCache(quiet) {
+  const spinner = quiet ? null : ora(`Fetching skills v${VERSION} from GitHub...`).start();
+  try {
+    const cacheDir = await ensureSkillsCached(VERSION);
+    if (spinner) spinner.succeed('Skills ready');
+    return cacheDir;
+  } catch (err) {
+    if (spinner) spinner.fail('Failed to fetch skills from GitHub');
+    throw err;
+  }
+}
+
 async function main() {
   const args = process.argv.slice(2);
-  
+
   // Setup handlers
   setupEscapeHandler();
   setupCleanupHandler();
-  
+
   console.log(chalk.cyan.bold(`\n🚀 claude-superskills v${VERSION} - Multi-Platform Installer\n`));
-  
+
   // Handle help
   if (args.includes('--help') || args.includes('-h')) {
     showHelp();
     return;
   }
-  
+
   // Handle version
   if (args.includes('--version') || args.includes('-v')) {
     console.log(`v${VERSION}`);
     return;
   }
-  
+
   // Handle list-bundles
   if (args.includes('--list-bundles')) {
     listBundles();
     return;
   }
-  
+
   // Handle search
   const searchIdx = args.indexOf('--search');
   if (searchIdx !== -1) {
@@ -77,24 +93,26 @@ async function main() {
     searchSkills(keyword);
     return;
   }
-  
+
   // Get command (first argument or default to install)
   let command = args[0] || 'install';
-  
+
   // Resolve aliases
   if (commandAliases[command]) {
     command = commandAliases[command];
   }
-  
+
+  const quiet = args.includes('-q') || args.includes('--quiet');
+
   // Handle bundle installation
   const bundleIdx = args.indexOf('--bundle');
   if (bundleIdx !== -1) {
     const bundleName = args[bundleIdx + 1];
     const bundle = validateBundle(bundleName);
-    
-    console.log(chalk.cyan('🔍 Detectando ferramentas AI CLI instaladas...\n'));
+
+    console.log(chalk.cyan('🔍 Detecting installed AI CLI tools...\n'));
     const detected = detectTools();
-    
+
     // Display tools table
     displayToolsTable(detected);
 
@@ -110,7 +128,7 @@ async function main() {
 
     // Check for --yes flag (skip prompts)
     const skipPrompt = args.includes('-y') || args.includes('--yes');
-    
+
     let platforms;
     if (skipPrompt) {
       platforms = [];
@@ -125,60 +143,60 @@ async function main() {
     } else {
       platforms = await promptPlatforms(detected);
     }
-    
+
     if (platforms.length === 0) {
-      console.log('\n❌ Instalação cancelada.\n');
+      console.log('\n❌ Installation cancelled.\n');
       process.exit(0);
     }
-    
-    const repoPath = getSkillsBasePath(__dirname);
-    const quiet = args.includes('-q') || args.includes('--quiet');
-    
+
+    // Download / verify skills cache
+    const cacheDir = await warmCache(quiet);
+
     if (!quiet) {
-      console.log(`📦 Instalando bundle: ${bundle.name}`);
+      console.log(`📦 Installing bundle: ${bundle.name}`);
       console.log(`Skills: ${bundle.skills.join(', ')}\n`);
     }
-    
+
     // Install bundle skills
-    bundle.skills.forEach(skill => {
+    for (const skill of bundle.skills) {
       if (platforms.includes('copilot')) {
-        installCopilotSkills(repoPath, [skill], quiet);
+        await installCopilotSkills(cacheDir, [skill], quiet);
       }
       if (platforms.includes('claude')) {
-        installClaudeSkills(repoPath, [skill], quiet);
+        await installClaudeSkills(cacheDir, [skill], quiet);
       }
       if (platforms.includes('codex') || platforms.includes('codex_cli') || platforms.includes('codex_app')) {
-        installCodexSkills(repoPath, [skill], quiet);
+        await installCodexSkills(cacheDir, [skill], quiet);
       }
       if (platforms.includes('opencode')) {
-        installOpenCodeSkills(repoPath, [skill], quiet);
+        await installOpenCodeSkills(cacheDir, [skill], quiet);
       }
       if (platforms.includes('gemini')) {
-        installGeminiSkills(repoPath, [skill], quiet);
+        await installGeminiSkills(cacheDir, [skill], quiet);
       }
       if (platforms.includes('antigravity')) {
-        installAntigravitySkills(repoPath, [skill], quiet);
+        await installAntigravitySkills(cacheDir, [skill], quiet);
       }
       if (platforms.includes('cursor')) {
-        installCursorSkills(repoPath, [skill], quiet);
+        await installCursorSkills(cacheDir, [skill], quiet);
       }
       if (platforms.includes('adal')) {
-        installAdalSkills(repoPath, [skill], quiet);
+        await installAdalSkills(cacheDir, [skill], quiet);
       }
-    });
-    
+    }
+
     if (!quiet) {
-      console.log(`\n✅ Bundle instalado com sucesso!\n`);
+      console.log(`\n✅ Bundle installed successfully!\n`);
     }
     return;
   }
-  
+
   // Zero-config mode (no arguments)
   if (args.length === 0 || command === 'install') {
-    console.log(chalk.cyan('🔍 Detectando ferramentas AI CLI instaladas...\n'));
-    
+    console.log(chalk.cyan('🔍 Detecting installed AI CLI tools...\n'));
+
     const detected = detectTools();
-    
+
     // Display tools table
     displayToolsTable(detected);
 
@@ -191,53 +209,53 @@ async function main() {
       console.log(getInstallInstructions());
       process.exit(1);
     }
-    
+
     // Check if already installed
     const installInfo = checkInstalledVersion();
-    
+
     if (installInfo.installed) {
-      console.log(chalk.cyan(`\nℹ️  claude-superskills já instalado nas seguintes plataformas:\n`));
-      
+      console.log(chalk.cyan(`\nℹ️  claude-superskills already installed on the following platforms:\n`));
+
       for (const platform of installInfo.platforms) {
         const version = installInfo.versions[platform];
         console.log(chalk.dim(`  • ${platform}: v${version}`));
       }
-      
+
       if (isUpdateAvailable(installInfo)) {
-        console.log(chalk.yellow(`\n⚠️  Nova versão disponível: v${installInfo.latestVersion}\n`));
-        
+        console.log(chalk.yellow(`\n⚠️  New version available: v${installInfo.latestVersion}\n`));
+
         const { update } = await inquirer.prompt([{
           type: 'confirm',
           name: 'update',
-          message: 'Deseja atualizar agora?',
+          message: 'Update now?',
           default: true
         }]);
-        
+
         if (!update) {
-          console.log(chalk.dim('\n❌ Atualização cancelada.\n'));
+          console.log(chalk.dim('\n❌ Update cancelled.\n'));
           process.exit(0);
         }
-        
-        console.log(chalk.cyan('\n🔄 Atualizando skills...\n'));
+
+        console.log(chalk.cyan('\n🔄 Updating skills...\n'));
       } else {
-        console.log(chalk.green(`\n✅ Você já possui a versão mais recente (v${installInfo.latestVersion})\n`));
-        
+        console.log(chalk.green(`\n✅ You already have the latest version (v${installInfo.latestVersion})\n`));
+
         const { reinstall } = await inquirer.prompt([{
           type: 'confirm',
           name: 'reinstall',
-          message: 'Deseja reinstalar?',
+          message: 'Reinstall?',
           default: false
         }]);
-        
+
         if (!reinstall) {
           process.exit(0);
         }
       }
     }
-    
+
     // Check for --yes flag (zero-config mode)
     const skipPrompt = args.includes('-y') || args.includes('--yes');
-    
+
     let platforms;
     if (skipPrompt) {
       // Auto-select all detected platforms
@@ -255,87 +273,79 @@ async function main() {
       // Interactive selection
       platforms = await promptPlatforms(detected);
     }
-    
+
     if (platforms.length === 0) {
-      console.log(chalk.red('\n❌ Instalação cancelada.\n'));
+      console.log(chalk.red('\n❌ Installation cancelled.\n'));
       process.exit(0);
     }
-    
-    console.log(chalk.cyan(`\n📦 Instalando skills para: ${platforms.join(', ')}\n`));
-    
-    const isLocal = args.includes('--local') || args.includes('-l');
-    const repoPath = isLocal ? process.cwd() : getSkillsBasePath(__dirname);
-    const quiet = args.includes('-q') || args.includes('--quiet');
 
-    if (isLocal && !quiet) {
-      console.log(chalk.yellow(`📂 Modo Local: Buscando skills em ${repoPath}`));
-    }
-    
+    console.log(chalk.cyan(`\n📦 Installing skills for: ${platforms.join(', ')}\n`));
+
+    // Download / verify skills cache
+    const cacheDir = await warmCache(quiet);
+
     // Install for selected platforms
     if (platforms.includes('copilot')) {
-      installCopilotSkills(repoPath, null, quiet);
+      await installCopilotSkills(cacheDir, null, quiet);
     }
-    
+
     if (platforms.includes('claude')) {
-      installClaudeSkills(repoPath, null, quiet);
+      await installClaudeSkills(cacheDir, null, quiet);
     }
-    
+
     if (platforms.includes('codex') || platforms.includes('codex_cli') || platforms.includes('codex_app')) {
-      installCodexSkills(repoPath, null, quiet);
+      await installCodexSkills(cacheDir, null, quiet);
     }
-    
+
     if (platforms.includes('opencode')) {
-      installOpenCodeSkills(repoPath, null, quiet);
+      await installOpenCodeSkills(cacheDir, null, quiet);
     }
-    
+
     if (platforms.includes('gemini')) {
-      installGeminiSkills(repoPath, null, quiet);
+      await installGeminiSkills(cacheDir, null, quiet);
     }
 
     if (platforms.includes('antigravity')) {
-      installAntigravitySkills(repoPath, null, quiet);
+      await installAntigravitySkills(cacheDir, null, quiet);
     }
 
     if (platforms.includes('cursor')) {
-      installCursorSkills(repoPath, null, quiet);
+      await installCursorSkills(cacheDir, null, quiet);
     }
 
     if (platforms.includes('adal')) {
-      installAdalSkills(repoPath, null, quiet);
+      await installAdalSkills(cacheDir, null, quiet);
     }
 
     if (!quiet) {
-      console.log(chalk.green(`\n✅ Instalação concluída com sucesso!\n`));
+      console.log(chalk.green(`\n✅ Installation complete!\n`));
     }
     return;
   }
-  
+
   // Handle other commands
   switch(command) {
-    case 'list':
+    case 'list': {
       console.log('📋 Installed Skills:\n');
-
-      // Get repo path (works both in npm package and git repo)
-      const repoPath = getSkillsBasePath(__dirname);
-      const skills = ['skill-creator', 'prompt-engineer', 'youtube-summarizer', 'audio-transcriber'];
-
+      const skills = ['skill-creator', 'prompt-engineer', 'youtube-summarizer', 'audio-transcriber',
+                      'agent-skill-discovery', 'agent-skill-orchestrator'];
       skills.forEach(skill => {
-        const version = getSkillVersion(skill, repoPath);
-        console.log(`  • ${skill} (v${version})`);
+        console.log(`  • ${skill}`);
       });
       console.log();
       break;
-      
+    }
+
     case 'update':
       console.log('🔄 Updating skills...');
       console.log('✅ All skills are up to date!\n');
       break;
-      
+
     case 'uninstall':
     case 'doctor':
       console.log('Use: npx claude-superskills --help for options\n');
       break;
-      
+
     default:
       console.log(`❌ Unknown command: ${command}`);
       showHelp();

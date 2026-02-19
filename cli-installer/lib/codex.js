@@ -1,100 +1,56 @@
-const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
-const os = require('os');
 const chalk = require('chalk');
-const { getSkillsSourcePath, getUserSkillsPath } = require('./utils/path-resolver');
+const { getUserSkillsPath } = require('./utils/path-resolver');
 
 /**
- * Instala skills para OpenAI Codex
- * Solução robusta com multi-path fallback e logging detalhado
- * @param {string} repoPath - Caminho para o repositório claude-superskills
- * @param {Array<string>|null} skills - Skills to install (null = all)
+ * Install skills for OpenAI Codex.
+ * @param {string} cacheDir - Path to cached skills dir (~/.claude-superskills/cache/{v}/skills/)
+ * @param {string[]|null} skills - Specific skills to install, or null for all
  * @param {boolean} quiet - Suppress output
  */
-function install(repoPath, skills = null, quiet = false) {
+async function install(cacheDir, skills = null, quiet = false) {
   const targetDir = getUserSkillsPath('codex');
 
   if (!quiet) {
-    console.log(chalk.cyan('\n📦 Instalando skills para OpenAI Codex...'));
-    console.log(chalk.gray(`   Destino: ${targetDir}`));
+    console.log(chalk.cyan('\n📦 Installing skills for OpenAI Codex...'));
+    console.log(chalk.gray(`   Target: ${targetDir}`));
   }
 
-  const sourceDir = getSkillsSourcePath(repoPath, 'codex');
-  
-  if (!fs.existsSync(sourceDir)) {
-    if (!quiet) {
-      console.log(chalk.red('❌ Diretório .codex/skills não encontrado no repositório'));
-      console.log(chalk.gray(`   Esperado: ${sourceDir}`));
-    }
-    return { installed: 0, failed: 0 };
-  }
-  
-  // Criar diretório de destino se não existir
-  if (!fs.existsSync(targetDir)) {
-    fs.mkdirSync(targetDir, { recursive: true });
-    if (!quiet) {
-      console.log(chalk.green(`   ✓ Criado: ${targetDir}`));
-    }
-  }
-  
-  // Listar skills disponíveis
-  const availableSkills = fs.readdirSync(sourceDir, { withFileTypes: true })
-    .filter(d => d.isDirectory() && d.name !== 'node_modules' && !d.name.startsWith('.'))
-    .map(d => d.name);
-  
-  if (availableSkills.length === 0) {
-    if (!quiet) {
-      console.log(chalk.yellow('   ⚠️  Nenhum skill encontrado em .codex/skills/'));
-    }
-    return { installed: 0, failed: 0 };
-  }
+  await fs.ensureDir(targetDir);
+
+  const availableSkills = (await fs.readdir(cacheDir)).filter(f =>
+    fs.statSync(path.join(cacheDir, f)).isDirectory()
+  );
 
   const skillsToInstall = skills || availableSkills;
   let installed = 0;
   let failed = 0;
-  
-  // Criar symlinks
-  skillsToInstall.forEach(skill => {
-    const src = path.join(sourceDir, skill);
+
+  for (const skill of skillsToInstall) {
+    const src = path.join(cacheDir, skill);
     const dest = path.join(targetDir, skill);
-    
+
     if (!fs.existsSync(src)) {
-      if (!quiet) {
-        console.log(chalk.yellow(`   ⚠️  Skill não encontrada: ${skill}`));
-      }
+      if (!quiet) console.log(chalk.yellow(`   ⚠️  Skill not found: ${skill}`));
       failed++;
-      return;
+      continue;
     }
-    
-    // Remover symlink antigo se existir
-    if (fs.existsSync(dest) || fs.lstatSync(dest, {throwIfNoEntry: false})) {
-      try {
-        fs.unlinkSync(dest);
-      } catch (e) {
-        // Ignore
-      }
-    }
-    
-    // Criar novo symlink
+
     try {
-      fs.symlinkSync(src, dest);
-      if (!quiet) {
-        console.log(chalk.green(`   ✓ Codex: ${skill}`));
-      }
+      if (fs.existsSync(dest)) await fs.remove(dest);
+      await fs.copy(src, dest);
+      if (!quiet) console.log(chalk.green(`   ✓ Codex: ${skill}`));
       installed++;
-    } catch (error) {
-      if (!quiet) {
-        console.log(chalk.red(`   ✗ Erro ao instalar ${skill}: ${error.message}`));
-      }
+    } catch (err) {
+      if (!quiet) console.log(chalk.red(`   ✗ Error installing ${skill}: ${err.message}`));
       failed++;
     }
-  });
-  
+  }
+
   if (!quiet) {
-    console.log(chalk.green(`\n✅ ${installed} Codex skill(s) instalado(s)`));
-    if (failed > 0) {
-      console.log(chalk.yellow(`⚠️  ${failed} skill(s) falharam`));
-    }
+    console.log(chalk.green(`\n✅ ${installed} Codex skill(s) installed`));
+    if (failed > 0) console.log(chalk.yellow(`⚠️  ${failed} skill(s) failed`));
   }
 
   return { installed, failed };
