@@ -1,6 +1,6 @@
 {
   "name": "cli-ai-skills",
-  "version": "1.10.1",
+  "version": "1.10.2",
   "description": "Install AI skills for GitHub Copilot CLI, Claude Code, OpenAI Codex, OpenCode, Gemini CLI, Antigravity, Cursor IDE, and AdaL CLI",
   "main": "lib/index.js",
   "bin": {
