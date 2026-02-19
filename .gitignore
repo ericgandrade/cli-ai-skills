@@ -10,3 +10,11 @@ __pycache__/
 *.pyc
 *.log
 antigravity-awesome-skills/
+
+# Codex local configuration
+.codex/auth.json
+.codex/config.toml
+.codex/models_cache.json
+.codex/version.json
+.codex/.personality_migration
+.codex/skills/.system/
