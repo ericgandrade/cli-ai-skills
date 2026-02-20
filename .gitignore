@@ -25,6 +25,7 @@ AGENTS.md
 .claude/skills/
 .codex/skills/
 .agent/skills/
+.agents/skills/
 .gemini/skills/
 .cursor/skills/
 .adal/skills/

@@ -16,7 +16,7 @@ const { searchSkills } = require('../lib/search');
 const { displayToolsTable } = require('../lib/ui/table');
 const { checkInstalledVersion, isUpdateAvailable } = require('../lib/version-checker');
 const { ensureSkillsCached } = require('../lib/core/downloader');
-const { getUserSkillsPath } = require('../lib/utils/path-resolver');
+const { getUserSkillsPath, getCodexSkillPaths } = require('../lib/utils/path-resolver');
 const chalk = require('chalk');
 const inquirer = require('inquirer');
 const ora = require('ora');
@@ -67,8 +67,7 @@ function getDetectedPlatforms(detected) {
   const platforms = [];
   if (detected.copilot.installed) platforms.push('copilot');
   if (detected.claude.installed) platforms.push('claude');
-  if (detected.codex_cli.installed) platforms.push('codex_cli');
-  if (detected.codex_app.installed) platforms.push('codex_app');
+  if (detected.codex_cli.installed || detected.codex_app.installed) platforms.push('codex');
   if (detected.opencode.installed) platforms.push('opencode');
   if (detected.gemini.installed) platforms.push('gemini');
   if (detected.antigravity.installed) platforms.push('antigravity');
@@ -138,9 +137,17 @@ function getPlatformTargetDir(platform) {
   return map[platform];
 }
 
+function getPlatformTargetDirs(platform) {
+  if (platform === 'codex' || platform === 'codex_cli' || platform === 'codex_app') {
+    return getCodexSkillPaths();
+  }
+  const dir = getPlatformTargetDir(platform);
+  return dir ? [dir] : [];
+}
+
 async function uninstallManagedSkills(platforms, quiet) {
   const managedSkills = getManagedSkillNames();
-  const targets = [...new Set(platforms.map(getPlatformTargetDir).filter(Boolean))];
+  const targets = [...new Set(platforms.flatMap(getPlatformTargetDirs).filter(Boolean))];
   let removedCount = 0;
 
   for (const targetDir of targets) {
@@ -157,6 +164,70 @@ async function uninstallManagedSkills(platforms, quiet) {
 
   if (!quiet) {
     console.log(chalk.gray(`🧹 Uninstalled ${removedCount} managed skill folder(s)`));
+  }
+}
+
+async function runUninstallFlow(detected, quiet, skipPrompt) {
+  const allPlatforms = getDetectedPlatforms(detected);
+  if (allPlatforms.length === 0) {
+    console.log(chalk.yellow('\n⚠️  No supported platforms detected for uninstall.\n'));
+    return;
+  }
+
+  let selectedPlatforms = allPlatforms;
+  let shouldClearCache = true;
+
+  if (!skipPrompt) {
+    const { uninstallMode } = await inquirer.prompt([{
+      type: 'list',
+      name: 'uninstallMode',
+      message: 'How do you want to uninstall?',
+      choices: [
+        { name: 'Uninstall from all detected platforms', value: 'all' },
+        { name: 'Choose platforms to uninstall', value: 'select' },
+        { name: 'Cancel', value: 'cancel' }
+      ],
+      default: 'all'
+    }]);
+
+    if (uninstallMode === 'cancel') {
+      console.log(chalk.dim('\n❌ Operation cancelled.\n'));
+      process.exit(0);
+    }
+
+    if (uninstallMode === 'select') {
+      selectedPlatforms = await promptPlatforms(detected, {
+        message: 'Uninstall skills from which platforms? (Press ESC to cancel)',
+        defaultChecked: false
+      });
+      if (selectedPlatforms.length === 0) {
+        console.log(chalk.dim('\n❌ No platform selected. Operation cancelled.\n'));
+        process.exit(0);
+      }
+    }
+
+    const { clearCacheNow } = await inquirer.prompt([{
+      type: 'confirm',
+      name: 'clearCacheNow',
+      message: 'Clear local skills cache (~/.claude-superskills/cache) too?',
+      default: true
+    }]);
+    shouldClearCache = clearCacheNow;
+  } else if (!quiet) {
+    console.log(chalk.cyan('\n🗑️  Auto mode: uninstalling from all detected platforms and clearing cache...\n'));
+  }
+
+  if (!quiet) {
+    console.log(chalk.cyan(`\n🧹 Uninstalling skills from: ${selectedPlatforms.join(', ')}\n`));
+  }
+
+  await uninstallManagedSkills(selectedPlatforms, quiet);
+  if (shouldClearCache) {
+    await clearSkillsCache(quiet);
+  }
+
+  if (!quiet) {
+    console.log(chalk.green('\n✅ Uninstall complete!\n'));
   }
 }
 
@@ -257,9 +328,6 @@ async function main() {
       console.log(getInstallInstructions());
       process.exit(1);
     }
-
-    // Check for --yes flag (skip prompts)
-    const skipPrompt = args.includes('-y') || args.includes('--yes');
 
     let platforms;
     if (skipPrompt) {
@@ -366,6 +434,7 @@ async function main() {
           choices: [
             { name: 'Update to latest version', value: 'update' },
             { name: 'Reinstall from scratch', value: 'reinstall' },
+            { name: 'Uninstall skills', value: 'uninstall' },
             { name: 'Cancel', value: 'cancel' }
           ],
           default: 'update'
@@ -374,6 +443,11 @@ async function main() {
         if (action === 'cancel') {
           console.log(chalk.dim('\n❌ Operation cancelled.\n'));
           process.exit(0);
+        }
+
+        if (action === 'uninstall') {
+          await runUninstallFlow(detected, quiet, skipPrompt);
+          return;
         }
 
         if (action === 'update') {
@@ -391,6 +465,7 @@ async function main() {
           message: 'What do you want to do?',
           choices: [
             { name: 'Reinstall from scratch', value: 'reinstall' },
+            { name: 'Uninstall skills', value: 'uninstall' },
             { name: 'Cancel', value: 'cancel' }
           ],
           default: 'reinstall'
@@ -399,6 +474,11 @@ async function main() {
         if (action === 'cancel') {
           console.log(chalk.dim('\n❌ Operation cancelled.\n'));
           process.exit(0);
+        }
+
+        if (action === 'uninstall') {
+          await runUninstallFlow(detected, quiet, skipPrompt);
+          return;
         }
 
         console.log(chalk.cyan('\n♻️  Reinstalling skills from scratch...\n'));
@@ -500,6 +580,10 @@ async function main() {
       break;
 
     case 'uninstall':
+      console.log(chalk.cyan('🔍 Detecting installed AI CLI tools...\n'));
+      await runUninstallFlow(detectTools(), quiet, skipPrompt);
+      break;
+
     case 'doctor':
       console.log('Use: npx claude-superskills --help for options\n');
       break;
@@ -542,6 +626,7 @@ Examples:
   npx claude-superskills --search "prompt"        # Search for skills
   npx claude-superskills --list-bundles           # Show available bundles
   npx claude-superskills ls -q                    # List skills, quiet mode
+  npx claude-superskills uninstall -y             # Uninstall all + clear cache
 `);
 }
 

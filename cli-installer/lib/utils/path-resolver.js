@@ -21,16 +21,22 @@ function getCachedSkillsPath(version) {
  * @param {string} platform - Platform name
  * @returns {string} Path to user's skills directory
  */
+function getCodexSkillPaths() {
+  const home = process.env.HOME || process.env.USERPROFILE;
+  return [
+    path.join(home, '.agents', 'skills'),
+    path.join(home, '.codex', 'vendor_imports', 'skills', 'skills', '.curated'),
+    path.join(home, '.codex', 'vendor_imports', 'skills', 'skills', '.custom'),
+    path.join(home, '.codex', 'skills')
+  ];
+}
+
 function getUserSkillsPath(platform) {
   const home = process.env.HOME || process.env.USERPROFILE;
 
-  // Special handling for Codex with multi-path fallback
+  // Codex official path: ~/.agents/skills (keep legacy fallbacks for compatibility)
   if (platform === 'codex') {
-    const codexPaths = [
-      path.join(home, '.codex', 'vendor_imports', 'skills', 'skills', '.curated'), // Real path (primary)
-      path.join(home, '.codex', 'vendor_imports', 'skills', 'skills', '.custom'),  // Alternative
-      path.join(home, '.codex', 'skills')                                           // Documented path (fallback)
-    ];
+    const codexPaths = getCodexSkillPaths();
 
     for (const codexPath of codexPaths) {
       if (fs.existsSync(codexPath)) {
@@ -56,5 +62,6 @@ function getUserSkillsPath(platform) {
 
 module.exports = {
   getCachedSkillsPath,
-  getUserSkillsPath
+  getUserSkillsPath,
+  getCodexSkillPaths
 };

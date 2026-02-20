@@ -36,7 +36,7 @@ See [Installation Guide](../docs/INSTALLATION.md) for full methods.
 
 - GitHub Copilot CLI: `~/.github/skills/`
 - Claude Code: `~/.claude/skills/`
-- OpenAI Codex: `~/.codex/vendor_imports/skills/skills/.curated/`
+- OpenAI Codex: `~/.agents/skills/` (fallback: legacy Codex paths)
 - OpenCode: `~/.agent/skills/`
 - Gemini CLI: `~/.gemini/skills/`
 - Antigravity: `~/.agent/skills/`
@@ -91,5 +91,6 @@ npx claude-superskills --search "research"
 npx claude-superskills i -a -y -q
 npx claude-superskills ls -q
 npx claude-superskills up
+npx claude-superskills uninstall -y
 npx claude-superskills doc
 ```

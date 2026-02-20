@@ -167,14 +167,14 @@ gemini -p "design a solution for processing meeting notes and creating Jira tick
 
 - **GitHub Copilot CLI** - Terminal AI assistant (`~/.github/skills/`)
 - **Claude Code** - Anthropic's Claude in development (`~/.claude/skills/`)
-- **OpenAI Codex** - GPT-powered coding assistant (`~/.codex/vendor_imports/skills/skills/.curated/`)
+- **OpenAI Codex** - GPT-powered coding assistant (`~/.agents/skills/`)
 - **OpenCode** - Open source AI coding assistant (`~/.agent/skills/`)
 - **Gemini CLI** - Google's Gemini in terminal (`~/.gemini/skills/`)
 - **Antigravity** - AI coding assistant (`~/.agent/skills/`)
 - **Cursor IDE** - AI-powered code editor (`~/.cursor/skills/`)
 - **AdaL CLI** - AI development assistant (`~/.adal/skills/`)
 
-**Note on Codex:** The installer automatically handles Codex's unique directory structure. Skills are installed to `~/.codex/vendor_imports/skills/skills/.curated/` and should appear in the Codex App after restart.
+**Note on Codex:** The installer follows Codex's documented skills path `~/.agents/skills/`, with fallback support for legacy Codex directories.
 
 ## ⌨️ Compatibility & Invocation
 
@@ -184,7 +184,7 @@ These skills follow the universal `SKILL.md` format and work with any AI coding 
 |------|------|--------------------|------|
 | **Claude Code** | CLI | `/skill-name help me...` | `.claude/skills/` |
 | **Gemini CLI** | CLI | `Use skill-name to...` | `.gemini/skills/` |
-| **Codex CLI** | CLI | `Use skill-name to...` | `.codex/skills/` |
+| **Codex CLI** | CLI | `Use skill-name to...` | `.agents/skills/` |
 | **Antigravity** | IDE | *(Agent Mode)* `Use skill...` | `.agent/skills/` |
 | **Cursor** | IDE | `@skill-name` in Chat | `.cursor/skills/` |
 | **Copilot** | Ext | *(Paste skill content manually)* | N/A |

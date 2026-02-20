@@ -54,14 +54,18 @@ async function confirmCancel() {
  * @param {Object} detected - Ferramentas detectadas { copilot, claude, codex_cli, codex_app, opencode, gemini }
  * @returns {Promise<Array>} Plataformas escolhidas
  */
-async function promptPlatforms(detected) {
+async function promptPlatforms(detected, options = {}) {
+  const {
+    message = 'Instalar skills para quais plataformas? (Pressione ESC para cancelar)',
+    defaultChecked = true
+  } = options;
   const choices = [];
   
   if (detected.copilot && detected.copilot.installed) {
     choices.push({
       name: '✅ GitHub Copilot CLI (~/.github/skills/)',
       value: 'copilot',
-      checked: true
+      checked: defaultChecked
     });
   }
   
@@ -69,33 +73,25 @@ async function promptPlatforms(detected) {
     choices.push({
       name: '✅ Claude Code (~/.claude/skills/)',
       value: 'claude',
-      checked: true
+      checked: defaultChecked
     });
   }
   
-  // Codex CLI - sempre separado
-  if (detected.codex_cli && detected.codex_cli.installed) {
+  // Codex CLI/App usam o mesmo diretório de skills; exibir uma única opção.
+  if ((detected.codex_cli && detected.codex_cli.installed) ||
+      (detected.codex_app && detected.codex_app.installed)) {
     choices.push({
-      name: '✅ OpenAI Codex CLI (~/.codex/vendor_imports/skills/skills/.curated/)',
-      value: 'codex_cli',
-      checked: true
-    });
-  }
-  
-  // Codex App - sempre separado
-  if (detected.codex_app && detected.codex_app.installed) {
-    choices.push({
-      name: '✅ OpenAI Codex App (~/.codex/vendor_imports/skills/skills/.curated/)',
-      value: 'codex_app',
-      checked: true
+      name: '✅ OpenAI Codex (CLI/App) (~/.agents/skills/)',
+      value: 'codex',
+      checked: defaultChecked
     });
   }
   
   if (detected.opencode && detected.opencode.installed) {
     choices.push({
-      name: '✅ OpenCode (~/.agents/skills/)',
+      name: '✅ OpenCode (~/.agent/skills/)',
       value: 'opencode',
-      checked: true
+      checked: defaultChecked
     });
   }
   
@@ -103,7 +99,7 @@ async function promptPlatforms(detected) {
     choices.push({
       name: '✅ Gemini CLI (~/.gemini/skills/)',
       value: 'gemini',
-      checked: true
+      checked: defaultChecked
     });
   }
 
@@ -111,7 +107,7 @@ async function promptPlatforms(detected) {
     choices.push({
       name: '✅ Google Antigravity (~/.agent/skills/)',
       value: 'antigravity',
-      checked: true
+      checked: defaultChecked
     });
   }
 
@@ -119,7 +115,7 @@ async function promptPlatforms(detected) {
     choices.push({
       name: '✅ Cursor IDE (~/.cursor/skills/)',
       value: 'cursor',
-      checked: true
+      checked: defaultChecked
     });
   }
 
@@ -127,7 +123,7 @@ async function promptPlatforms(detected) {
     choices.push({
       name: '✅ AdaL CLI (~/.adal/skills/)',
       value: 'adal',
-      checked: true
+      checked: defaultChecked
     });
   }
 
@@ -139,7 +135,7 @@ async function promptPlatforms(detected) {
     {
       type: 'checkbox',
       name: 'platforms',
-      message: 'Instalar skills para quais plataformas? (Pressione ESC para cancelar)',
+      message,
       choices: choices,
       validate: (answer) => {
         if (answer.length < 1) {

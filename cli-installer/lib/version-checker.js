@@ -3,6 +3,7 @@ const path = require('path');
 const os = require('os');
 const semver = require('semver');
 const yaml = require('js-yaml');
+const { getUserSkillsPath } = require('./utils/path-resolver');
 
 /**
  * Verifica se claude-superskills já está instalado em alguma plataforma
@@ -21,7 +22,7 @@ function checkInstalledVersion() {
   const skillDirs = {
     copilot: path.join(homeDir, '.github', 'skills'),
     claude: path.join(homeDir, '.claude', 'skills'),
-    codex: path.join(homeDir, '.codex', 'skills'),
+    codex: getUserSkillsPath('codex'),
     opencode: path.join(homeDir, '.agent', 'skills'),
     gemini: path.join(homeDir, '.gemini', 'skills'),
     antigravity: path.join(homeDir, '.agent', 'skills'),
@@ -93,22 +94,22 @@ function isUpdateAvailable(installInfo) {
 function checkPlatformInstallation(platform) {
   const homeDir = os.homedir();
   const platformMap = {
-    copilot: '.github',
-    claude: '.claude',
-    codex: '.codex',
-    opencode: '.agent',
-    gemini: '.gemini',
-    antigravity: '.agent',
-    cursor: '.cursor',
-    adal: '.adal'
+    copilot: path.join(homeDir, '.github', 'skills'),
+    claude: path.join(homeDir, '.claude', 'skills'),
+    codex: getUserSkillsPath('codex'),
+    opencode: path.join(homeDir, '.agent', 'skills'),
+    gemini: path.join(homeDir, '.gemini', 'skills'),
+    antigravity: path.join(homeDir, '.agent', 'skills'),
+    cursor: path.join(homeDir, '.cursor', 'skills'),
+    adal: path.join(homeDir, '.adal', 'skills')
   };
-  
-  const dirName = platformMap[platform];
-  if (!dirName) {
+
+  const skillsDir = platformMap[platform];
+  if (!skillsDir) {
     return { installed: false, version: null };
   }
-  
-  const skillPath = path.join(homeDir, dirName, 'skills', 'skill-creator', 'SKILL.md');
+
+  const skillPath = path.join(skillsDir, 'skill-creator', 'SKILL.md');
   
   if (!fs.existsSync(skillPath)) {
     return { installed: false, version: null };

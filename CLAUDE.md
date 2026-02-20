@@ -80,6 +80,7 @@ The following paths are in `.gitignore` and must stay empty/absent in the repo:
 .claude/skills/      ← GITIGNORED — do not create or commit
 .codex/skills/       ← GITIGNORED — do not create or commit
 .agent/skills/       ← GITIGNORED — do not create or commit
+.agents/skills/      ← GITIGNORED — do not create or commit
 .gemini/skills/      ← GITIGNORED — do not create or commit
 .cursor/skills/      ← GITIGNORED — do not create or commit
 .adal/skills/        ← GITIGNORED — do not create or commit
@@ -93,7 +94,7 @@ cli-installer/skills/ ← GITIGNORED — do not create or commit
 **If you ever see skills committed under these paths, remove them:**
 ```bash
 git rm -r --cached .github/skills/ .claude/skills/ .codex/skills/ \
-  .agent/skills/ .gemini/skills/ .cursor/skills/ .adal/skills/ \
+  .agent/skills/ .agents/skills/ .gemini/skills/ .cursor/skills/ .adal/skills/ \
   cli-installer/skills/
 git commit -m "fix: remove erroneously committed platform skill dirs"
 ```
@@ -105,7 +106,7 @@ git commit -m "fix: remove erroneously committed platform skill dirs"
 1. **Single Source of Truth**: All skills are maintained in `skills/` only
 2. **Download at Install Time**: The installer fetches skills from the GitHub release tag and caches them at `~/.claude-superskills/cache/{version}/skills/` — no skills are bundled in the npm package
 3. **Platform-Specific Installers**: Each platform has its own async installer in `cli-installer/lib/`; all copy from the cache using `fs.copy` (no symlinks)
-4. **No Platform Dirs in Repo**: `.github/skills/`, `.claude/skills/`, `.codex/skills/`, `.agent/skills/`, `.gemini/skills/`, `.cursor/skills/`, `.adal/skills/` are all in `.gitignore`
+4. **No Platform Dirs in Repo**: `.github/skills/`, `.claude/skills/`, `.codex/skills/`, `.agent/skills/`, `.agents/skills/`, `.gemini/skills/`, `.cursor/skills/`, `.adal/skills/` are all in `.gitignore`
 5. **Bundle System**: Skills are grouped into curated bundles (essential, content, developer, orchestration, all)
 
 ### Install Flow
@@ -120,7 +121,7 @@ npx claude-superskills
     → copy skills from cache → platform dirs
         copilot     → ~/.github/skills/
         claude      → ~/.claude/skills/
-        codex       → ~/.codex/vendor_imports/skills/skills/.curated/
+        codex       → ~/.agents/skills/ (legacy Codex paths still supported)
         opencode    → ~/.agent/skills/
         gemini      → ~/.gemini/skills/
         antigravity → ~/.agent/skills/
@@ -322,7 +323,7 @@ async function install(cacheDir, skills = null, quiet = false)
 |------|----------|----------------|
 | `copilot.js` | GitHub Copilot CLI | `~/.github/skills/` |
 | `claude.js` | Claude Code | `~/.claude/skills/` |
-| `codex.js` | OpenAI Codex | `~/.codex/vendor_imports/skills/skills/.curated/` |
+| `codex.js` | OpenAI Codex | `~/.agents/skills/` |
 | `opencode.js` | OpenCode | `~/.agent/skills/` |
 | `gemini.js` | Gemini CLI | `~/.gemini/skills/` |
 | `antigravity.js` | Antigravity | `~/.agent/skills/` |
