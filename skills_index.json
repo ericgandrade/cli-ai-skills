@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generated": "2026-02-20T18:26:18.110857Z",
+  "generated": "2026-02-20T18:48:09.276295Z",
   "skills": [
     {
       "name": "agent-skill-discovery",
@@ -67,7 +67,7 @@
     {
       "name": "audio-transcriber",
       "version": "1.2.1",
-      "description": "Transform audio recordings into professional Markdown documentation with intelligent summaries using LLM integration",
+      "description": "This skill should be used when the user needs to transform audio recordings into professional Markdown documentation with intelligent summaries using LLM integration.",
       "category": "content",
       "tags": [
         "audio",
@@ -87,7 +87,7 @@
     {
       "name": "brainstorming",
       "version": "1.0.0",
-      "description": "You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user intent, requirements and design before implementation.",
+      "description": "This skill should be used when the user needs pre-implementation ideation for creative work, such as creating features, building components, adding functionality, or modifying behavior.",
       "category": "planning",
       "tags": [
         "brainstorming",
@@ -111,7 +111,7 @@
     {
       "name": "deep-research",
       "version": "1.0.0",
-      "description": "Execute deep, multi-step research using native web tools (WebSearch/WebFetch) without external API keys. Use for market analysis, competitive research, literature scans, technical due diligence, and decision support with citations.",
+      "description": "This skill should be used when the user needs deep, multi-step research using native web tools (WebSearch/WebFetch) without external API keys.",
       "category": "research",
       "tags": [
         "research",
@@ -134,9 +134,40 @@
       "triggers": []
     },
     {
+      "name": "docling-converter",
+      "version": "1.0.0",
+      "description": "This skill should be used when the user needs to convert documents (PDF, Office, images, HTML, Markdown) into structured outputs such as Markdown, JSON, or DoclingDocument using Docling.",
+      "category": "content",
+      "tags": [
+        "docling",
+        "document-conversion",
+        "pdf",
+        "ocr",
+        "markdown",
+        "json"
+      ],
+      "risk": "safe",
+      "platforms": [
+        "github-copilot-cli",
+        "claude-code",
+        "codex",
+        "opencode",
+        "gemini",
+        "antigravity",
+        "cursor",
+        "adal"
+      ],
+      "triggers": [
+        "convert this pdf to markdown",
+        "extract text from scanned document",
+        "docling conversion",
+        "convert docx pptx to markdown"
+      ]
+    },
+    {
       "name": "executing-plans",
       "version": "1.0.0",
-      "description": "Use when you have a written implementation plan to execute in a separate session with review checkpoints",
+      "description": "This skill should be used when the user has a written implementation plan to execute in a separate session with review checkpoints.",
       "category": "planning",
       "tags": [
         "planning",
@@ -160,7 +191,7 @@
     {
       "name": "prompt-engineer",
       "version": "1.1.0",
-      "description": "Transforms user prompts into optimized prompts using frameworks (RTF, RISEN, Chain of Thought, RODES, Chain of Density, RACE, RISE, STAR, SOAP, CLEAR, GROW)",
+      "description": "This skill should be used when the user needs to transform raw prompts into optimized prompts using frameworks (RTF, RISEN, Chain of Thought, RODES, Chain of Density, RACE, RISE, STAR, SOAP, CLEAR, GROW).",
       "category": "automation",
       "tags": [
         "prompt-engineering",
@@ -196,9 +227,40 @@
       "triggers": []
     },
     {
+      "name": "us-program-research",
+      "version": "1.0.0",
+      "description": "This skill should be used when the user needs structured research and ranking of US academic programs (PhD, Master's, Bachelor's), including credential analysis, parallel source collection, and an actionable application plan.",
+      "category": "research",
+      "tags": [
+        "us-programs",
+        "university-research",
+        "rankings",
+        "admissions",
+        "scorecards"
+      ],
+      "risk": "medium",
+      "platforms": [
+        "github-copilot-cli",
+        "claude-code",
+        "codex",
+        "opencode",
+        "gemini",
+        "antigravity",
+        "cursor",
+        "adal"
+      ],
+      "triggers": [
+        "research us programs",
+        "find masters programs in usa",
+        "research phd in us",
+        "compare us graduate schools",
+        "create us application action plan"
+      ]
+    },
+    {
       "name": "writing-plans",
       "version": "1.0.0",
-      "description": "Use when you have a spec or requirements for a multi-step task, before touching code",
+      "description": "This skill should be used when the user has a spec or requirements for a multi-step task before touching code.",
       "category": "planning",
       "tags": [
         "planning",
@@ -222,7 +284,7 @@
     {
       "name": "youtube-summarizer",
       "version": "1.2.1",
-      "description": "Extract transcripts from YouTube videos and generate comprehensive, detailed summaries using intelligent analysis frameworks",
+      "description": "This skill should be used when the user needs to extract transcripts from YouTube videos and generate comprehensive, detailed summaries using intelligent analysis frameworks.",
       "category": "content",
       "tags": [
         "video",

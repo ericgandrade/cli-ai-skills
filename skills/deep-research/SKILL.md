@@ -1,6 +1,6 @@
 ---
 name: deep-research
-description: Execute deep, multi-step research using native web tools (WebSearch/WebFetch) without external API keys. Use for market analysis, competitive research, literature scans, technical due diligence, and decision support with citations.
+description: "This skill should be used when the user needs deep, multi-step research using native web tools (WebSearch/WebFetch) without external API keys."
 version: 1.0.0
 author: Eric Andrade
 created: 2026-02-20
@@ -12,6 +12,8 @@ risk: safe
 ---
 
 # Deep Research (No External API)
+
+## Purpose
 
 Run structured, multi-step research with evidence-first synthesis.
 
@@ -32,6 +34,8 @@ Use this skill when:
 - Clear research question and scope
 
 No external API key is required.
+
+## Workflow
 
 ## Research Protocol
 
@@ -97,3 +101,15 @@ Choose one based on request:
 - Never fabricate sources or citations.
 - If evidence is insufficient, state it clearly.
 - Distinguish confirmed facts from inference.
+
+## Critical Rules
+
+- Always include citations for material claims.
+- Always separate facts from interpretations and recommendations.
+- Always mark uncertainty explicitly when evidence is weak or conflicting.
+
+## Example Usage
+
+1. "Use deep-research to compare 3 vector databases for enterprise use."
+2. "Use deep-research to summarize regulatory updates from the last 12 months."
+3. "Use deep-research to produce a source-backed buy-vs-build memo."

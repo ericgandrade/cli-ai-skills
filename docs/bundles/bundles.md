@@ -51,6 +51,7 @@ npx claude-superskills --bundle essential -y
 **Includes:**
 - **youtube-summarizer** - Summarize YouTube videos
 - **audio-transcriber** - Transcribe audio to Markdown
+- **docling-converter** - Convert PDF/Office/image docs to Markdown/JSON with optional OCR
 
 **Installation:**
 ```bash
@@ -104,6 +105,7 @@ npx claude-superskills --bundle planning -y
 
 **Includes:**
 - **deep-research** - Multi-step research with citations (no Google API required)
+- **us-program-research** - US academic program ranking and action-plan workflow
 - **agent-skill-discovery** - Discover available resources
 - **prompt-engineer** - Improve research prompts
 
@@ -162,8 +164,10 @@ npx claude-superskills --bundle developer -y
 - **deep-research** - Run deep research with citations
 - **skill-creator** - Create custom skills
 - **prompt-engineer** - Optimize prompts
+- **docling-converter** - Convert complex documents with Docling
 - **youtube-summarizer** - Summarize videos
 - **audio-transcriber** - Transcribe audio
+- **us-program-research** - Research and rank US academic programs
 
 **Installation:**
 ```bash
@@ -197,7 +201,7 @@ npx claude-superskills --bundle all -y
 | Audio Transcription | ❌ | ✅ | ❌ | ❌ | ❌ | ✅ |
 | Planning Workflow | ✅ | ❌ | ✅ | ❌ | ❌ | ✅ |
 | Deep Research | ❌ | ❌ | ❌ | ✅ | ❌ | ✅ |
-| Skills Count | 7 | 2 | 4 | 3 | 1 | 10 |
+| Skills Count | 7 | 3 | 4 | 4 | 1 | 12 |
 | Size | Medium | Medium | Medium | Small | Small | Large |
 
 ---

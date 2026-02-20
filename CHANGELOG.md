@@ -6,6 +6,34 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.12.0] - 2026-02-20
+
+### Added
+
+- New universal skills:
+  - `docling-converter` v1.0.0
+  - `us-program-research` v1.0.0
+- New skill directories and assets:
+  - `skills/docling-converter/` with `references/` and `scripts/`
+  - `skills/us-program-research/` with `references/`
+
+### Changed
+
+- Applied `skill-creator` best-practice structure updates to:
+  - `brainstorming` v1.0.0
+  - `deep-research` v1.0.0
+  - `executing-plans` v1.0.0
+  - `writing-plans` v1.0.0
+  - `docling-converter` v1.0.0
+  - `us-program-research` v1.0.0
+- Updated bundles:
+  - `content` now includes `docling-converter`
+  - `research` now includes `us-program-research`
+  - `all` now includes all 12 skills
+- Regenerated `CATALOG.md` and `skills_index.json` for 12 total skills.
+- Package version bumped to `1.12.0` in `cli-installer/package.json` and `cli-installer/package-lock.json`.
+- Updated root docs (`README.md`, `CLAUDE.md`) for 12 skills, new bundles, and `v1.12.0`.
+
 ## [1.11.0] - 2026-02-20
 
 ### Added

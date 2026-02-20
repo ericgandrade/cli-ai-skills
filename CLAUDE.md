@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **claude-superskills** is a reusable AI skills library for **8 AI platforms**: GitHub Copilot CLI, Claude Code, OpenAI Codex, OpenCode, Gemini CLI, Antigravity, Cursor IDE, and AdaL CLI. Skills are Markdown-based workflow specifications (`SKILL.md`) that teach AI agents how to perform specific tasks.
 
-- **npm package**: `claude-superskills` (v1.10.4) — `npx claude-superskills`
+- **npm package**: `claude-superskills` (v1.12.0) — `npx claude-superskills`
 - **GitHub**: `https://github.com/ericgandrade/claude-superskills`
 - **Old package** `cli-ai-skills` is deprecated, redirects to this one
 
@@ -19,8 +19,14 @@ claude-superskills/
 │   ├── prompt-engineer/
 │   ├── youtube-summarizer/
 │   ├── audio-transcriber/
+│   ├── docling-converter/
 │   ├── agent-skill-discovery/
-│   └── agent-skill-orchestrator/
+│   ├── agent-skill-orchestrator/
+│   ├── brainstorming/
+│   ├── writing-plans/
+│   ├── executing-plans/
+│   ├── deep-research/
+│   └── us-program-research/
 │
 ├── cli-installer/             # NPM package (claude-superskills)
 │   ├── bin/cli.js            # Main CLI entry point
@@ -42,7 +48,7 @@ claude-superskills/
 │   │   ├── bundles.js        # Skill bundle definitions
 │   │   ├── search.js         # Skill search functionality
 │   │   └── version-checker.js
-│   └── package.json          # NPM manifest (v1.10.4) — no skills/ in files
+│   └── package.json          # NPM manifest (v1.12.0) — no skills/ in files
 │
 ├── scripts/
 │   ├── build-skills.sh       # Validates skills/ source (no longer syncs)
@@ -94,7 +100,7 @@ git commit -m "fix: remove erroneously committed platform skill dirs"
 
 ---
 
-### Key Architecture Principles (v1.10.4+)
+### Key Architecture Principles (v1.12.0+)
 
 1. **Single Source of Truth**: All skills are maintained in `skills/` only
 2. **Download at Install Time**: The installer fetches skills from the GitHub release tag and caches them at `~/.claude-superskills/cache/{version}/skills/` — no skills are bundled in the npm package
@@ -262,7 +268,7 @@ Skills that interact with project structure should include a discovery phase tha
 
 ## Version Management
 
-The package version is defined in `cli-installer/package.json` (currently **v1.10.4**).
+The package version is defined in `cli-installer/package.json` (currently **v1.12.0**).
 
 - `cli-installer/package.json` — source of truth for npm
 - `cli-installer/bin/cli.js` — reads version dynamically from package.json
@@ -271,7 +277,7 @@ The package version is defined in `cli-installer/package.json` (currently **v1.1
 
 **Bumping:**
 ```bash
-./scripts/bump-version.sh patch   # 1.10.4 → 1.10.5
+./scripts/bump-version.sh patch   # 1.12.0 → 1.12.1
 # Updates package.json, commits, creates tag, pushes → triggers publish workflow
 # Then update README.md badges manually
 # Then update CHANGELOG.md
@@ -335,11 +341,13 @@ OpenCode and Antigravity share `~/.agent/skills/` as the universal agent path.
 ### Bundle System (`lib/bundles.js`)
 
 Curated skill collections:
-- **essential**: `skill-creator`, `prompt-engineer`, `agent-skill-discovery`, `agent-skill-orchestrator`
-- **content**: `youtube-summarizer`, `audio-transcriber`
+- **essential**: core workflow skills including `skill-creator`, `prompt-engineer`, discovery/orchestration, and planning trio
+- **planning**: `brainstorming`, `writing-plans`, `executing-plans`, `agent-skill-orchestrator`
+- **research**: `deep-research`, `us-program-research`, `agent-skill-discovery`, `prompt-engineer`
+- **content**: `youtube-summarizer`, `audio-transcriber`, `docling-converter`
 - **developer**: `skill-creator`
 - **orchestration**: `agent-skill-discovery`, `agent-skill-orchestrator`
-- **all**: all 6 skills
+- **all**: all 12 skills
 
 ## Automation Scripts
 

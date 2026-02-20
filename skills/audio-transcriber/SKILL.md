@@ -1,6 +1,6 @@
 ---
 name: audio-transcriber
-description: "Transform audio recordings into professional Markdown documentation with intelligent summaries using LLM integration"
+description: "This skill should be used when the user needs to transform audio recordings into professional Markdown documentation with intelligent summaries using LLM integration."
 version: 1.2.1
 author: Eric Andrade
 created: 2025-02-01

@@ -45,12 +45,14 @@
       "description": "Skills for deep research and structured resource discovery.",
       "skills": [
         "deep-research",
+        "us-program-research",
         "agent-skill-discovery",
         "prompt-engineer"
       ],
       "use_cases": [
         "Technical due diligence",
         "Competitive and market research",
+        "US academic program selection and admissions planning",
         "Evidence-backed decision support",
         "Discovery of installed/local resources"
       ],
@@ -61,11 +63,13 @@
       "description": "Skills for processing video and audio content. Extract transcripts, summaries, and insights.",
       "skills": [
         "youtube-summarizer",
-        "audio-transcriber"
+        "audio-transcriber",
+        "docling-converter"
       ],
       "use_cases": [
         "Summarizing YouTube videos",
         "Transcribing audio recordings",
+        "Converting PDF/Office documents to structured Markdown and JSON",
         "Creating meeting notes",
         "Extracting video insights"
       ],
@@ -109,8 +113,10 @@
         "writing-plans",
         "executing-plans",
         "deep-research",
+        "us-program-research",
         "skill-creator",
         "prompt-engineer",
+        "docling-converter",
         "youtube-summarizer",
         "audio-transcriber"
       ],

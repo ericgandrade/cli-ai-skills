@@ -1,7 +1,7 @@
 # 📚 Claude Superskills Catalog
 
-**Generated:** 2026-02-20T18:26:18.145560Z  
-**Total Skills:** 10  
+**Generated:** 2026-02-20T18:48:09.306385Z  
+**Total Skills:** 12  
 **Platforms:** GitHub Copilot CLI, Claude Code, OpenAI Codex, OpenCode, Gemini CLI, Antigravity, Cursor IDE, AdaL CLI
 
 ---
@@ -15,9 +15,11 @@
 | **audio-transcriber** | 1.2.1 | content | audio, transcription, whisper | safe | 🤖 🧠 ⚙️ |
 | **brainstorming** | 1.0.0 | planning | brainstorming, design, requirements | safe | 🤖 🧠 ⚙️ 🧩 ♊ 🪂 🖱️ 🧪 |
 | **deep-research** | 1.0.0 | research | research, search, analysis | safe | 🤖 🧠 ⚙️ 🧩 ♊ 🪂 🖱️ 🧪 |
+| **docling-converter** | 1.0.0 | content | docling, document-conversion, pdf | safe | 🤖 🧠 ⚙️ 🧩 ♊ 🪂 🖱️ 🧪 |
 | **executing-plans** | 1.0.0 | planning | planning, execution, checkpoints | safe | 🤖 🧠 ⚙️ 🧩 ♊ 🪂 🖱️ 🧪 |
 | **prompt-engineer** | 1.1.0 | automation | prompt-engineering, optimization, frameworks | safe | 🤖 🧠 ⚙️ |
 | **skill-creator** | 1.3.1 | meta | automation, scaffolding, skill-creation | safe | 🤖 🧠 ⚙️ |
+| **us-program-research** | 1.0.0 | research | us-programs, university-research, rankings | medium | 🤖 🧠 ⚙️ 🧩 ♊ 🪂 🖱️ 🧪 |
 | **writing-plans** | 1.0.0 | planning | planning, implementation-plan, task-breakdown | safe | 🤖 🧠 ⚙️ 🧩 ♊ 🪂 🖱️ 🧪 |
 | **youtube-summarizer** | 1.2.1 | content | video, summarization, transcription | safe | 🤖 🧠 ⚙️ |
 
@@ -28,17 +30,21 @@
 ### Automation
 
 - **prompt-engineer** (v1.1.0)
-  - Description: Transforms user prompts into optimized prompts using frameworks (RTF, RISEN, Chain of Thought, RODES...
+  - Description: This skill should be used when the user needs to transform raw prompts into optimized prompts using ...
   - Tags: prompt-engineering, optimization, frameworks, ai-enhancement
 
 ### Content
 
 - **audio-transcriber** (v1.2.1)
-  - Description: Transform audio recordings into professional Markdown documentation with intelligent summaries using...
+  - Description: This skill should be used when the user needs to transform audio recordings into professional Markdo...
   - Tags: audio, transcription, whisper, meeting-minutes, speech-to-text
 
+- **docling-converter** (v1.0.0)
+  - Description: This skill should be used when the user needs to convert documents (PDF, Office, images, HTML, Markd...
+  - Tags: docling, document-conversion, pdf, ocr, markdown, json
+
 - **youtube-summarizer** (v1.2.1)
-  - Description: Extract transcripts from YouTube videos and generate comprehensive, detailed summaries using intelli...
+  - Description: This skill should be used when the user needs to extract transcripts from YouTube videos and generat...
   - Tags: video, summarization, transcription, youtube, content-analysis
 
 ### Discovery
@@ -62,22 +68,26 @@
 ### Planning
 
 - **brainstorming** (v1.0.0)
-  - Description: You MUST use this before any creative work - creating features, building components, adding function...
+  - Description: This skill should be used when the user needs pre-implementation ideation for creative work, such as...
   - Tags: brainstorming, design, requirements, pre-implementation
 
 - **executing-plans** (v1.0.0)
-  - Description: Use when you have a written implementation plan to execute in a separate session with review checkpo...
+  - Description: This skill should be used when the user has a written implementation plan to execute in a separate s...
   - Tags: planning, execution, checkpoints, implementation
 
 - **writing-plans** (v1.0.0)
-  - Description: Use when you have a spec or requirements for a multi-step task, before touching code...
+  - Description: This skill should be used when the user has a spec or requirements for a multi-step task before touc...
   - Tags: planning, implementation-plan, task-breakdown, tdd
 
 ### Research
 
 - **deep-research** (v1.0.0)
-  - Description: Execute deep, multi-step research using native web tools (WebSearch/WebFetch) without external API k...
+  - Description: This skill should be used when the user needs deep, multi-step research using native web tools (WebS...
   - Tags: research, search, analysis, synthesis, citations
+
+- **us-program-research** (v1.0.0)
+  - Description: This skill should be used when the user needs structured research and ranking of US academic program...
+  - Tags: us-programs, university-research, rankings, admissions, scorecards
 
 
 ---

@@ -1,6 +1,6 @@
 ---
 name: writing-plans
-description: Use when you have a spec or requirements for a multi-step task, before touching code
+description: "This skill should be used when the user has a spec or requirements for a multi-step task before touching code."
 version: 1.0.0
 author: Eric Andrade
 created: 2026-02-20
@@ -12,6 +12,25 @@ risk: safe
 ---
 
 # Writing Plans
+
+## Purpose
+
+Create executable, low-ambiguity implementation plans that another engineer can run task-by-task with predictable outcomes.
+
+## When to Use
+
+Use this skill when:
+- Requirements/specs exist but implementation has not started
+- Work is multi-step and requires coordination across files and tests
+- A handoff-ready plan is needed for another session or engineer
+
+## Workflow
+
+1. Gather context and constraints
+2. Break work into bite-sized, test-first tasks
+3. Specify exact files, code snippets, and commands
+4. Add validation criteria and expected outputs
+5. Save plan and hand off to `executing-plans`
 
 ## Overview
 
@@ -122,3 +141,15 @@ After saving the plan, offer execution choice:
 **If Parallel Session chosen:**
 - Guide them to open new session in worktree
 - **REQUIRED SUB-SKILL:** New session uses superpowers:executing-plans
+
+## Critical Rules
+
+- Always include exact paths and exact commands.
+- Always define expected outcomes for test/verification steps.
+- Never leave steps abstract (avoid "implement validation" without concrete code intent).
+
+## Example Usage
+
+1. "Use writing-plans to plan migration from REST to GraphQL."
+2. "Use writing-plans to break down an auth refactor into TDD tasks."
+3. "Use writing-plans to prepare a handoff plan for a new caching layer."

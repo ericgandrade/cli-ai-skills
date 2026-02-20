@@ -1,6 +1,6 @@
 ---
 name: brainstorming
-description: "You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user intent, requirements and design before implementation."
+description: "This skill should be used when the user needs pre-implementation ideation for creative work, such as creating features, building components, adding functionality, or modifying behavior."
 version: 1.0.0
 author: Eric Andrade
 created: 2026-02-20
@@ -13,9 +13,27 @@ risk: safe
 
 # Brainstorming Ideas Into Designs
 
-## Overview
+## Purpose
 
 Help turn ideas into fully formed designs and specs through natural collaborative dialogue.
+
+## When to Use
+
+Use this skill when:
+- The request involves creating or changing behavior/features
+- Requirements are ambiguous or incomplete
+- Trade-off analysis is needed before implementation
+- A design document must be approved before coding
+
+## Workflow
+
+1. Explore project context
+2. Ask clarifying questions one at a time
+3. Propose 2-3 approaches with trade-offs
+4. Present design sections and get approval
+5. Save design doc and hand off to `writing-plans`
+
+## Overview
 
 Start by understanding the current project context, then ask questions one at a time to refine the idea. Once you understand what you're building, present the design and get user approval.
 
@@ -102,3 +120,15 @@ digraph brainstorming {
 - **Explore alternatives** - Always propose 2-3 approaches before settling
 - **Incremental validation** - Present design, get approval before moving on
 - **Be flexible** - Go back and clarify when something doesn't make sense
+
+## Critical Rules
+
+- Never start implementation before user approval of the design.
+- Never skip trade-off discussion between at least 2 approaches.
+- Never invoke implementation skills directly from brainstorming (handoff only to `writing-plans`).
+
+## Example Usage
+
+1. "Use brainstorming to define a dashboard redesign before coding."
+2. "Use brainstorming to clarify API requirements and constraints."
+3. "Use brainstorming to compare architecture options for a new feature."
