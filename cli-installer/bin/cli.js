@@ -78,19 +78,44 @@ function getDetectedPlatforms(detected) {
 }
 
 function getManagedSkillNames() {
-  const bundles = loadBundles();
+  const all = new Set();
+  const homeDir = os.homedir();
 
-  if (bundles.bundles && bundles.bundles.all && Array.isArray(bundles.bundles.all.skills)) {
-    return bundles.bundles.all.skills;
+  // 1) Prefer local repo source when running from repository checkout.
+  const repoSkillsDir = path.join(process.cwd(), 'skills');
+  if (fs.existsSync(repoSkillsDir)) {
+    for (const entry of fs.readdirSync(repoSkillsDir)) {
+      const skillDir = path.join(repoSkillsDir, entry);
+      if (fs.existsSync(path.join(skillDir, 'SKILL.md')) && fs.statSync(skillDir).isDirectory()) {
+        all.add(entry);
+      }
+    }
   }
 
-  const all = new Set();
+  // 2) Read any cached skills versions already downloaded by installer.
+  const cacheBase = path.join(homeDir, '.claude-superskills', 'cache');
+  if (fs.existsSync(cacheBase)) {
+    for (const version of fs.readdirSync(cacheBase)) {
+      const versionSkillsDir = path.join(cacheBase, version, 'skills');
+      if (!fs.existsSync(versionSkillsDir)) continue;
+      for (const entry of fs.readdirSync(versionSkillsDir)) {
+        const skillDir = path.join(versionSkillsDir, entry);
+        if (fs.existsSync(path.join(skillDir, 'SKILL.md')) && fs.statSync(skillDir).isDirectory()) {
+          all.add(entry);
+        }
+      }
+    }
+  }
+
+  // 3) Fallback to bundle declarations.
+  const bundles = loadBundles();
   for (const bundle of Object.values(bundles.bundles || {})) {
     for (const skill of bundle.skills || []) {
       all.add(skill);
     }
   }
-  return Array.from(all);
+
+  return Array.from(all).sort();
 }
 
 function getPlatformTargetDir(platform) {
@@ -143,6 +168,26 @@ async function clearSkillsCache(quiet) {
   } else if (!quiet) {
     console.log(chalk.gray('🗑️  Cache not found, skipping'));
   }
+}
+
+async function getInstalledSkillsByPlatforms(platforms) {
+  const targets = [...new Set(platforms.map(getPlatformTargetDir).filter(Boolean))];
+  const installed = new Set();
+
+  for (const targetDir of targets) {
+    if (!(await fs.pathExists(targetDir))) continue;
+    const entries = await fs.readdir(targetDir);
+    for (const entry of entries) {
+      const skillDir = path.join(targetDir, entry);
+      if (!(await fs.pathExists(path.join(skillDir, 'SKILL.md')))) continue;
+      const stat = await fs.stat(skillDir);
+      if (stat.isDirectory()) {
+        installed.add(entry);
+      }
+    }
+  }
+
+  return Array.from(installed).sort();
 }
 
 async function main() {
@@ -412,11 +457,15 @@ async function main() {
   switch(command) {
     case 'list': {
       console.log('📋 Installed Skills:\n');
-      const skills = ['skill-creator', 'prompt-engineer', 'youtube-summarizer', 'audio-transcriber',
-                      'agent-skill-discovery', 'agent-skill-orchestrator'];
+      const detected = detectTools();
+      const platforms = getDetectedPlatforms(detected);
+      const skills = await getInstalledSkillsByPlatforms(platforms);
       skills.forEach(skill => {
         console.log(`  • ${skill}`);
       });
+      if (skills.length === 0) {
+        console.log('  (none)');
+      }
       console.log();
       break;
     }
