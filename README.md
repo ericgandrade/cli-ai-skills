@@ -1,6 +1,6 @@
 # 🤖 Claude Superskills v1.12.0
 
-Reusable AI skills for **GitHub Copilot CLI**, **Claude Code**, **OpenAI Codex**, **OpenCode**, **Gemini CLI**, **Antigravity**, **Cursor IDE**, and **AdaL CLI** — install once, use everywhere.
+Reusable AI CLI skills for GitHub Copilot and Claude Code.
 
 ![Version](https://img.shields.io/badge/version-1.12.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)

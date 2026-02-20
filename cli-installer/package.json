@@ -1,7 +1,7 @@
 {
   "name": "claude-superskills",
   "version": "1.12.0",
-  "description": "Install AI skills for GitHub Copilot CLI, Claude Code, OpenAI Codex, OpenCode, Gemini CLI, Antigravity, Cursor IDE, and AdaL CLI",
+  "description": "Reusable AI CLI skills for GitHub Copilot and Claude Code",
   "main": "lib/index.js",
   "bin": {
     "claude-superskills": "bin/cli.js"
