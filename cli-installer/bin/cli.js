@@ -11,7 +11,7 @@ const { install: installGeminiSkills } = require('../lib/gemini');
 const { install: installAntigravitySkills } = require('../lib/antigravity');
 const { install: installCursorSkills } = require('../lib/cursor');
 const { install: installAdalSkills } = require('../lib/adal');
-const { listBundles, validateBundle, loadBundles } = require('../lib/bundles');
+const { listBundles, validateBundle } = require('../lib/bundles');
 const { searchSkills } = require('../lib/search');
 const { displayToolsTable } = require('../lib/ui/table');
 const { checkInstalledVersion, isUpdateAvailable } = require('../lib/version-checker');
@@ -106,12 +106,19 @@ function getManagedSkillNames() {
     }
   }
 
-  // 3) Fallback to bundle declarations.
-  const bundles = loadBundles();
-  for (const bundle of Object.values(bundles.bundles || {})) {
-    for (const skill of bundle.skills || []) {
-      all.add(skill);
+  // 3) Optional fallback to bundle declarations (if bundles.json exists).
+  try {
+    const bundlesPath = path.join(__dirname, '..', 'bundles.json');
+    if (fs.existsSync(bundlesPath)) {
+      const bundles = JSON.parse(fs.readFileSync(bundlesPath, 'utf8'));
+      for (const bundle of Object.values(bundles.bundles || {})) {
+        for (const skill of bundle.skills || []) {
+          all.add(skill);
+        }
+      }
     }
+  } catch {
+    // Ignore bundle file issues; uninstall has runtime fallback.
   }
 
   return Array.from(all).sort();
@@ -146,9 +153,26 @@ function getPlatformTargetDirs(platform) {
 }
 
 async function uninstallManagedSkills(platforms, quiet) {
-  const managedSkills = getManagedSkillNames();
+  let managedSkills = getManagedSkillNames();
   const targets = [...new Set(platforms.flatMap(getPlatformTargetDirs).filter(Boolean))];
   let removedCount = 0;
+
+  // Runtime fallback when packaged metadata is unavailable (e.g. npx runtime):
+  // remove all installed skill directories that contain SKILL.md on selected targets.
+  if (managedSkills.length === 0) {
+    const discovered = new Set();
+    for (const targetDir of targets) {
+      if (!(await fs.pathExists(targetDir))) continue;
+      const entries = await fs.readdir(targetDir);
+      for (const entry of entries) {
+        const skillDir = path.join(targetDir, entry);
+        if (!(await fs.pathExists(path.join(skillDir, 'SKILL.md')))) continue;
+        const stat = await fs.stat(skillDir);
+        if (stat.isDirectory()) discovered.add(entry);
+      }
+    }
+    managedSkills = Array.from(discovered);
+  }
 
   for (const targetDir of targets) {
     if (!(await fs.pathExists(targetDir))) continue;
