@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generated": "2026-02-04T14:35:00Z",
+  "generated": "2026-02-20T00:00:00Z",
   "bundles": {
     "essential": {
       "name": "Essential Skills",
@@ -9,7 +9,10 @@
         "skill-creator",
         "prompt-engineer",
         "agent-skill-discovery",
-        "agent-skill-orchestrator"
+        "agent-skill-orchestrator",
+        "brainstorming",
+        "writing-plans",
+        "executing-plans"
       ],
       "use_cases": [
         "Creating custom AI skills",
@@ -19,6 +22,39 @@
         "Planning complex tasks"
       ],
       "target": "Beginners, skill developers"
+    },
+    "planning": {
+      "name": "Planning & Execution",
+      "description": "Skills focused on pre-implementation design, planning, and structured execution.",
+      "skills": [
+        "brainstorming",
+        "writing-plans",
+        "executing-plans",
+        "agent-skill-orchestrator"
+      ],
+      "use_cases": [
+        "Clarifying requirements before coding",
+        "Creating implementation plans",
+        "Executing tasks in checkpoints",
+        "Reducing rework and delivery risk"
+      ],
+      "target": "Developers, architects, technical leads"
+    },
+    "research": {
+      "name": "Research & Analysis",
+      "description": "Skills for deep research and structured resource discovery.",
+      "skills": [
+        "deep-research",
+        "agent-skill-discovery",
+        "prompt-engineer"
+      ],
+      "use_cases": [
+        "Technical due diligence",
+        "Competitive and market research",
+        "Evidence-backed decision support",
+        "Discovery of installed/local resources"
+      ],
+      "target": "Analysts, architects, product and engineering teams"
     },
     "content": {
       "name": "Content Creation",
@@ -69,6 +105,10 @@
       "skills": [
         "agent-skill-discovery",
         "agent-skill-orchestrator",
+        "brainstorming",
+        "writing-plans",
+        "executing-plans",
+        "deep-research",
         "skill-creator",
         "prompt-engineer",
         "youtube-summarizer",

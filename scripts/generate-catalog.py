@@ -11,11 +11,11 @@ with open(index_path) as f:
     index = json.load(f)
 
 # Start building catalog
-catalog = f"""# 📚 CLI AI Skills Catalog
+catalog = f"""# 📚 Claude Superskills Catalog
 
 **Generated:** {datetime.now().isoformat()}Z  
 **Total Skills:** {len(index['skills'])}  
-**Platforms:** GitHub Copilot CLI, Claude Code, OpenAI Codex
+**Platforms:** GitHub Copilot CLI, Claude Code, OpenAI Codex, OpenCode, Gemini CLI, Antigravity, Cursor IDE, AdaL CLI
 
 ---
 
@@ -31,7 +31,12 @@ for skill in index['skills']:
     platforms = ' '.join({
         'github-copilot-cli': '🤖',
         'claude-code': '🧠',
-        'codex': '⚙️'
+        'codex': '⚙️',
+        'opencode': '🧩',
+        'gemini': '♊',
+        'antigravity': '🪂',
+        'cursor': '🖱️',
+        'adal': '🧪'
     }.get(p, p) for p in skill['platforms'])
     
     catalog += f"| **{skill['name']}** | {skill['version']} | {skill['category']} | {tags} | {skill['risk']} | {platforms} |\n"

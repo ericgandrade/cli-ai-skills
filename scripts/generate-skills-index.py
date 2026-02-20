@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
-"""
-Generate skills_index.json from all SKILL.md files
-Extracts YAML frontmatter from skills across all platforms
-"""
+"""Generate skills_index.json from all SKILL.md files under skills/."""
 
 import os
 import json
@@ -12,7 +9,7 @@ from pathlib import Path
 
 print("🔍 Scanning skills...")
 
-skills_dir = Path(__file__).parent.parent / '.github' / 'skills'
+skills_dir = Path(__file__).parent.parent / 'skills'
 skills = []
 
 # Read each skill's SKILL.md
@@ -53,18 +50,17 @@ for skill_name in sorted(os.listdir(skills_dir)):
     try:
         metadata = yaml.safe_load(yaml_content)
         
-        # Validate required fields
-        required = ['name', 'version', 'description', 'category', 'tags', 'risk', 'platforms']
+        # Validate metadata and fill defaults for optional fields.
+        required = ['name', 'description']
         missing = [field for field in required if not metadata.get(field)]
-        
         if missing:
-            print(f"⚠️  {skill_name} missing fields: {', '.join(missing)}")
+            print(f"⚠️  {skill_name} missing required fields: {', '.join(missing)}")
         
         skills.append({
             'name': metadata.get('name', skill_name),
             'version': metadata.get('version', '0.0.0'),
             'description': metadata.get('description', ''),
-            'category': metadata.get('category', 'uncategorized'),
+            'category': metadata.get('category', 'general'),
             'tags': metadata.get('tags', []),
             'risk': metadata.get('risk', 'unknown'),
             'platforms': metadata.get('platforms', []),

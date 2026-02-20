@@ -17,6 +17,11 @@ Bundles are **curated collections** of skills grouped by use case. Instead of in
 **Includes:**
 - **skill-creator** - Create custom skills
 - **prompt-engineer** - Optimize your prompts
+- **agent-skill-discovery** - Discover installed and local resources
+- **agent-skill-orchestrator** - Build intelligent execution strategies
+- **brainstorming** - Clarify design before coding
+- **writing-plans** - Create implementation plans
+- **executing-plans** - Execute plans with checkpoints
 
 **Installation:**
 ```bash
@@ -29,7 +34,7 @@ npx claude-superskills --bundle essential -y
 - 📝 Writing better AI prompts
 - 🚀 Getting started quickly
 
-**Word Count:** ~3000 words of functionality
+**Word Count:** ~12000 words of functionality
 
 **Perfect For:**
 - Beginners
@@ -70,6 +75,51 @@ npx claude-superskills --bundle content -y
 
 ---
 
+## 🧭 Planning & Execution Bundle
+
+**Perfect for:** Structured implementation workflows
+
+**Includes:**
+- **brainstorming** - Design before implementation
+- **writing-plans** - Produce clear implementation plans
+- **executing-plans** - Execute plans with review gates
+- **agent-skill-orchestrator** - Coordinate strategy and resources
+
+**Installation:**
+```bash
+npx claude-superskills --bundle planning -y
+```
+
+**Use Cases:**
+- 🧠 Clarifying requirements and constraints
+- 🗺️ Breaking work into atomic tasks
+- ✅ Executing with checkpoints and review loops
+- 📉 Reducing rework and scope drift
+
+---
+
+## 🔬 Research & Analysis Bundle
+
+**Perfect for:** Evidence-based technical and market research
+
+**Includes:**
+- **deep-research** - Multi-step research with citations (no Google API required)
+- **agent-skill-discovery** - Discover available resources
+- **prompt-engineer** - Improve research prompts
+
+**Installation:**
+```bash
+npx claude-superskills --bundle research -y
+```
+
+**Use Cases:**
+- 🔎 Competitive and market analysis
+- 📚 Literature and technical scans
+- 🧾 Decision support with cited evidence
+- 🧭 Repository and environment discovery
+
+---
+
 ## 🛠️ Developer Bundle
 
 **Perfect for:** Creating and extending skills
@@ -104,6 +154,12 @@ npx claude-superskills --bundle developer -y
 **Perfect for:** Complete functionality
 
 **Includes:**
+- **agent-skill-discovery** - Discover installed and local resources
+- **agent-skill-orchestrator** - Build intelligent execution strategies
+- **brainstorming** - Clarify design before coding
+- **writing-plans** - Create implementation plans
+- **executing-plans** - Execute plans with checkpoints
+- **deep-research** - Run deep research with citations
 - **skill-creator** - Create custom skills
 - **prompt-engineer** - Optimize prompts
 - **youtube-summarizer** - Summarize videos
@@ -133,16 +189,16 @@ npx claude-superskills --bundle all -y
 
 ## 📊 Bundle Comparison
 
-| Feature | Essential | Content | Developer | All |
-|---------|-----------|---------|-----------|-----|
-| Prompt Optimization | ✅ | ❌ | ❌ | ✅ |
-| Skill Creation | ✅ | ❌ | ✅ | ✅ |
-| Video Summarization | ❌ | ✅ | ❌ | ✅ |
-| Audio Transcription | ❌ | ✅ | ❌ | ✅ |
-| Skills Count | 2 | 2 | 1 | 4 |
-| Size | Small | Medium | Small | Large |
-| Beginner Friendly | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ |
-| Content Focus | No | Yes | No | Yes |
+| Feature | Essential | Content | Planning | Research | Developer | All |
+|---------|-----------|---------|----------|----------|-----------|-----|
+| Prompt Optimization | ✅ | ❌ | ❌ | ✅ | ❌ | ✅ |
+| Skill Creation | ✅ | ❌ | ❌ | ❌ | ✅ | ✅ |
+| Video Summarization | ❌ | ✅ | ❌ | ❌ | ❌ | ✅ |
+| Audio Transcription | ❌ | ✅ | ❌ | ❌ | ❌ | ✅ |
+| Planning Workflow | ✅ | ❌ | ✅ | ❌ | ❌ | ✅ |
+| Deep Research | ❌ | ❌ | ❌ | ✅ | ❌ | ✅ |
+| Skills Count | 7 | 2 | 4 | 3 | 1 | 10 |
+| Size | Medium | Medium | Medium | Small | Small | Large |
 
 ---
 
@@ -175,6 +231,12 @@ Start
 
 **"I make YouTube videos and need summaries"**  
 → **Content Bundle** - Perfect for creators
+
+**"I want better planning before coding"**
+→ **Planning Bundle** - Best for engineering workflows
+
+**"I need deep research with citations"**
+→ **Research Bundle** - Best for analysis and due diligence
 
 **"I want to build custom skills for my team"**  
 → **Developer Bundle** or **Essential Bundle** first

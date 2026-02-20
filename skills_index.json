@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generated": "2026-02-07T17:26:19.840572Z",
+  "generated": "2026-02-20T18:26:18.110857Z",
   "skills": [
     {
       "name": "agent-skill-discovery",
@@ -85,6 +85,79 @@
       "triggers": []
     },
     {
+      "name": "brainstorming",
+      "version": "1.0.0",
+      "description": "You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user intent, requirements and design before implementation.",
+      "category": "planning",
+      "tags": [
+        "brainstorming",
+        "design",
+        "requirements",
+        "pre-implementation"
+      ],
+      "risk": "safe",
+      "platforms": [
+        "github-copilot-cli",
+        "claude-code",
+        "codex",
+        "opencode",
+        "gemini",
+        "antigravity",
+        "cursor",
+        "adal"
+      ],
+      "triggers": []
+    },
+    {
+      "name": "deep-research",
+      "version": "1.0.0",
+      "description": "Execute deep, multi-step research using native web tools (WebSearch/WebFetch) without external API keys. Use for market analysis, competitive research, literature scans, technical due diligence, and decision support with citations.",
+      "category": "research",
+      "tags": [
+        "research",
+        "search",
+        "analysis",
+        "synthesis",
+        "citations"
+      ],
+      "risk": "safe",
+      "platforms": [
+        "github-copilot-cli",
+        "claude-code",
+        "codex",
+        "opencode",
+        "gemini",
+        "antigravity",
+        "cursor",
+        "adal"
+      ],
+      "triggers": []
+    },
+    {
+      "name": "executing-plans",
+      "version": "1.0.0",
+      "description": "Use when you have a written implementation plan to execute in a separate session with review checkpoints",
+      "category": "planning",
+      "tags": [
+        "planning",
+        "execution",
+        "checkpoints",
+        "implementation"
+      ],
+      "risk": "safe",
+      "platforms": [
+        "github-copilot-cli",
+        "claude-code",
+        "codex",
+        "opencode",
+        "gemini",
+        "antigravity",
+        "cursor",
+        "adal"
+      ],
+      "triggers": []
+    },
+    {
       "name": "prompt-engineer",
       "version": "1.1.0",
       "description": "Transforms user prompts into optimized prompts using frameworks (RTF, RISEN, Chain of Thought, RODES, Chain of Density, RACE, RISE, STAR, SOAP, CLEAR, GROW)",
@@ -119,6 +192,30 @@
         "github-copilot-cli",
         "claude-code",
         "codex"
+      ],
+      "triggers": []
+    },
+    {
+      "name": "writing-plans",
+      "version": "1.0.0",
+      "description": "Use when you have a spec or requirements for a multi-step task, before touching code",
+      "category": "planning",
+      "tags": [
+        "planning",
+        "implementation-plan",
+        "task-breakdown",
+        "tdd"
+      ],
+      "risk": "safe",
+      "platforms": [
+        "github-copilot-cli",
+        "claude-code",
+        "codex",
+        "opencode",
+        "gemini",
+        "antigravity",
+        "cursor",
+        "adal"
       ],
       "triggers": []
     },

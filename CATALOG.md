@@ -1,8 +1,8 @@
-# 📚 CLI AI Skills Catalog
+# 📚 Claude Superskills Catalog
 
-**Generated:** 2026-02-07T17:26:19.869197Z  
-**Total Skills:** 6  
-**Platforms:** GitHub Copilot CLI, Claude Code, OpenAI Codex
+**Generated:** 2026-02-20T18:26:18.145560Z  
+**Total Skills:** 10  
+**Platforms:** GitHub Copilot CLI, Claude Code, OpenAI Codex, OpenCode, Gemini CLI, Antigravity, Cursor IDE, AdaL CLI
 
 ---
 
@@ -10,11 +10,15 @@
 
 | Skill | Version | Category | Tags | Risk | Platforms |
 |-------|---------|----------|------|------|-----------|
-| **agent-skill-discovery** | 1.1.0 | discovery | discovery, inventory, catalog | safe | 🤖 🧠 ⚙️ opencode gemini |
-| **agent-skill-orchestrator** | 1.1.0 | orchestration | orchestration, planning, strategy | safe | 🤖 🧠 ⚙️ opencode gemini |
+| **agent-skill-discovery** | 1.1.0 | discovery | discovery, inventory, catalog | safe | 🤖 🧠 ⚙️ 🧩 ♊ |
+| **agent-skill-orchestrator** | 1.1.0 | orchestration | orchestration, planning, strategy | safe | 🤖 🧠 ⚙️ 🧩 ♊ |
 | **audio-transcriber** | 1.2.1 | content | audio, transcription, whisper | safe | 🤖 🧠 ⚙️ |
+| **brainstorming** | 1.0.0 | planning | brainstorming, design, requirements | safe | 🤖 🧠 ⚙️ 🧩 ♊ 🪂 🖱️ 🧪 |
+| **deep-research** | 1.0.0 | research | research, search, analysis | safe | 🤖 🧠 ⚙️ 🧩 ♊ 🪂 🖱️ 🧪 |
+| **executing-plans** | 1.0.0 | planning | planning, execution, checkpoints | safe | 🤖 🧠 ⚙️ 🧩 ♊ 🪂 🖱️ 🧪 |
 | **prompt-engineer** | 1.1.0 | automation | prompt-engineering, optimization, frameworks | safe | 🤖 🧠 ⚙️ |
 | **skill-creator** | 1.3.1 | meta | automation, scaffolding, skill-creation | safe | 🤖 🧠 ⚙️ |
+| **writing-plans** | 1.0.0 | planning | planning, implementation-plan, task-breakdown | safe | 🤖 🧠 ⚙️ 🧩 ♊ 🪂 🖱️ 🧪 |
 | **youtube-summarizer** | 1.2.1 | content | video, summarization, transcription | safe | 🤖 🧠 ⚙️ |
 
 ---
@@ -54,6 +58,26 @@
 - **agent-skill-orchestrator** (v1.1.0)
   - Description: This skill should be used when the user needs to solve a complex task and wants a detailed execution...
   - Tags: orchestration, planning, strategy, intelligent-matching, platform-agnostic
+
+### Planning
+
+- **brainstorming** (v1.0.0)
+  - Description: You MUST use this before any creative work - creating features, building components, adding function...
+  - Tags: brainstorming, design, requirements, pre-implementation
+
+- **executing-plans** (v1.0.0)
+  - Description: Use when you have a written implementation plan to execute in a separate session with review checkpo...
+  - Tags: planning, execution, checkpoints, implementation
+
+- **writing-plans** (v1.0.0)
+  - Description: Use when you have a spec or requirements for a multi-step task, before touching code...
+  - Tags: planning, implementation-plan, task-breakdown, tdd
+
+### Research
+
+- **deep-research** (v1.0.0)
+  - Description: Execute deep, multi-step research using native web tools (WebSearch/WebFetch) without external API k...
+  - Tags: research, search, analysis, synthesis, citations
 
 
 ---

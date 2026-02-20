@@ -1,10 +1,10 @@
-# 🤖 Claude Superskills v1.10.4
+# 🤖 Claude Superskills v1.11.0
 
 Reusable AI skills for **GitHub Copilot CLI**, **Claude Code**, **OpenAI Codex**, **OpenCode**, **Gemini CLI**, **Antigravity**, **Cursor IDE**, and **AdaL CLI** — install once, use everywhere.
 
-![Version](https://img.shields.io/badge/version-1.10.4-blue.svg)
+![Version](https://img.shields.io/badge/version-1.11.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
-![Skills](https://img.shields.io/badge/skills-6-brightgreen.svg)
+![Skills](https://img.shields.io/badge/skills-10-brightgreen.svg)
 ![Platforms](https://img.shields.io/badge/platforms-8-orange.svg)
 
 ## 🚀 Quick Install
@@ -56,7 +56,7 @@ curl -fsSL https://raw.githubusercontent.com/ericgandrade/claude-superskills/mai
 
 ## ✨ Features
 
-- **6 Universal Skills** - Work on all platforms
+- **10 Universal Skills** - Work on all platforms
 - **Zero-Config Install** - Run once, works everywhere
 - **Curated Bundles** - Install exactly what you need
 - **Smart Search** - Find skills by keyword
@@ -76,14 +76,26 @@ curl -fsSL https://raw.githubusercontent.com/ericgandrade/claude-superskills/mai
 ### 🛠️ Development & Automation
 | Skill | Version | Purpose |
 |-------|---------|---------|
-| **skill-creator** | v1.3.0 | Automate skill creation with guided workflow |
+| **skill-creator** | v1.3.1 | Automate skill creation with guided workflow |
 | **prompt-engineer** | v1.1.0 | Optimize prompts using 11 frameworks (RTF, RISEN, Chain of Thought, etc.) |
+
+### 🧭 Planning & Execution
+| Skill | Version | Purpose |
+|-------|---------|---------|
+| **brainstorming** | v1.0.0 | Mandatory pre-implementation design clarification workflow |
+| **writing-plans** | v1.0.0 | Build detailed, actionable implementation plans before coding |
+| **executing-plans** | v1.0.0 | Execute plans in batches with checkpoints and review gates |
+
+### 🔬 Research & Analysis
+| Skill | Version | Purpose |
+|-------|---------|---------|
+| **deep-research** | v1.0.0 | Multi-step research workflow with citations using native web tools (no Google API required) |
 
 ### 📝 Content Processing
 | Skill | Version | Purpose |
 |-------|---------|---------|
-| **youtube-summarizer** | v1.2.0 | Extract YouTube transcripts and generate comprehensive summaries |
-| **audio-transcriber** | v1.2.0 | Transform audio recordings into professional Markdown documentation |
+| **youtube-summarizer** | v1.2.1 | Extract YouTube transcripts and generate comprehensive summaries |
+| **audio-transcriber** | v1.2.1 | Transform audio recordings into professional Markdown documentation |
 
 ## 🎯 Curated Bundles
 
@@ -93,6 +105,12 @@ npx claude-superskills --bundle essential -y
 
 # Content Creation (video & audio)
 npx claude-superskills --bundle content -y
+
+# Planning & Execution
+npx claude-superskills --bundle planning -y
+
+# Research & Analysis
+npx claude-superskills --bundle research -y
 
 # Skill Developer (for creating custom skills)
 npx claude-superskills --bundle developer -y
@@ -227,7 +245,7 @@ MIT - See [LICENSE](./LICENSE) for details.
 
 **Built with ❤️ by [Eric Andrade](https://github.com/ericgandrade)**
 
-*Version 1.10.4 | February 2026*
+*Version 1.11.0 | February 2026*
 
 ## 🎁 Get Started
 
@@ -235,6 +253,8 @@ Choose a bundle that fits your workflow:
 
 - **[Essential](docs/bundles/bundles.md#-essential-bundle)** - skill-creator, prompt-engineer
 - **[Content](docs/bundles/bundles.md#-content-creation-bundle)** - youtube-summarizer, audio-transcriber  
+- **[Planning](docs/bundles/bundles.md#-planning--execution-bundle)** - brainstorming, writing-plans, executing-plans
+- **[Research](docs/bundles/bundles.md#-research--analysis-bundle)** - deep-research + discovery
 - **[Developer](docs/bundles/bundles.md#-developer-bundle)** - skill-creator for power users
 - **[All](docs/bundles/bundles.md#-all-skills-bundle)** - Complete toolkit
 

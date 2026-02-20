@@ -6,6 +6,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.11.0] - 2026-02-20
+
+### Added
+
+- New universal skills:
+  - `brainstorming` v1.0.0
+  - `writing-plans` v1.0.0
+  - `executing-plans` v1.0.0
+  - `deep-research` v1.0.0
+- New bundles:
+  - `planning` (brainstorming, writing-plans, executing-plans, agent-skill-orchestrator)
+  - `research` (deep-research, agent-skill-discovery, prompt-engineer)
+
+### Changed
+
+- `deep-research` adapted to run without Google/Gemini API dependency (native WebSearch/WebFetch workflow).
+- `all` and `essential` bundles updated to include planning workflow skills.
+- `skills_index.json` and `CATALOG.md` regenerated for 10 total skills.
+- `scripts/generate-skills-index.py` now scans `skills/` directly and supports default metadata fallbacks.
+- Package version bumped to `1.11.0` in `cli-installer/package.json` and `cli-installer/package-lock.json`.
+- Root `README.md` and bundles documentation updated for new skills and NPX bundle examples.
+
 ## [1.10.4] - 2026-02-19
 
 ### Changed
