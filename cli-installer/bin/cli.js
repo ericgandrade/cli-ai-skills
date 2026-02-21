@@ -46,6 +46,24 @@ const shortFlags = {
   '-q': '--quiet'
 };
 
+const VALID_SCOPES = new Set(['global', 'local', 'both']);
+const PLATFORM_LOCAL_DIRS = {
+  copilot: path.join(process.cwd(), '.github', 'skills'),
+  claude: path.join(process.cwd(), '.claude', 'skills'),
+  codex: path.join(process.cwd(), '.codex', 'skills'),
+  opencode: path.join(process.cwd(), '.agent', 'skills'),
+  gemini: path.join(process.cwd(), '.gemini', 'skills'),
+  antigravity: path.join(process.cwd(), '.agent', 'skills'),
+  cursor: path.join(process.cwd(), '.cursor', 'skills'),
+  adal: path.join(process.cwd(), '.adal', 'skills')
+};
+
+function getFlagValue(args, flagName) {
+  const idx = args.indexOf(flagName);
+  if (idx === -1) return null;
+  return args[idx + 1] || null;
+}
+
 /**
  * Download/verify skills cache and return the cache directory path.
  * @param {boolean} quiet
@@ -58,7 +76,7 @@ async function warmCache(quiet) {
     if (spinner) spinner.succeed('Skills ready');
     return cacheDir;
   } catch (err) {
-    if (spinner) spinner.fail('Failed to fetch skills from GitHub');
+    if (spinner) spinner.fail(`Failed to fetch skills from GitHub (${err.message})`);
     throw err;
   }
 }
@@ -128,14 +146,123 @@ function getPlatformTargetDir(platform) {
   return getUserSkillsPath(platform) || null;
 }
 
-function getPlatformTargetDirs(platform) {
-  const dir = getPlatformTargetDir(platform);
-  return dir ? [dir] : [];
+function getPlatformTargetDirs(platform, options = {}) {
+  const scope = options.scope || 'global';
+  const globalDir = getPlatformTargetDir(platform);
+  const localDir = PLATFORM_LOCAL_DIRS[platform] || null;
+
+  if (scope === 'local') return localDir ? [localDir] : [];
+  if (scope === 'both') {
+    return [...new Set([globalDir, localDir].filter(Boolean))];
+  }
+  return globalDir ? [globalDir] : [];
 }
 
-async function uninstallManagedSkills(platforms, quiet) {
+function getInstalledManagedCount(targetDir, managedSkills) {
+  if (!fs.existsSync(targetDir)) return 0;
+
+  let count = 0;
+  for (const skill of managedSkills) {
+    const skillDir = path.join(targetDir, skill);
+    if (!fs.existsSync(path.join(skillDir, 'SKILL.md'))) continue;
+    if (fs.statSync(skillDir).isDirectory()) count++;
+  }
+  return count;
+}
+
+function getPlatformInstallStatus(platform) {
+  const managedSkills = getManagedSkillNames();
+  const globalDir = getPlatformTargetDir(platform);
+  const localDir = PLATFORM_LOCAL_DIRS[platform] || null;
+  const globalCount = getInstalledManagedCount(globalDir, managedSkills);
+  const localCount = localDir ? getInstalledManagedCount(localDir, managedSkills) : 0;
+
+  return {
+    globalDir,
+    localDir,
+    globalCount,
+    localCount,
+    hasGlobal: globalCount > 0,
+    hasLocal: localCount > 0
+  };
+}
+
+async function promptScope(actionLabel) {
+  const { scope } = await inquirer.prompt([{
+    type: 'list',
+    name: 'scope',
+    message: `Where should ${actionLabel} happen?`,
+    choices: [
+      {
+        name: 'Global (Recommended)',
+        value: 'global',
+        short: 'global'
+      },
+      {
+        name: 'Local (Current repository)',
+        value: 'local',
+        short: 'local'
+      },
+      {
+        name: 'Global + Local (Advanced; may cause confusion)',
+        value: 'both',
+        short: 'both'
+      }
+    ],
+    default: 'global'
+  }]);
+
+  if (scope !== 'both') return scope;
+
+  console.log(chalk.yellow('\n⚠️  Global + Local may cause inconsistent skill resolution in some tools.'));
+  const { confirmBoth } = await inquirer.prompt([{
+    type: 'confirm',
+    name: 'confirmBoth',
+    message: 'Continue with both scopes?',
+    default: false
+  }]);
+  if (!confirmBoth) return 'global';
+
+  const { confirmBothAgain } = await inquirer.prompt([{
+    type: 'confirm',
+    name: 'confirmBothAgain',
+    message: 'Confirm again: apply to both global and local?',
+    default: false
+  }]);
+  return confirmBothAgain ? 'both' : 'global';
+}
+
+function parseScope(args) {
+  const scopeArg = getFlagValue(args, '--scope');
+  const claudeScopeArg = getFlagValue(args, '--claude-scope');
+  const hasGlobalFlag = args.includes('--global') || args.includes('-g');
+  const hasLocalFlag = args.includes('--local') || args.includes('-l');
+
+  if (hasGlobalFlag && hasLocalFlag) {
+    throw new Error('Use only one of --global or --local.');
+  }
+
+  const candidates = [scopeArg, claudeScopeArg].filter(Boolean);
+  if (hasGlobalFlag) candidates.push('global');
+  if (hasLocalFlag) candidates.push('local');
+
+  if (candidates.length === 0) return null;
+
+  const unique = Array.from(new Set(candidates.map(v => String(v).toLowerCase())));
+  if (unique.length > 1) {
+    throw new Error(`Conflicting scope options: ${unique.join(', ')}`);
+  }
+
+  const scope = unique[0];
+  if (!VALID_SCOPES.has(scope)) {
+    throw new Error(`Invalid scope "${scope}". Use: global, local, or both.`);
+  }
+  return scope;
+}
+
+async function uninstallManagedSkills(platforms, quiet, options = {}) {
   let managedSkills = getManagedSkillNames();
-  const targets = [...new Set(platforms.flatMap(getPlatformTargetDirs).filter(Boolean))];
+  const targets = [...new Set(platforms.flatMap(platform => getPlatformTargetDirs(platform, options)).filter(Boolean))];
   let removedCount = 0;
 
   // Runtime fallback when packaged metadata is unavailable (e.g. npx runtime):
@@ -172,7 +299,7 @@ async function uninstallManagedSkills(platforms, quiet) {
   }
 }
 
-async function runUninstallFlow(detected, quiet, skipPrompt) {
+async function runUninstallFlow(detected, quiet, skipPrompt, cliScopeOverride = null) {
   const allPlatforms = getDetectedPlatforms(detected);
   if (allPlatforms.length === 0) {
     console.log(chalk.yellow('\n⚠️  No supported platforms detected for uninstall.\n'));
@@ -181,6 +308,7 @@ async function runUninstallFlow(detected, quiet, skipPrompt) {
 
   let selectedPlatforms = allPlatforms;
   let shouldClearCache = true;
+  let scope = cliScopeOverride || 'global';
 
   if (!skipPrompt) {
     const { uninstallMode } = await inquirer.prompt([{
@@ -211,6 +339,8 @@ async function runUninstallFlow(detected, quiet, skipPrompt) {
       }
     }
 
+    scope = cliScopeOverride || await promptScope('uninstall');
+
     const { clearCacheNow } = await inquirer.prompt([{
       type: 'confirm',
       name: 'clearCacheNow',
@@ -224,9 +354,10 @@ async function runUninstallFlow(detected, quiet, skipPrompt) {
 
   if (!quiet) {
     console.log(chalk.cyan(`\n🧹 Uninstalling skills from: ${selectedPlatforms.join(', ')}\n`));
+    console.log(chalk.gray(`   Scope: ${scope}`));
   }
 
-  await uninstallManagedSkills(selectedPlatforms, quiet);
+  await uninstallManagedSkills(selectedPlatforms, quiet, { scope });
   if (shouldClearCache) {
     await clearSkillsCache(quiet);
   }
@@ -264,6 +395,36 @@ async function getInstalledSkillsByPlatforms(platforms) {
   }
 
   return Array.from(installed).sort();
+}
+
+function getInstallerByPlatform(platform) {
+  const installers = {
+    copilot: installCopilotSkills,
+    claude: installClaudeSkills,
+    codex: installCodexSkills,
+    opencode: installOpenCodeSkills,
+    gemini: installGeminiSkills,
+    antigravity: installAntigravitySkills,
+    cursor: installCursorSkills,
+    adal: installAdalSkills
+  };
+  return installers[platform] || null;
+}
+
+async function installForPlatforms(cacheDir, platforms, skills, quiet, scope) {
+  for (const platform of platforms) {
+    const installer = getInstallerByPlatform(platform);
+    if (!installer) continue;
+
+    const targetDirs = getPlatformTargetDirs(platform, { scope });
+    if (targetDirs.length === 0) continue;
+
+    for (const targetDir of targetDirs) {
+      const isLocal = targetDir.startsWith(process.cwd());
+      const label = `${platform} (${isLocal ? 'local' : 'global'})`;
+      await installer(cacheDir, skills, quiet, targetDir, label);
+    }
+  }
 }
 
 async function main() {
@@ -311,6 +472,7 @@ async function main() {
 
   const quiet = args.includes('-q') || args.includes('--quiet');
   const skipPrompt = args.includes('-y') || args.includes('--yes');
+  const cliScopeOverride = parseScope(args);
 
   // Handle bundle installation
   const bundleIdx = args.indexOf('--bundle');
@@ -346,6 +508,14 @@ async function main() {
       process.exit(0);
     }
 
+    const scope = cliScopeOverride || (skipPrompt ? 'global' : await promptScope('installation'));
+    if (!quiet) {
+      console.log(chalk.gray(`Scope: ${scope} (${scope === 'global' ? 'recommended' : 'advanced'})`));
+      if (scope === 'both') {
+        console.log(chalk.yellow('⚠️  Global + Local can cause tool confusion. Global is recommended.'));
+      }
+    }
+
     // Download / verify skills cache
     const cacheDir = await warmCache(quiet);
 
@@ -356,30 +526,7 @@ async function main() {
 
     // Install bundle skills
     for (const skill of bundle.skills) {
-      if (platforms.includes('copilot')) {
-        await installCopilotSkills(cacheDir, [skill], quiet);
-      }
-      if (platforms.includes('claude')) {
-        await installClaudeSkills(cacheDir, [skill], quiet);
-      }
-      if (platforms.includes('codex')) {
-        await installCodexSkills(cacheDir, [skill], quiet);
-      }
-      if (platforms.includes('opencode')) {
-        await installOpenCodeSkills(cacheDir, [skill], quiet);
-      }
-      if (platforms.includes('gemini')) {
-        await installGeminiSkills(cacheDir, [skill], quiet);
-      }
-      if (platforms.includes('antigravity')) {
-        await installAntigravitySkills(cacheDir, [skill], quiet);
-      }
-      if (platforms.includes('cursor')) {
-        await installCursorSkills(cacheDir, [skill], quiet);
-      }
-      if (platforms.includes('adal')) {
-        await installAdalSkills(cacheDir, [skill], quiet);
-      }
+      await installForPlatforms(cacheDir, platforms, [skill], quiet, scope);
     }
 
     if (!quiet) {
@@ -407,19 +554,44 @@ async function main() {
       process.exit(1);
     }
 
+    const detectedPlatforms = getDetectedPlatforms(detected);
+    const platformScopeStatus = Object.fromEntries(
+      detectedPlatforms.map(p => [p, getPlatformInstallStatus(p)])
+    );
+
+    if (!quiet && detectedPlatforms.length > 0) {
+      console.log(chalk.cyan('\nInstall status by scope:'));
+      for (const platform of detectedPlatforms) {
+        const status = platformScopeStatus[platform];
+        const globalStatus = status.hasGlobal ? `installed (${status.globalCount})` : 'not installed';
+        const localStatus = status.hasLocal ? `installed (${status.localCount})` : 'not installed';
+        console.log(chalk.dim(`  • ${platform}: global=${globalStatus} | local=${localStatus}`));
+      }
+    }
+
     // Check if already installed
     const installInfo = checkInstalledVersion();
+    const hasAnyLocalInstall = Object.values(platformScopeStatus).some(s => s.hasLocal);
+    const hasAnyGlobalInstall = Object.values(platformScopeStatus).some(s => s.hasGlobal);
+    const hasExistingInstall = installInfo.installed || hasAnyGlobalInstall || hasAnyLocalInstall;
     let requiresCleanReinstall = false;
 
-    if (installInfo.installed) {
+    if (hasExistingInstall) {
       console.log(chalk.cyan(`\nℹ️  claude-superskills already installed on the following platforms:\n`));
 
-      for (const platform of installInfo.platforms) {
-        const version = installInfo.versions[platform];
-        console.log(chalk.dim(`  • ${platform}: v${version}`));
+      if (installInfo.platforms.length > 0) {
+        for (const platform of installInfo.platforms) {
+          const version = installInfo.versions[platform];
+          console.log(chalk.dim(`  • ${platform}: v${version}`));
+        }
+      }
+      for (const platform of detectedPlatforms) {
+        const status = platformScopeStatus[platform];
+        console.log(chalk.dim(`  • ${platform}(global): ${status.hasGlobal ? 'installed' : 'not installed'}`));
+        console.log(chalk.dim(`  • ${platform}(local): ${status.hasLocal ? 'installed' : 'not installed'}`));
       }
 
-      const updateAvailable = isUpdateAvailable(installInfo);
+      const updateAvailable = installInfo.installed ? isUpdateAvailable(installInfo) : false;
 
       if (skipPrompt) {
         if (updateAvailable) {
@@ -451,7 +623,7 @@ async function main() {
         }
 
         if (action === 'uninstall') {
-          await runUninstallFlow(detected, quiet, skipPrompt);
+          await runUninstallFlow(detected, quiet, skipPrompt, cliScopeOverride);
           return;
         }
 
@@ -482,7 +654,7 @@ async function main() {
         }
 
         if (action === 'uninstall') {
-          await runUninstallFlow(detected, quiet, skipPrompt);
+          await runUninstallFlow(detected, quiet, skipPrompt, cliScopeOverride);
           return;
         }
 
@@ -509,13 +681,20 @@ async function main() {
       process.exit(0);
     }
 
+    const scope = cliScopeOverride || (skipPrompt ? 'global' : await promptScope('installation'));
+
     console.log(chalk.cyan(`\n📦 Installing skills for: ${platforms.join(', ')}\n`));
+    console.log(chalk.gray(`   Scope: ${scope} (${scope === 'global' ? 'recommended' : 'advanced'})`));
+    if (scope === 'both') {
+      console.log(chalk.yellow('   ⚠️  Global + Local may cause confusion in some tools.'));
+    }
+    console.log();
 
     if (requiresCleanReinstall) {
       if (!quiet) {
         console.log(chalk.cyan('♻️  Running clean reinstall: uninstall + cache cleanup...\n'));
       }
-      await uninstallManagedSkills(platforms, quiet);
+      await uninstallManagedSkills(platforms, quiet, { scope });
       await clearSkillsCache(quiet);
       if (!quiet) console.log();
     }
@@ -523,38 +702,7 @@ async function main() {
     // Download / verify skills cache
     const cacheDir = await warmCache(quiet);
 
-    // Install for selected platforms
-    if (platforms.includes('copilot')) {
-      await installCopilotSkills(cacheDir, null, quiet);
-    }
-
-    if (platforms.includes('claude')) {
-      await installClaudeSkills(cacheDir, null, quiet);
-    }
-
-    if (platforms.includes('codex')) {
-      await installCodexSkills(cacheDir, null, quiet);
-    }
-
-    if (platforms.includes('opencode')) {
-      await installOpenCodeSkills(cacheDir, null, quiet);
-    }
-
-    if (platforms.includes('gemini')) {
-      await installGeminiSkills(cacheDir, null, quiet);
-    }
-
-    if (platforms.includes('antigravity')) {
-      await installAntigravitySkills(cacheDir, null, quiet);
-    }
-
-    if (platforms.includes('cursor')) {
-      await installCursorSkills(cacheDir, null, quiet);
-    }
-
-    if (platforms.includes('adal')) {
-      await installAdalSkills(cacheDir, null, quiet);
-    }
+    await installForPlatforms(cacheDir, platforms, null, quiet, scope);
 
     if (!quiet) {
       console.log(chalk.green(`\n✅ Installation complete!\n`));
@@ -586,7 +734,7 @@ async function main() {
 
     case 'uninstall':
       console.log(chalk.cyan('🔍 Detecting installed AI CLI tools...\n'));
-      await runUninstallFlow(detectTools(), quiet, skipPrompt);
+      await runUninstallFlow(detectTools(), quiet, skipPrompt, cliScopeOverride);
       break;
 
     case 'doctor':
@@ -617,8 +765,10 @@ Options:
   --search KEYWORD Search for skills
   --list-bundles  Show available bundles
   --all, -a       Install for all platforms
-  --global, -g    Global installation
-  --local, -l     Local installation
+  --scope SCOPE   Scope for selected platforms: global|local|both (default: global)
+  --claude-scope SCOPE  Backward-compatible alias of --scope
+  --global, -g    Alias for --scope global
+  --local, -l     Alias for --scope local
   --yes, -y       Skip prompts (auto-confirm)
   --quiet, -q     Minimal output
   --help, -h      Show this help
@@ -631,6 +781,9 @@ Examples:
   npx claude-superskills --search "prompt"        # Search for skills
   npx claude-superskills --list-bundles           # Show available bundles
   npx claude-superskills ls -q                    # List skills, quiet mode
+  npx claude-superskills --scope global           # Global install (recommended)
+  npx claude-superskills --scope local            # Local install for current repository
+  npx claude-superskills --scope both             # Global + local install (advanced)
   npx claude-superskills uninstall -y             # Uninstall all + clear cache
 `);
 }

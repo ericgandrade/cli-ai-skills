@@ -6,6 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.12.10] - 2026-02-21
+
+### Changed
+
+- Installer scope options (`global`, `local`, `both`) now apply to all supported platforms, not only Claude.
+- Interactive UX now defaults to and recommends `global` scope to avoid cross-tool ambiguity.
+- Added explicit warning + double confirmation when `both` scope is selected.
+- Added `--scope global|local|both` as first-class option and kept `--claude-scope` as backward-compatible alias.
+- Install and uninstall flows now respect scope selection consistently (including clean reinstall path).
+- Platform installers now accept custom target directories, enabling scoped installs for global/local paths.
+
+### Fixed
+
+- Prevented partial installs by removing destination folders on copy errors across all platform installers.
+- Cache handling now avoids reusing partial downloads and keeps installation directories cleaner.
+
 ## [1.12.8] - 2026-02-20
 
 ### Fixed

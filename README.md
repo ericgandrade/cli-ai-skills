@@ -1,8 +1,8 @@
-# 🤖 Claude Superskills v1.12.8
+# 🤖 Claude Superskills v1.12.10
 
 Scale AI-assisted engineering with a reusable skill platform that turns ad-hoc prompting into standardized, high-impact workflows. Install once and deliver consistent planning, research, orchestration, and content automation across your entire multi-tool AI stack.
 
-![Version](https://img.shields.io/badge/version-1.12.8-blue.svg)
+![Version](https://img.shields.io/badge/version-1.12.10-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Skills](https://img.shields.io/badge/skills-12-brightgreen.svg)
 ![Platforms](https://img.shields.io/badge/platforms-8-orange.svg)
@@ -18,6 +18,9 @@ curl -fsSL https://raw.githubusercontent.com/ericgandrade/claude-superskills/mai
 ```bash
 npx claude-superskills
 ```
+
+The installer now supports `global`, `local`, and `both` scopes for all platforms.
+Default and recommendation: `global` (avoids tool confusion).
 
 **Other methods:**
 ```bash
@@ -213,6 +216,9 @@ These skills follow the universal `SKILL.md` format and work with any AI coding 
 
 ```bash
 npx claude-superskills i -a -y -q    # Install all, skip prompts, quiet mode
+npx claude-superskills --scope global # Recommended scope
+npx claude-superskills --scope local  # Current repository only
+npx claude-superskills --scope both   # Advanced: global + local
 npx claude-superskills ls -q         # List with minimal output
 npx claude-superskills --list-bundles # Show available bundles
 ```
@@ -247,7 +253,7 @@ MIT - See [LICENSE](./LICENSE) for details.
 
 **Built with ❤️ by [Eric Andrade](https://github.com/ericgandrade)**
 
-*Version 1.12.8 | February 2026*
+*Version 1.12.10 | February 2026*
 
 ## 🎁 Get Started
 

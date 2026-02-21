@@ -7,6 +7,14 @@ const yaml = require('js-yaml');
 const REPO_OWNER = 'ericgandrade';
 const REPO_NAME = 'claude-superskills';
 const CACHE_BASE = path.join(os.homedir(), '.claude-superskills', 'cache');
+const CACHE_COMPLETE_MARKER = '.cache-complete';
+
+function getGitHubHeaders() {
+  return {
+    'Accept': 'application/vnd.github.v3+json',
+    'User-Agent': 'claude-superskills-installer'
+  };
+}
 
 /**
  * Ensure skills for a given version are cached locally.
@@ -16,14 +24,17 @@ const CACHE_BASE = path.join(os.homedir(), '.claude-superskills', 'cache');
  */
 async function ensureSkillsCached(version) {
   const versionCacheDir = path.join(CACHE_BASE, version, 'skills');
+  const markerPath = path.join(versionCacheDir, CACHE_COMPLETE_MARKER);
 
   if (fs.existsSync(versionCacheDir)) {
     const entries = fs.readdirSync(versionCacheDir).filter(f =>
       fs.statSync(path.join(versionCacheDir, f)).isDirectory()
     );
-    if (entries.length > 0) {
+    if (entries.length > 0 && fs.existsSync(markerPath)) {
       return versionCacheDir;
     }
+    // Cache may be partial/corrupted from interrupted downloads.
+    await fs.remove(versionCacheDir);
   }
 
   await fs.ensureDir(versionCacheDir);
@@ -31,13 +42,21 @@ async function ensureSkillsCached(version) {
   // Try downloading the release tarball first (most reliable)
   try {
     await downloadViaReleaseZip(version, versionCacheDir);
+    await writeCacheMarker(versionCacheDir);
     return versionCacheDir;
   } catch (_err) {
     // Fall back to GitHub API tree walk
   }
 
-  await downloadViaApiTree(version, versionCacheDir);
-  return versionCacheDir;
+  try {
+    await downloadViaApiTree(version, versionCacheDir);
+    await writeCacheMarker(versionCacheDir);
+    return versionCacheDir;
+  } catch (err) {
+    // Never keep partial cache on disk.
+    await fs.remove(versionCacheDir);
+    throw err;
+  }
 }
 
 /**
@@ -45,28 +64,51 @@ async function ensureSkillsCached(version) {
  */
 async function downloadViaReleaseZip(version, targetDir) {
   const AdmZip = requireAdmZip();
-  const url = `https://github.com/${REPO_OWNER}/${REPO_NAME}/archive/refs/tags/v${version}.zip`;
+  const urls = [
+    `https://github.com/${REPO_OWNER}/${REPO_NAME}/archive/refs/tags/v${version}.zip`,
+    `https://codeload.github.com/${REPO_OWNER}/${REPO_NAME}/zip/refs/tags/v${version}`
+  ];
+  let lastError;
 
-  const response = await axios.get(url, {
-    responseType: 'arraybuffer',
-    headers: { 'User-Agent': 'claude-superskills-installer' },
-    maxRedirects: 5
-  });
+  for (const url of urls) {
+    try {
+      const response = await axios.get(url, {
+        responseType: 'arraybuffer',
+        headers: getGitHubHeaders(),
+        maxRedirects: 5,
+        timeout: 30000
+      });
 
-  const zip = new AdmZip(Buffer.from(response.data));
-  const entries = zip.getEntries();
-  const prefix = `${REPO_NAME}-${version}/skills/`;
+      const zip = new AdmZip(Buffer.from(response.data));
+      const entries = zip.getEntries();
+      const prefix = `${REPO_NAME}-${version}/skills/`;
 
-  for (const entry of entries) {
-    if (!entry.entryName.startsWith(prefix) || entry.isDirectory) continue;
+      for (const entry of entries) {
+        if (!entry.entryName.startsWith(prefix) || entry.isDirectory) continue;
 
-    const relativePath = entry.entryName.slice(prefix.length);
-    if (!relativePath) continue;
+        const relativePath = entry.entryName.slice(prefix.length);
+        if (!relativePath) continue;
 
-    const destPath = path.join(targetDir, relativePath);
-    await fs.ensureDir(path.dirname(destPath));
-    fs.writeFileSync(destPath, entry.getData());
+        const destPath = path.join(targetDir, relativePath);
+        await fs.ensureDir(path.dirname(destPath));
+        fs.writeFileSync(destPath, entry.getData());
+      }
+
+      const installedSkillDirs = (await fs.readdir(targetDir)).filter(entry =>
+        fs.statSync(path.join(targetDir, entry)).isDirectory()
+      );
+      if (installedSkillDirs.length === 0) {
+        throw new Error('zip downloaded but no skills found in archive');
+      }
+
+      return;
+    } catch (err) {
+      lastError = err;
+      await fs.emptyDir(targetDir);
+    }
   }
+
+  throw lastError || new Error('failed to download release zip');
 }
 
 /**
@@ -80,22 +122,35 @@ function requireAdmZip() {
   }
 }
 
+async function writeCacheMarker(versionCacheDir) {
+  const markerPath = path.join(versionCacheDir, CACHE_COMPLETE_MARKER);
+  await fs.writeFile(markerPath, `createdAt=${new Date().toISOString()}\n`);
+}
+
 /**
  * Download skills by walking the GitHub API tree (no adm-zip needed).
  */
 async function downloadViaApiTree(version, targetDir) {
   const ref = `v${version}`;
   const apiBase = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}`;
-  const headers = {
-    'Accept': 'application/vnd.github.v3+json',
-    'User-Agent': 'claude-superskills-installer'
-  };
+  const headers = getGitHubHeaders();
 
-  // Get tree recursively
-  const treeRes = await axios.get(
-    `${apiBase}/git/trees/${ref}?recursive=1`,
-    { headers }
-  );
+  let treeRes;
+  try {
+    // Get tree recursively
+    treeRes = await axios.get(
+      `${apiBase}/git/trees/${ref}?recursive=1`,
+      { headers }
+    );
+  } catch (err) {
+    const status = err?.response?.status;
+    if (status === 403) {
+      throw new Error(
+        'GitHub API returned 403 (rate limit or network policy). Retry later or check network policy.'
+      );
+    }
+    throw err;
+  }
 
   const tree = treeRes.data.tree;
 

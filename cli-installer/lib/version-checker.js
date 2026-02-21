@@ -4,6 +4,58 @@ const os = require('os');
 const semver = require('semver');
 const yaml = require('js-yaml');
 const { getUserSkillsPath } = require('./utils/path-resolver');
+const MANAGED_SKILL_HINTS = [
+  'skill-creator',
+  'prompt-engineer',
+  'agent-skill-discovery',
+  'agent-skill-orchestrator',
+  'audio-transcriber',
+  'docling-converter'
+];
+
+function getSkillDirs(skillsRoot) {
+  if (!fs.existsSync(skillsRoot)) return [];
+  return fs.readdirSync(skillsRoot)
+    .map(entry => path.join(skillsRoot, entry))
+    .filter(p => {
+      try {
+        return fs.statSync(p).isDirectory();
+      } catch (_err) {
+        return false;
+      }
+    });
+}
+
+function readSkillVersion(skillMdPath) {
+  try {
+    const content = fs.readFileSync(skillMdPath, 'utf-8');
+    const yamlMatch = content.match(/^---\n([\s\S]*?)\n---/);
+    if (!yamlMatch) return 'unknown';
+    const metadata = yaml.load(yamlMatch[1]);
+    return metadata?.version || 'unknown';
+  } catch (_err) {
+    return 'unknown';
+  }
+}
+
+function findInstalledSkillInfo(skillsRoot) {
+  const skillDirs = getSkillDirs(skillsRoot);
+  if (skillDirs.length === 0) return { installed: false, version: null };
+
+  const byName = new Map(skillDirs.map(p => [path.basename(p), p]));
+  const orderedDirs = [
+    ...MANAGED_SKILL_HINTS.filter(name => byName.has(name)).map(name => byName.get(name)),
+    ...skillDirs.filter(p => !MANAGED_SKILL_HINTS.includes(path.basename(p)))
+  ];
+
+  for (const skillDir of orderedDirs) {
+    const skillMdPath = path.join(skillDir, 'SKILL.md');
+    if (!fs.existsSync(skillMdPath)) continue;
+    return { installed: true, version: readSkillVersion(skillMdPath) };
+  }
+
+  return { installed: false, version: null };
+}
 
 /**
  * Verifica se claude-superskills já está instalado em alguma plataforma
@@ -31,30 +83,11 @@ function checkInstalledVersion() {
   };
   
   for (const [platform, skillDir] of Object.entries(skillDirs)) {
-    if (!fs.existsSync(skillDir)) continue;
-    
-    // Verificar se há skills instaladas (procurar por skill-creator ou prompt-engineer)
-    const testSkillPath = path.join(skillDir, 'skill-creator', 'SKILL.md');
-    
-    if (fs.existsSync(testSkillPath)) {
-      result.installed = true;
-      result.platforms.push(platform);
-      
-      // Extrair versão do YAML frontmatter
-      try {
-        const content = fs.readFileSync(testSkillPath, 'utf-8');
-        const yamlMatch = content.match(/^---\n([\s\S]*?)\n---/);
-        
-        if (yamlMatch) {
-          const metadata = yaml.load(yamlMatch[1]);
-          result.versions[platform] = metadata.version || 'unknown';
-        } else {
-          result.versions[platform] = 'unknown';
-        }
-      } catch (err) {
-        result.versions[platform] = 'unknown';
-      }
-    }
+    const info = findInstalledSkillInfo(skillDir);
+    if (!info.installed) continue;
+    result.installed = true;
+    result.platforms.push(platform);
+    result.versions[platform] = info.version || 'unknown';
   }
   
   return result;
@@ -109,25 +142,9 @@ function checkPlatformInstallation(platform) {
     return { installed: false, version: null };
   }
 
-  const skillPath = path.join(skillsDir, 'skill-creator', 'SKILL.md');
-  
-  if (!fs.existsSync(skillPath)) {
-    return { installed: false, version: null };
-  }
-  
-  try {
-    const content = fs.readFileSync(skillPath, 'utf-8');
-    const yamlMatch = content.match(/^---\n([\s\S]*?)\n---/);
-    
-    if (yamlMatch) {
-      const metadata = yaml.load(yamlMatch[1]);
-      return { installed: true, version: metadata.version || 'unknown' };
-    }
-  } catch (err) {
-    return { installed: true, version: 'unknown' };
-  }
-  
-  return { installed: true, version: 'unknown' };
+  const info = findInstalledSkillInfo(skillsDir);
+  if (!info.installed) return { installed: false, version: null };
+  return { installed: true, version: info.version || 'unknown' };
 }
 
 module.exports = { 

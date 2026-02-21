@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **claude-superskills** is a reusable AI skills library for **8 AI platforms**: GitHub Copilot CLI, Claude Code, OpenAI Codex, OpenCode, Gemini CLI, Antigravity, Cursor IDE, and AdaL CLI. Skills are Markdown-based workflow specifications (`SKILL.md`) that teach AI agents how to perform specific tasks.
 
-- **npm package**: `claude-superskills` (v1.12.8) — `npx claude-superskills`
+- **npm package**: `claude-superskills` (v1.12.10) — `npx claude-superskills`
 - **GitHub**: `https://github.com/ericgandrade/claude-superskills`
 - **Old package** `cli-ai-skills` is deprecated, redirects to this one
 
@@ -64,7 +64,7 @@ claude-superskills/
 │   │   └── utils/
 │   │       ├── path-resolver.js   # getCachedSkillsPath(), getUserSkillsPath(), getCodexSkillPaths()
 │   │       └── skill-versions.js
-│   └── package.json          # NPM manifest (v1.12.8) — no skills/ in files
+│   └── package.json          # NPM manifest (v1.12.10) — no skills/ in files
 │
 ├── scripts/
 │   ├── build-skills.sh       # Validates skills/ source (no longer syncs)
@@ -293,7 +293,7 @@ Skills that interact with project structure should include a discovery phase tha
 
 ## Version Management
 
-The package version is defined in `cli-installer/package.json` (currently **v1.12.8**).
+The package version is defined in `cli-installer/package.json` (currently **v1.12.10**).
 
 - `cli-installer/package.json` — source of truth for npm
 - `cli-installer/bin/cli.js` — reads version dynamically from package.json
@@ -302,7 +302,7 @@ The package version is defined in `cli-installer/package.json` (currently **v1.1
 
 **Bumping:**
 ```bash
-./scripts/bump-version.sh patch   # 1.12.8 → 1.12.9
+./scripts/bump-version.sh patch   # 1.12.10 → 1.12.11
 # Updates package.json, commits, creates tag, pushes → triggers publish workflow
 # Then update README.md badges manually
 # Then update CHANGELOG.md
@@ -369,11 +369,7 @@ OpenCode and Antigravity share `~/.agent/skills/` as the universal agent path.
 - Cache location: `~/.claude-superskills/cache/{version}/skills/`
 - `clearCache()` — wipes `~/.claude-superskills/cache/`
 
-> **GitHub 403 / rate limit**: The GitHub API allows 60 unauthenticated requests/hour. On corporate networks or after repeated installs, the API tree walk may return 403. Set `GITHUB_TOKEN` env var to authenticate and raise the limit:
-> ```bash
-> GITHUB_TOKEN=ghp_xxx npx claude-superskills
-> ```
-> The release zip download (Strategy 1) does not require authentication and is unaffected by the API rate limit.
+> **GitHub 403 / rate limit**: On corporate networks or after repeated installs, the API fallback (`api.github.com`) may return 403. The installer prioritizes release zip download (`github.com`/`codeload.github.com`) to avoid API limits. If 403 persists, retry later or review network/proxy policy for GitHub domains.
 
 ### Bundle System (`lib/bundles.js`)
 
