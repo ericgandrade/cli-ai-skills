@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **claude-superskills** is a reusable AI skills library for **8 AI platforms**: GitHub Copilot CLI, Claude Code, OpenAI Codex, OpenCode, Gemini CLI, Antigravity, Cursor IDE, and AdaL CLI. Skills are Markdown-based workflow specifications (`SKILL.md`) that teach AI agents how to perform specific tasks.
 
-- **npm package**: `claude-superskills` (v1.12.7) — `npx claude-superskills`
+- **npm package**: `claude-superskills` (v1.12.8) — `npx claude-superskills`
 - **GitHub**: `https://github.com/ericgandrade/claude-superskills`
 - **Old package** `cli-ai-skills` is deprecated, redirects to this one
 
@@ -33,8 +33,7 @@ claude-superskills/
 │   ├── lib/
 │   │   ├── copilot.js        # GitHub Copilot installer
 │   │   ├── claude.js         # Claude Code installer
-│   │   ├── codex.js          # OpenAI Codex CLI installer (~/.agents/skills/)
-│   │   ├── codex-app.js      # OpenAI Codex App installer (~/.codex/skills/)
+│   │   ├── codex.js          # OpenAI Codex installer (~/.codex/skills/ — CLI + App)
 │   │   ├── opencode.js       # OpenCode installer
 │   │   ├── gemini.js         # Gemini CLI installer
 │   │   ├── antigravity.js    # Antigravity installer
@@ -122,8 +121,7 @@ npx claude-superskills
     → copy skills from cache → platform dirs
         copilot     → ~/.github/skills/
         claude      → ~/.claude/skills/
-        codex_cli   → ~/.agents/skills/
-        codex_app   → ~/.codex/skills/
+        codex       → ~/.codex/skills/ (CLI + App — single path, no duplicates)
         opencode    → ~/.agent/skills/
         gemini      → ~/.gemini/skills/
         antigravity → ~/.agent/skills/
@@ -271,7 +269,7 @@ Skills that interact with project structure should include a discovery phase tha
 
 ## Version Management
 
-The package version is defined in `cli-installer/package.json` (currently **v1.12.7**).
+The package version is defined in `cli-installer/package.json` (currently **v1.12.8**).
 
 - `cli-installer/package.json` — source of truth for npm
 - `cli-installer/bin/cli.js` — reads version dynamically from package.json
@@ -280,7 +278,7 @@ The package version is defined in `cli-installer/package.json` (currently **v1.1
 
 **Bumping:**
 ```bash
-./scripts/bump-version.sh patch   # 1.12.7 → 1.12.8
+./scripts/bump-version.sh patch   # 1.12.8 → 1.12.9
 # Updates package.json, commits, creates tag, pushes → triggers publish workflow
 # Then update README.md badges manually
 # Then update CHANGELOG.md
@@ -325,8 +323,7 @@ async function install(cacheDir, skills = null, quiet = false)
 |------|----------|----------------|
 | `copilot.js` | GitHub Copilot CLI | `~/.github/skills/` |
 | `claude.js` | Claude Code | `~/.claude/skills/` |
-| `codex.js` | OpenAI Codex CLI | `~/.agents/skills/` |
-| `codex-app.js` | OpenAI Codex App | `~/.codex/skills/` |
+| `codex.js` | OpenAI Codex (CLI + App) | `~/.codex/skills/` |
 | `opencode.js` | OpenCode | `~/.agent/skills/` |
 | `gemini.js` | Gemini CLI | `~/.gemini/skills/` |
 | `antigravity.js` | Antigravity | `~/.agent/skills/` |
