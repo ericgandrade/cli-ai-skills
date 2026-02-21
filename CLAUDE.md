@@ -218,7 +218,16 @@ git push origin main && git push origin vX.Y.Z
 # ↑ tag push triggers GitHub Actions publish workflow automatically
 ```
 
+> **Release Rule (mandatory):** npm publication is done by GitHub Actions triggered by tag push (`v*`). Do not treat local `npm publish` as the primary release path.
+
 > **Note:** `bump-version.sh` uses `--no-git-tag-version` — it only updates `package.json`. The git tag must be created and pushed manually after the commit.
+
+> **Change Management Rule (mandatory):** any repository change must include consistency updates before release when applicable:
+> - `README.md` (commands, examples, version badges/footer, behavior notes)
+> - `CHANGELOG.md` (new version entry with added/changed/fixed items)
+> - `CLAUDE.md` (architecture/workflow/rules/version references)
+> - `cli-installer/package.json` and `cli-installer/package-lock.json` (version bump)
+> - Git commit + version tag `vX.Y.Z` + push `main` and tag to trigger publish workflow
 
 ### Testing the Download Flow
 
