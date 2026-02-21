@@ -4,7 +4,7 @@ Scale AI-assisted engineering with a reusable skill platform that turns ad-hoc p
 
 ![Version](https://img.shields.io/badge/version-1.12.12-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
-![Skills](https://img.shields.io/badge/skills-12-brightgreen.svg)
+![Skills](https://img.shields.io/badge/skills-13-brightgreen.svg)
 ![Platforms](https://img.shields.io/badge/platforms-8-orange.svg)
 
 ## 🚀 Quick Install
@@ -59,7 +59,7 @@ curl -fsSL https://raw.githubusercontent.com/ericgandrade/claude-superskills/mai
 
 ## ✨ Features
 
-- **12 Universal Skills** - Work on all platforms
+- **13 Universal Skills** - Work on all platforms
 - **Zero-Config Install** - Run once, works everywhere
 - **Curated Bundles** - Install exactly what you need
 - **Smart Search** - Find skills by keyword
@@ -101,6 +101,7 @@ curl -fsSL https://raw.githubusercontent.com/ericgandrade/claude-superskills/mai
 | **youtube-summarizer** | v1.2.1 | Extract YouTube transcripts and generate comprehensive summaries |
 | **audio-transcriber** | v1.2.1 | Transform audio recordings into professional Markdown documentation |
 | **docling-converter** | v1.0.0 | Convert PDF/Office/image documents to Markdown/JSON/HTML with optional OCR |
+| **storytelling-expert** | v1.0.0 | Transform ideas into engaging narratives using 8 elite storytelling frameworks |
 
 ## 🎯 Curated Bundles
 
@@ -262,7 +263,7 @@ MIT - See [LICENSE](./LICENSE) for details.
 Choose a bundle that fits your workflow:
 
 - **[Essential](docs/bundles/bundles.md#-essential-bundle)** - skill-creator, prompt-engineer
-- **[Content](docs/bundles/bundles.md#-content-creation-bundle)** - youtube-summarizer, audio-transcriber, docling-converter  
+- **[Content](docs/bundles/bundles.md#-content-creation-bundle)** - youtube-summarizer, audio-transcriber, docling-converter, storytelling-expert  
 - **[Planning](docs/bundles/bundles.md#-planning--execution-bundle)** - brainstorming, writing-plans, executing-plans
 - **[Research](docs/bundles/bundles.md#-research--analysis-bundle)** - deep-research, us-program-research + discovery
 - **[Developer](docs/bundles/bundles.md#-developer-bundle)** - skill-creator for power users

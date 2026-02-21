@@ -64,7 +64,8 @@
       "skills": [
         "youtube-summarizer",
         "audio-transcriber",
-        "docling-converter"
+        "docling-converter",
+        "storytelling-expert"
       ],
       "use_cases": [
         "Summarizing YouTube videos",
@@ -118,7 +119,8 @@
         "prompt-engineer",
         "docling-converter",
         "youtube-summarizer",
-        "audio-transcriber"
+        "audio-transcriber",
+        "storytelling-expert"
       ],
       "use_cases": [
         "Complete AI assistance",

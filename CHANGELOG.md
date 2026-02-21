@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.13.0] - 2026-02-21
+
+### Added
+
+- **New Universal Skill:** `storytelling-expert` v1.0.0
+  - Transforms ideas and data into engaging narratives using 8 elite frameworks (StoryBrand, Golden Circle, Pixar, etc.).
+  - Automatically selects the best framework based on context.
+  - Adds `storytelling-expert` to `content` and `all` bundles.
+
 ## [1.12.12] - 2026-02-21
 
 ### Changed

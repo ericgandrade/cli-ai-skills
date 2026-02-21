@@ -26,7 +26,8 @@ claude-superskills/
 │   ├── writing-plans/
 │   ├── executing-plans/
 │   ├── deep-research/
-│   └── us-program-research/
+│   ├── us-program-research/
+│   └── storytelling-expert/
 │
 ├── cli-installer/             # NPM package (claude-superskills)
 │   ├── bin/cli.js            # Main CLI entry point (commands, flags, install flow)

@@ -298,8 +298,36 @@
         "github-copilot-cli",
         "claude-code",
         "codex"
+    {
+      "name": "storytelling-expert",
+      "version": "1.0.0",
+      "description": "Transforma ideias, apresentações, discursos de vendas ou dados em histórias altamente engajadoras e persuasivas utilizando frameworks de narrativa de elite. Analisa o contexto e aplica automaticamente o framework mais adequado (StoryBrand, Golden Circle, Pixar, etc.).",
+      "category": "content",
+      "tags": [
+        "storytelling",
+        "narrative",
+        "frameworks",
+        "persuasion",
+        "pitch"
       ],
-      "triggers": []
+      "risk": "safe",
+      "platforms": [
+        "github-copilot-cli",
+        "claude-code",
+        "codex",
+        "opencode",
+        "gemini",
+        "antigravity",
+        "cursor",
+        "adal"
+      ],
+      "triggers": [
+        "ajude com storytelling",
+        "melhore essa história",
+        "crie uma narrativa para",
+        "pitch de investidor",
+        "discurso de vendas"
+      ]
     }
   ]
 }
