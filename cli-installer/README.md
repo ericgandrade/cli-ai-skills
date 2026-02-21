@@ -1,10 +1,10 @@
-# claude-superskills v1.11.0
+# claude-superskills v1.12.12
 
 🚀 **NPX Installer for AI Skills**
 
 Install reusable skills for GitHub Copilot CLI, Claude Code, OpenAI Codex, OpenCode, Gemini CLI, Antigravity, Cursor IDE, and AdaL CLI in one command.
 
-![Version](https://img.shields.io/badge/version-1.11.0-blue.svg)
+![Version](https://img.shields.io/badge/version-1.12.12-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Node](https://img.shields.io/badge/node-%3E%3D14.0.0-green.svg)
 
@@ -36,10 +36,10 @@ See [Installation Guide](../docs/INSTALLATION.md) for full methods.
 
 - GitHub Copilot CLI: `~/.github/skills/`
 - Claude Code: `~/.claude/skills/`
-- OpenAI Codex: `~/.agents/skills/` (fallback: legacy Codex paths)
+- OpenAI Codex: `~/.codex/skills/` (cleanup support for legacy `~/.agents/skills/`)
 - OpenCode: `~/.agent/skills/`
 - Gemini CLI: `~/.gemini/skills/`
-- Antigravity: `~/.agent/skills/`
+- Antigravity: `~/.gemini/antigravity/skills/`
 - Cursor IDE: `~/.cursor/skills/`
 - AdaL CLI: `~/.adal/skills/`
 

@@ -365,14 +365,14 @@ This is **normal** if you haven't installed GitHub Copilot CLI, Claude Code, or 
 - Skills don't appear in Codex App
 
 **Root Cause:**
-Codex expects skills in `~/.agents/skills/`. Legacy installs may still have old paths under `~/.codex/...`.
+Codex expects skills in `~/.codex/skills/`. Legacy installs may still have old paths under `~/.agents/...`.
 
 **Solution:** The installer now handles this automatically (v1.7.3+)
 
 **Verify installation:**
 ```bash
 # Check if skills are in the correct location
-ls -la ~/.agents/skills/
+ls -la ~/.codex/skills/
 
 # You should see symlinks to:
 # - skill-creator
@@ -399,13 +399,13 @@ After installation, you may need to:
 **Manual Installation (fallback):**
 ```bash
 # Create directory structure
-mkdir -p ~/.agents/skills
+mkdir -p ~/.codex/skills
 
 # Clone repository
 git clone https://github.com/ericgandrade/claude-superskills.git
 
 # Create symlinks manually
-cd ~/.agents/skills
+cd ~/.codex/skills
 ln -s /path/to/claude-superskills/skills/skill-creator skill-creator
 ln -s /path/to/claude-superskills/skills/prompt-engineer prompt-engineer
 ln -s /path/to/claude-superskills/skills/youtube-summarizer youtube-summarizer
@@ -445,7 +445,7 @@ rm -rf ~/.copilot/skills/*
 rm -rf ~/.claude/skills/*
 
 # Codex
-rm -rf ~/.agents/skills/*
+rm -rf ~/.codex/skills/*
 
 # OpenCode
 rm -rf ~/.opencode/skills/*

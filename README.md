@@ -1,8 +1,8 @@
-# 🤖 Claude Superskills v1.12.11
+# 🤖 Claude Superskills v1.12.12
 
 Scale AI-assisted engineering with a reusable skill platform that turns ad-hoc prompting into standardized, high-impact workflows. Install once and deliver consistent planning, research, orchestration, and content automation across your entire multi-tool AI stack.
 
-![Version](https://img.shields.io/badge/version-1.12.11-blue.svg)
+![Version](https://img.shields.io/badge/version-1.12.12-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Skills](https://img.shields.io/badge/skills-12-brightgreen.svg)
 ![Platforms](https://img.shields.io/badge/platforms-8-orange.svg)
@@ -170,14 +170,14 @@ gemini -p "design a solution for processing meeting notes and creating Jira tick
 
 - **GitHub Copilot CLI** - Terminal AI assistant (`~/.github/skills/`)
 - **Claude Code** - Anthropic's Claude in development (`~/.claude/skills/`)
-- **OpenAI Codex** - GPT-powered coding assistant (`~/.agents/skills/`)
+- **OpenAI Codex** - GPT-powered coding assistant (`~/.codex/skills/`)
 - **OpenCode** - Open source AI coding assistant (`~/.agent/skills/`)
 - **Gemini CLI** - Google's Gemini in terminal (`~/.gemini/skills/`)
-- **Antigravity** - AI coding assistant (`~/.agent/skills/`)
+- **Antigravity** - AI coding assistant (`~/.gemini/antigravity/skills/`)
 - **Cursor IDE** - AI-powered code editor (`~/.cursor/skills/`)
 - **AdaL CLI** - AI development assistant (`~/.adal/skills/`)
 
-**Note on Codex:** The installer follows Codex's documented skills path `~/.agents/skills/`, with fallback support for legacy Codex directories.
+**Note on Codex:** The installer uses `~/.codex/skills/` for Codex CLI + App, with cleanup support for legacy `~/.agents/skills/`.
 
 ## ⌨️ Compatibility & Invocation
 
@@ -187,14 +187,14 @@ These skills follow the universal `SKILL.md` format and work with any AI coding 
 |------|------|--------------------|------|
 | **Claude Code** | CLI | `/skill-name help me...` | `.claude/skills/` |
 | **Gemini CLI** | CLI | `Use skill-name to...` | `.gemini/skills/` |
-| **Codex CLI** | CLI | `Use skill-name to...` | `.agents/skills/` |
-| **Antigravity** | IDE | *(Agent Mode)* `Use skill...` | `.agent/skills/` |
+| **Codex CLI** | CLI | `Use skill-name to...` | `.codex/skills/` |
+| **Antigravity** | IDE | *(Agent Mode)* `Use skill...` | `.gemini/antigravity/skills/` |
 | **Cursor** | IDE | `@skill-name` in Chat | `.cursor/skills/` |
 | **Copilot** | Ext | *(Paste skill content manually)* | N/A |
 | **OpenCode** | CLI | `opencode run @skill-name` | `.agent/skills/` |
 | **AdaL CLI** | CLI | *(Auto)* Skills load on-demand | `.adal/skills/` |
 
-> **Tip — Universal Path:** Clone to `.agent/skills/`. Most modern tools (Antigravity, recent CLIs) look here by default.
+> **Tip:** OpenCode uses `.agent/skills/`; Antigravity uses `.gemini/antigravity/skills/`.
 
 ## 📚 Documentation
 
@@ -255,7 +255,7 @@ MIT - See [LICENSE](./LICENSE) for details.
 
 **Built with ❤️ by [Eric Andrade](https://github.com/ericgandrade)**
 
-*Version 1.12.11 | February 2026*
+*Version 1.12.12 | February 2026*
 
 ## 🎁 Get Started
 

@@ -54,7 +54,7 @@ const PLATFORM_LOCAL_DIRS = {
   codex: path.join(process.cwd(), '.codex', 'skills'),
   opencode: path.join(process.cwd(), '.agent', 'skills'),
   gemini: path.join(process.cwd(), '.gemini', 'skills'),
-  antigravity: path.join(process.cwd(), '.agent', 'skills'),
+  antigravity: path.join(process.cwd(), '.gemini', 'antigravity', 'skills'),
   cursor: path.join(process.cwd(), '.cursor', 'skills'),
   adal: path.join(process.cwd(), '.adal', 'skills')
 };

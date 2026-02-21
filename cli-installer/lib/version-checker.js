@@ -77,7 +77,7 @@ function checkInstalledVersion() {
     codex: getUserSkillsPath('codex'),
     opencode: path.join(homeDir, '.agent', 'skills'),
     gemini: path.join(homeDir, '.gemini', 'skills'),
-    antigravity: path.join(homeDir, '.agent', 'skills'),
+    antigravity: path.join(homeDir, '.gemini', 'antigravity', 'skills'),
     cursor: path.join(homeDir, '.cursor', 'skills'),
     adal: path.join(homeDir, '.adal', 'skills')
   };
@@ -132,7 +132,7 @@ function checkPlatformInstallation(platform) {
     codex: getUserSkillsPath('codex'),
     opencode: path.join(homeDir, '.agent', 'skills'),
     gemini: path.join(homeDir, '.gemini', 'skills'),
-    antigravity: path.join(homeDir, '.agent', 'skills'),
+    antigravity: path.join(homeDir, '.gemini', 'antigravity', 'skills'),
     cursor: path.join(homeDir, '.cursor', 'skills'),
     adal: path.join(homeDir, '.adal', 'skills')
   };

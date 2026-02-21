@@ -104,7 +104,7 @@ async function promptPlatforms(detected, options = {}) {
 
   if (detected.antigravity && detected.antigravity.installed) {
     choices.push({
-      name: '✅ Google Antigravity (~/.agent/skills/)',
+      name: '✅ Google Antigravity (~/.gemini/antigravity/skills/)',
       value: 'antigravity',
       checked: defaultChecked
     });

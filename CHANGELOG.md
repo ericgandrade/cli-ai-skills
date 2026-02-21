@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.12.12] - 2026-02-21
+
+### Changed
+
+- Antigravity installer path updated from `~/.agent/skills/` to `~/.gemini/antigravity/skills/` across installer logic, version checks, and interactive prompts.
+- Documentation aligned to the new Antigravity path in `README.md`, `cli-installer/README.md`, and `CLAUDE.md`.
+- Codex path documentation standardized to `~/.codex/skills/` with explicit legacy note for `~/.agents/skills/`.
+
+### Fixed
+
+- Resolved cross-tool path inconsistency where Antigravity could remain without installed skills while other platforms had full installs.
+
 ## [1.12.11] - 2026-02-21
 
 ### Added

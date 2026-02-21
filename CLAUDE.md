@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **claude-superskills** is a reusable AI skills library for **8 AI platforms**: GitHub Copilot CLI, Claude Code, OpenAI Codex, OpenCode, Gemini CLI, Antigravity, Cursor IDE, and AdaL CLI. Skills are Markdown-based workflow specifications (`SKILL.md`) that teach AI agents how to perform specific tasks.
 
-- **npm package**: `claude-superskills` (v1.12.11) — `npx claude-superskills`
+- **npm package**: `claude-superskills` (v1.12.12) — `npx claude-superskills`
 - **GitHub**: `https://github.com/ericgandrade/claude-superskills`
 - **Old package** `cli-ai-skills` is deprecated, redirects to this one
 
@@ -64,7 +64,7 @@ claude-superskills/
 │   │   └── utils/
 │   │       ├── path-resolver.js   # getCachedSkillsPath(), getUserSkillsPath(), getCodexSkillPaths()
 │   │       └── skill-versions.js
-│   └── package.json          # NPM manifest (v1.12.11) — no skills/ in files
+│   └── package.json          # NPM manifest (v1.12.12) — no skills/ in files
 │
 ├── scripts/
 │   ├── build-skills.sh       # Validates skills/ source (no longer syncs)
@@ -140,7 +140,7 @@ npx claude-superskills
         codex       → ~/.codex/skills/ (CLI + App — single path, no duplicates)
         opencode    → ~/.agent/skills/
         gemini      → ~/.gemini/skills/
-        antigravity → ~/.agent/skills/
+        antigravity → ~/.gemini/antigravity/skills/
         cursor      → ~/.cursor/skills/
         adal        → ~/.adal/skills/
 ```
@@ -302,7 +302,7 @@ Skills that interact with project structure should include a discovery phase tha
 
 ## Version Management
 
-The package version is defined in `cli-installer/package.json` (currently **v1.12.11**).
+The package version is defined in `cli-installer/package.json` (currently **v1.12.12**).
 
 - `cli-installer/package.json` — source of truth for npm
 - `cli-installer/bin/cli.js` — reads version dynamically from package.json
@@ -311,7 +311,7 @@ The package version is defined in `cli-installer/package.json` (currently **v1.1
 
 **Bumping:**
 ```bash
-./scripts/bump-version.sh patch   # 1.12.11 → 1.12.12
+./scripts/bump-version.sh patch   # 1.12.12 → 1.12.13
 # Updates package.json, commits, creates tag, pushes → triggers publish workflow
 # Then update README.md badges manually
 # Then update CHANGELOG.md
@@ -365,11 +365,11 @@ async function install(cacheDir, skills = null, quiet = false, targetDirOverride
 | `codex.js` | OpenAI Codex (CLI + App) | `~/.codex/skills/` |
 | `opencode.js` | OpenCode | `~/.agent/skills/` |
 | `gemini.js` | Gemini CLI | `~/.gemini/skills/` |
-| `antigravity.js` | Antigravity | `~/.agent/skills/` |
+| `antigravity.js` | Antigravity | `~/.gemini/antigravity/skills/` |
 | `cursor.js` | Cursor IDE | `~/.cursor/skills/` |
 | `adal.js` | AdaL CLI | `~/.adal/skills/` |
 
-OpenCode and Antigravity share `~/.agent/skills/` as the universal agent path.
+OpenCode uses `~/.agent/skills/`. Antigravity uses `~/.gemini/antigravity/skills/`.
 
 ### Downloader (`lib/core/downloader.js`)
 

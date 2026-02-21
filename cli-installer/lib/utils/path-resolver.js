@@ -43,7 +43,7 @@ function getUserSkillsPath(platform) {
     'claude':      path.join(home, '.claude', 'skills'),
     'opencode':    path.join(home, '.agent', 'skills'),
     'gemini':      path.join(home, '.gemini', 'skills'),
-    'antigravity': path.join(home, '.agent', 'skills'),
+    'antigravity': path.join(home, '.gemini', 'antigravity', 'skills'),
     'cursor':      path.join(home, '.cursor', 'skills'),
     'adal':        path.join(home, '.adal', 'skills')
   };
