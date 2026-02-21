@@ -48,7 +48,7 @@ claude-superskills/
 │   │   ├── bundles.js        # Skill bundle definitions
 │   │   ├── search.js         # Skill search functionality
 │   │   └── version-checker.js
-│   └── package.json          # NPM manifest (v1.12.0) — no skills/ in files
+│   └── package.json          # NPM manifest (v1.12.8) — no skills/ in files
 │
 ├── scripts/
 │   ├── build-skills.sh       # Validates skills/ source (no longer syncs)

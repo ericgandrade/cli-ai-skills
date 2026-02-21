@@ -247,7 +247,7 @@ MIT - See [LICENSE](./LICENSE) for details.
 
 **Built with ❤️ by [Eric Andrade](https://github.com/ericgandrade)**
 
-*Version 1.12.0 | February 2026*
+*Version 1.12.8 | February 2026*
 
 ## 🎁 Get Started
 
