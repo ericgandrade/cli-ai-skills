@@ -328,6 +328,37 @@
         "pitch de investidor",
         "discurso de vendas"
       ]
+    },
+    {
+      "name": "mckinsey-strategist",
+      "version": "1.0.0",
+      "description": "Atua como um Sócio Sênior de Estratégia (McKinsey-style) para desconstruir problemas complexos de negócios e fornecer recomendações de alto impacto utilizando frameworks analíticos de elite (SWOT, VRIO, 7S, Second-Order Thinking).",
+      "category": "planning",
+      "tags": [
+        "consulting",
+        "strategy",
+        "mckinsey",
+        "analysis",
+        "business"
+      ],
+      "risk": "safe",
+      "platforms": [
+        "github-copilot-cli",
+        "claude-code",
+        "codex",
+        "opencode",
+        "gemini",
+        "antigravity",
+        "cursor",
+        "adal"
+      ],
+      "triggers": [
+        "act as a consultant",
+        "strategic analysis for",
+        "business diagnosis",
+        "consulting case",
+        "mckinsey style recommendation"
+      ]
     }
   ]
 }

@@ -30,7 +30,8 @@
         "brainstorming",
         "writing-plans",
         "executing-plans",
-        "agent-skill-orchestrator"
+        "agent-skill-orchestrator",
+        "mckinsey-strategist"
       ],
       "use_cases": [
         "Clarifying requirements before coding",
@@ -120,7 +121,8 @@
         "docling-converter",
         "youtube-summarizer",
         "audio-transcriber",
-        "storytelling-expert"
+        "storytelling-expert",
+        "mckinsey-strategist"
       ],
       "use_cases": [
         "Complete AI assistance",

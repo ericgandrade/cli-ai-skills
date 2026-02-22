@@ -14,6 +14,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   - Transforms ideas and data into engaging narratives using 8 elite frameworks (StoryBrand, Golden Circle, Pixar, etc.).
   - Automatically selects the best framework based on context.
   - Adds `storytelling-expert` to `content` and `all` bundles.
+- **New Universal Skill:** `mckinsey-strategist` v1.0.0
+  - Acts as a Senior Strategy Partner (McKinsey-style) to diagnose complex business problems.
+  - Integrates 5 analytical filters: SWOT, VRIO, 7S, Second-Order Thinking, and Impact/Effort Matrix.
+  - Adds `mckinsey-strategist` to `planning` and `all` bundles.
 
 ## [1.12.12] - 2026-02-21
 
