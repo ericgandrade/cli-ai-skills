@@ -1,3 +1,9 @@
+---
+name: storytelling-expert
+description: This skill should be used when the user needs to transform ideas, presentations, speeches, or data into persuasive stories using elite storytelling frameworks.
+version: 1.0.0
+---
+
 # 📖 Storytelling Expert
 
 **Version:** 1.0.0

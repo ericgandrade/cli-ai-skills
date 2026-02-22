@@ -204,6 +204,16 @@ fi
 
 1. **SKILL.md** - Use appropriate template:
    - `skill-template-copilot.md`, `skill-template-claude.md`, or `skill-template-codex.md`
+   - **MANDATORY:** Template must start with YAML frontmatter delimited by `---` on the first line and closing `---` before the Markdown body
+   - Minimum required frontmatter fields:
+     ```yaml
+     ---
+     name: {{SKILL_NAME}}
+     description: This skill should be used when the user needs to [clear use case].
+     version: {{VERSION}}
+     ---
+     ```
+   - `description` must be third-person and start with `This skill should be used when...`
    - Substitute placeholders:
      - `{{SKILL_NAME}}` → kebab-case name
      - `{{DESCRIPTION}}` → one-line description
@@ -305,10 +315,13 @@ scripts/validate-skill-content.sh ".github/skills/$SKILL_NAME"
 
 **If validation fails:**
 - Display specific errors
+- **If YAML frontmatter is missing/invalid:** stop completion and rewrite the top of `SKILL.md` before any other fixes
 - Offer to fix automatically (common issues)
 - Ask user to manually correct complex issues
 
 **Common auto-fixes:**
+- Add missing YAML frontmatter block (`--- ... ---`) at top of `SKILL.md`
+- Add missing `name`, `description`, or `version` fields
 - Convert second-person to imperative form
 - Reformat description to third-person
 - Add missing required fields

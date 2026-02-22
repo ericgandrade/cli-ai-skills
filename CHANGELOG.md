@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.13.4] - 2026-02-22
+
+### Fixed
+
+- Added missing YAML frontmatter to `docling-converter`, `storytelling-expert`, and `mckinsey-strategist` `SKILL.md` files so Codex can load them without skipping.
+- Hardened `skill-creator` instructions to require YAML frontmatter (`--- ... ---`) and block completion when frontmatter validation fails.
+
 ## [1.13.3] - 2026-02-22
 
 ### Changed

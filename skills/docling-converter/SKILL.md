@@ -1,3 +1,9 @@
+---
+name: docling-converter
+description: This skill should be used when the user needs to convert documents into structured Markdown or JSON using Docling.
+version: 1.0.1
+---
+
 # 📄 Docling Document Converter
 
 **Version:** 1.0.1

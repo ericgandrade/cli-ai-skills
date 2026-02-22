@@ -1,3 +1,9 @@
+---
+name: mckinsey-strategist
+description: This skill should be used when the user needs structured strategic analysis and high-impact executive recommendations for complex business problems.
+version: 1.0.0
+---
+
 # 💼 McKinsey Strategist
 
 **Version:** 1.0.0
