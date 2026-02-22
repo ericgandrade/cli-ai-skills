@@ -6,6 +6,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.13.2] - 2026-02-21
+
+### Fixed
+
+- **docling-converter** (v1.0.1): Rewritten from passive documentation to an active agentic workflow.
+  - Added automatic dependency check and installation (`docling`, `docling[ocr]`).
+  - Implemented dynamic Python script generation for conversion execution.
+  - Added robust error handling and output validation.
+
+## [1.13.1] - 2026-02-21
+
+### Added
+
+- **New Universal Skill:** `mckinsey-strategist` v1.0.0
+  - Acts as a Senior Strategy Partner (McKinsey-style) to diagnose complex business problems.
+  - Integrates 5 analytical filters: SWOT, VRIO, 7S, Second-Order Thinking, and Impact/Effort Matrix.
+  - Adds `mckinsey-strategist` to `planning` and `all` bundles.
+
 ## [1.13.0] - 2026-02-21
 
 ### Added
@@ -14,10 +32,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   - Transforms ideas and data into engaging narratives using 8 elite frameworks (StoryBrand, Golden Circle, Pixar, etc.).
   - Automatically selects the best framework based on context.
   - Adds `storytelling-expert` to `content` and `all` bundles.
-- **New Universal Skill:** `mckinsey-strategist` v1.0.0
-  - Acts as a Senior Strategy Partner (McKinsey-style) to diagnose complex business problems.
-  - Integrates 5 analytical filters: SWOT, VRIO, 7S, Second-Order Thinking, and Impact/Effort Matrix.
-  - Adds `mckinsey-strategist` to `planning` and `all` bundles.
 
 ## [1.12.12] - 2026-02-21
 
